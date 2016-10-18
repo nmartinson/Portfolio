@@ -1,0 +1,33 @@
+var webpack = require('webpack');
+
+var devUrl = 'http://localhost:3000/api/v1';
+var prodUrl = 'https://boiling-journey-2134.herokuapp.com/api/v1';
+
+var apiUrl = process.env.NODE_ENV === 'production' ? prodUrl : devUrl;
+
+module.exports = {
+  entry: "./app/App.js",
+  output: {
+    filename: "bundle.js"
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel',
+        query: {
+          presets: ['react', 'es2015']
+        }
+      }
+    ]
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
+        'API_URL': JSON.stringify(apiUrl)
+      }
+    })
+  ]
+}

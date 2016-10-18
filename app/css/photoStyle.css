@@ -1,0 +1,77 @@
+
+* { margin: 0; padding: 0; }
+
+div.container{
+    background-color: black;
+}
+
+html,body{
+    background-color: black;
+    height: 100%;
+    overflow: hidden;
+}
+
+#page-wrap{ 
+    width: 100%; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img{
+    max-width: 100%;
+}
+.image{
+    position: relative;
+    margin-bottom: 20px;
+    width: 100%; 
+}
+
+.image:hover{
+    opacity: 0.7;
+}
+
+h2{
+    position: absolute;
+    top: 0px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgb(0, 0, 0); 
+    background: rgba(0, 0, 0, 0.7); 
+    margin-left: auto;
+    margin-right: auto;
+    color: white; 
+    font: bold 45px/45px Helvetica, Sans-Serif; 
+    letter-spacing: -1px;
+    line-height: 200%
+}
+
+/* Demo styles */
+.content{
+    color:#777;
+    font:12px/1.4 "helvetica neue",arial,sans-serif;
+    width:100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* This rule is read by Galleria to define the gallery height: */
+#galleria{
+    height:100px; 
+}
+
+
+.galleria-fscr{
+    width:20px;
+    height:20px;
+    position:absolute;
+    bottom:0px;
+    right:10px;
+    background:url('fullscreen.png');
+    z-index:4;
+    cursor: pointer;
+    opacity: .3;
+}
+.galleria-fscr:hover{
+    opacity:1;
+}
