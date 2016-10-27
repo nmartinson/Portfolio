@@ -17,19 +17,14 @@ const NavHeader = () => {
         <LinkContainer to="/galleries">
           <NavItem eventKey={1} >Galleries</NavItem>
         </LinkContainer>
+        <LinkContainer to="/createGallery">
+          <NavItem eventKey={1} >Create Gallery</NavItem>
+        </LinkContainer>
         <NavItem eventKey={2} href="#">Favorites</NavItem>
         <NavItem eventKey={2} href="http://www.boundless-journey.com">Blog</NavItem>
-        <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-          <MenuItem eventKey={3.1}>Action</MenuItem>
-          <MenuItem eventKey={3.2}>Another action</MenuItem>
-          <MenuItem eventKey={3.3}>Something else here</MenuItem>
-          <MenuItem divider />
-          <MenuItem eventKey={3.3}>Separated link</MenuItem>
-        </NavDropdown>
-      </Nav>
-      <Nav pullRight>
-        <NavItem eventKey={1} href="#">Link Right</NavItem>
-        <NavItem eventKey={2} href="#">Link Right</NavItem>
+        <LinkContainer to="/contact">
+          <NavItem eventKey={3} >Contact</NavItem>
+        </LinkContainer>
       </Nav>
     </Navbar.Collapse>
   </Navbar>

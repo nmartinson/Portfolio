@@ -3,18 +3,89 @@ import axios from 'axios';
 import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
 import Modal from 'react-modal';
+import Styles  from '../styles';
+import Helmet from "react-helmet";
 
+import {
+  ShareButtons,
+  ShareCounts,
+  generateShareIcon
+} from 'react-share';
 
-const previewStyles = {
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  position: 'fixed',
-  border: 'solid #1a1a1a 10px',
-  zIndex: '3',
+const {
+  FacebookShareButton,
+  GooglePlusShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+  PinterestShareButton,
+  VKShareButton,
+} = ShareButtons;
+
+const {
+  FacebookShareCount,
+  GooglePlusShareCount,
+  LinkedinShareCount,
+  PinterestShareCount,
+} = ShareCounts;
+
+const FacebookIcon = generateShareIcon('facebook');
+const TwitterIcon = generateShareIcon('twitter');
+const GooglePlusIcon = generateShareIcon('google');
+const LinkedinIcon = generateShareIcon('linkedin');
+const PinterestIcon = generateShareIcon('pinterest');
+const VKIcon = generateShareIcon('vk');
+
+const customStyles = {
+  overlay : {
+    position          : 'fixed',
+    top               : 0,
+    left              : 0,
+    right             : 0,
+    bottom            : 0,
+  },
+  content: {
+    border: '0',
+    borderRadius: '4px',
+    bottom: 'auto',
+    minHeight: '10rem',
+    left: '50%',
+    padding: '2rem',
+    position: 'fixed',
+    right: 'auto',
+    top: '50%',
+    transform: 'translate(-50%,-50%)',
+    minWidth: '40rem',
+    width: '80%',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    background: 'black'
+  }
 };
 
-const ImagePreview = ({ url }) => <img src={url}  alt={url} width="50%" height="auto" />;
+const ImagePreview = ({ url, name, style, description }) => {
+  return (
+    <div style={style.container}>
+      <div style={style.sidebar}>
+        <img src={url}  style={style.modalImage} alt={url}  />
+        <p>sidebar content here</p>
+      </div>
+      <div style={style.content}>
+        <h1>{name}</h1>
+        <h1>Description</h1>
+        <p>This is an image description</p>
+      </div>
+    </div>
+  )
+};
+
+function getIndex(value, arr, prop) {
+    for(var i = 0; i < arr.length; i++) {
+        if(arr[i][prop] === value) {
+            return i;
+        }
+    }
+    return -1; //to handle the case where the value doesn't exist
+}
 
 class Photoset extends React.Component {
   constructor(){
@@ -24,22 +95,23 @@ class Photoset extends React.Component {
       id: null,
       title: "",
       loading: true,
-      imageDetails: [],
+      imageDetails: {settings:[]},
       imageList: {}
     }
-
   }
   componentDidMount(){
     const { id, title } = this.props.params;
     const apiUrl = process.env.API_URL;
-    console.log(this.props.params)
     const path = `${apiUrl}/gallery?gallery_id=${id}`
-    console.log(path)
+
     axios.get(path)
       .then((response) => {
-        console.log(response.data)
+        var items = response.data;
+        for(var i=0; i <items.length; i++){
+          items[i].clickHandler = (x) => {this.openModal(x) };
+        }
         this.setState({
-          imageList: response.data,
+          imageList: items,
           loading: false,
           id: id,
           title: title,
@@ -50,67 +122,24 @@ class Photoset extends React.Component {
         console.log("Error in Photoset:", error);
       });
 
-    //     const images = [
-    //   {
-    //     url: "https://farm3.staticflickr.com/2937/14197491985_58036d5b0e_z.jpg",
-    //     prices: [{price: 10.00, size:"10x15"},{price: 100.00, size:"20x30"}],
-    //     clickHandler: (x) => {this.openModal(x) }
-    //   },
-    //   {
-    //     url: "http://www.mountainprofessor.com/images/Mountain-Ranges-Colorado-2.jpg",
-    //     prices: [{price: 1.00, size:"10x15"},{price: 1000.00, size:"20x30"}],
-    //     clickHandler: ( x) => { this.openModal(x) }
-    //   }
-    // ];
 
-    // this.setState({
-    //   imageURLs: [],
-    //   id: id,
-    //   title: title,
-    //   modalIsOpen: false,
-    //   imageList: images
-    // })
-
-    // var path = " https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=0412d3495604ac32c3ada71d433053f7&photoset_id=" + id + "&user_id=132620238%40N05&format=json&nojsoncallback=1&auth_token=72157671780663984-a1ac7df6408647c8&api_sig=1a88b277098875c5704163ac757adf01"
-    // axios.get(path)
-    //   .then((response) => {
-    //     console.log(response)
-    //     var photos = response.data.photoset.photo;
-    //     for(var i = 0; i < photos.length; i++){
-    //       console.log(photos[i].id)
-
-    //       var photoPath = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes&api_key=0412d3495604ac32c3ada71d433053f7&photo_id=" + photos[i].id + "&format=json&nojsoncallback=1&auth_token=72157671780663984-a1ac7df6408647c8&api_sig=53f15d4b5436a810276635c006003dbb"
-    //       axios.get(photoPath)
-    //         .then((response) => {
-    //           console.log(response)
-    //         })
-    //     }
-    //     //console.log(response)
-    //       this.setState({
-    //         imageURLs: response,
-    //         loading: false
-    //       })
-    //   })
-    //   .catch((error) => {
-    //     console.log("Error ", error);
-    //   })
   }
 
   componentWillReceiveProps(nextProps){
     //handle new props
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true, imageDetails: this.state.imageList[0]});
-        //console.log(this.state.imageList)
-
+  openModal(url) {
+    var index = getIndex(url, this.state.imageList, 'url');
+    this.setState({modalIsOpen: true, imageDetails: this.state.imageList[index]});
   }
 
   afterOpenModal() {
-    this.refs.subtitle.style.color = '#f00';
+   // this.refs.subtitle.style.color = 'black';
   }
 
-  closeModal() {
+  closeModal(e) {
+    e.preventDefault();
     this.setState({modalIsOpen: false});
   }
 
@@ -119,48 +148,66 @@ class Photoset extends React.Component {
     if(loading){
       return(<p>Loading</p>)
     } else {
-
-      console.log("details")
-      console.log(imageList)
-          console.log(this.state)
-
-      // const images = imageURLs.map(function(url, idx){
-      //   return url;
-      // }.bind(this));
         return (
-          <div>
+        <div>
+        <FacebookShareButton
+            url={String(window.location)}
+            title={"TEST title"} >
+            <FacebookIcon
+              size={32}
+              round />
+          </FacebookShareButton>
+          <Helmet
+            htmlAttributes={{"lang": "en", "amp": undefined}} // amp takes no value
+            title="Photoset"
+            titleTemplate="Portfolio"
+            defaultTitle="Portfolio"
+            base={{"target": "_blank", "href": "http://boundless-journey.com/portfolio"}}
+            meta={[
+                {"name": "twitter:image", "content": "http://i1.wp.com/www.boundless-journey.com/wp-content/uploads/2016/09/DSC_5325.jpg"},
+                {"property": "og:image", "content": "http://i1.wp.com/www.boundless-journey.com/wp-content/uploads/2016/09/DSC_5325.jpg"},
+                {"property": "og:title", "content": "Photoset title - boundless-journey"}
+            ]}
+          />
+          <div >
             <Modal
               isOpen={this.state.modalIsOpen}
               onAfterOpen={(x) => this.afterOpenModal(x)}
               onRequestClose={(x) => this.closeModal(x)}
               contentLabel="Example Modal" 
+              style={customStyles}
             >
-              <h2 ref="subtitle">Image Title</h2>
-              <div>
-                <ImagePreview url={imageDetails != null ? imageDetails.url : "" } />
+              <div >
+                <button style={{float: "right"}} onClick={(x) => {this.closeModal(x)}}>Close</button>
+                <ImagePreview style={Styles} name={imageDetails.name} description={imageDetails.description} url={imageDetails != null ? imageDetails.url : "" }/>
                 <form>
-                  <div className="form-group">
+                  <div className="form-group" style={{maxWidth:"60%", width: "40%"}}>
                     <label name="price_tag" htmlFor="price_tag">Gear Tag</label>
-                    <select className="form-control"  id="price_tag">
-                      <option hidden></option>
-                      {
-
-                        imageDetails.map((image, index1) => {
-                          image.settings.map((setting, index) => {
-                            return <option key={index} value={setting.price}>{setting.size} - {setting.price}</option>
-                          })
-                        })
-                        
-                      }
-                    </select>                  
-                    <button>Buy it!</button>
+                    <div className="row">
+                      <div className="form-group col-xs-6">
+                        <select className="form-control" id="price_tag">
+                          <option hidden></option>
+                          {
+                            imageDetails.settings.map((setting, index) => {
+                              return <option key={index} value={setting.price}>{setting.size} - ${setting.price}</option>
+                            })                        
+                          }
+                        </select>   
+                      </div>
+                      <div className="form-group col-xs-6">
+                        <button onClick={(x) => {this.closeModal(x)}}>Buy it!</button>               
+                      </div>
+                    </div>
                   </div>
                 </form>
+                <Link to={`/contact/${imageDetails.id}`}>
+                  <button>Email me about this photo</button>
+                </Link>
               </div>
             </Modal>
-
             <ReactRpg imagesArray={imageList} columns={[ 1, 2, 3 ]} padding={10} />
           </div>
+        </div>
         )
       }
   }

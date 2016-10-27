@@ -1,7 +1,10 @@
 import React from 'react';
 import NavHeader from './NavHeader';
 
+
+
 const Main = ({children, history}) => {
+
   return (
     <div className="main-container">
       <NavHeader />
@@ -12,4 +15,4 @@ const Main = ({children, history}) => {
   )
 }
 
-export default Main
+export default Main;
