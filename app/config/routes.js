@@ -7,6 +7,7 @@ import CreateFeature from '../components/AddFeaturedPhoto';
 import EditPhoto from '../components/EditPhotos';
 import Contact from '../components/ContactForm';
 import Featured from '../components/FeaturedImages';
+import About from '../components/About';
 import { Route, IndexRoute } from 'react-router';
 
 module.exports = (
@@ -18,5 +19,6 @@ module.exports = (
       <Route path="/editPhoto" component={EditPhoto} />
       <Route path="/contact(/:photo_id)(/:name)" component={Contact} />
       <Route path="/featured" component={Featured} />
+      <Route path="/about" component={About} />
   </Route>
 );

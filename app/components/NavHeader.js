@@ -14,9 +14,12 @@ const NavHeader = () => {
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
-        <NavItem eventKey={2} href="http://www.boundless-journey.com">Blog</NavItem>
+        <NavItem eventKey={1} href="http://www.boundless-journey.com">Blog</NavItem>
         <LinkContainer to="/contact">
-          <NavItem eventKey={3} >Contact</NavItem>
+          <NavItem eventKey={2} >Contact</NavItem>
+        </LinkContainer>
+        <LinkContainer to="/about">
+          <NavItem eventKey={3} >About</NavItem>
         </LinkContainer>
       </Nav>
     </Navbar.Collapse>
