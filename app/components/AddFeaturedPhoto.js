@@ -4,6 +4,8 @@ import Dropzone from 'react-dropzone';
 import { Link } from 'react-router';
 import base64 from 'base-64';
 import { ReactRpg } from 'react-rpg';
+var exif = require('exif-js');
+var xmpReader = require('xmp-reader');
 
 const imageStyle = {
   maxWidth: "200px"
@@ -14,7 +16,9 @@ class AddFeaturedPhoto extends React.Component {
     super();
     this.state = {
       files: [],
-      isFeaturedImage: true
+      isFeaturedImage: true,
+      xmpData: null,
+      exifData: null
     }
   }
 
@@ -87,12 +91,34 @@ class AddFeaturedPhoto extends React.Component {
   }
 
   uploadFiles(){
-    const { files, isFeaturedImage} = this.state;
+    const { files, isFeaturedImage, exifData, xmpData} = this.state;
     const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/features`
 
     var images = files.map((fileItem, index) => {
-      return { file: fileItem.file, name: fileItem.inputName, uniqueFileName: fileItem.name, settings: fileItem.settings, isFeatured: isFeaturedImage, description: fileItem.description }
+      var exposure = '';
+      if(exifData.ExposureTime.denominator == 1){
+        exposure = exifData.ExposureTime.numerator + ' s';
+      } else{
+        exposure = exifData.ExposureTime.numerator + '/' + exifData.ExposureTime.denominator + ' s';
+      }
+      return { file: fileItem.file, 
+        name: fileItem.inputName,
+        uniqueFileName: fileItem.name, 
+        settings: fileItem.settings, 
+        isFeatured: isFeaturedImage, 
+        description: fileItem.description,
+        imageData: {
+          copyright: exifData.Copyright,
+          date: exifData.DateTimeOriginal,
+          fstop: exifData.FNumber.numerator,
+          exposureTime: exposure,
+          focalLength: exifData.FocalLengthIn35mmFilm + "mm",
+          iso: exifData.ISOSpeedRatings,
+          make: exifData.Make,
+          model: exifData.Model,
+        }
+      }
     });
 
      axios.post(path, 
@@ -135,8 +161,39 @@ class AddFeaturedPhoto extends React.Component {
         file.isFeatured = true;
         return file
     })
+    this.getImageData(acceptedFiles[0]);
     this.setState({ files: this.state.files.concat(newFiles) })
   }
+
+  getImageData(file){
+    var fileReader = new FileReader();
+    fileReader.onload = function(progressEvent) {
+      var result = progressEvent.target.result;
+      var {files, exifData, xmpData} = this.state;
+      var exifResults = exif.readFromBinaryFile(result);
+      console.log(exifResults)
+
+      var buffer = this.toBuffer(result);
+      xmpReader.fromBuffer(buffer).then(
+        (data)=> {
+          console.log(data); 
+          files[0].inputName = data.title;
+          files[0].description = data.description;
+          this.setState({files: files, exifData: exifResults, xmpData: data})},
+        (err) => console.log(err)
+      ); 
+    }.bind(this);
+    fileReader.readAsArrayBuffer(file);
+  }
+
+  toBuffer(ab) {
+    var buf = new Buffer(ab.byteLength);
+    var view = new Uint8Array(ab);
+    for (var i = 0; i < buf.length; ++i) {
+        buf[i] = view[i];
+    }
+    return buf;
+  } 
 
   componentDidMount(){
 
@@ -147,8 +204,6 @@ class AddFeaturedPhoto extends React.Component {
   }
   render(){
     const { files} = this.state;
-    if(files.length > 0){
-    console.log(files[0].settings)}
       return(
         <div>
           <form onSubmit={(x) => {this.handleSubmit(x)}}>
@@ -160,9 +215,9 @@ class AddFeaturedPhoto extends React.Component {
               files.map(function(photo, idx) {
                   return (<div>
                             <label name="photo_name" htmlFor="photo_name">Photo Name</label>
-                            <input id={idx} type="text" onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
+                            <input id={idx} type="text" value={photo.inputName != null || photo.inputName != '' ? photo.inputName : ''} onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
                             <label name="photo_description" htmlFor="photo_description">Photo Description</label>
-                            <input id={idx} type="text" onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
+                            <input id={idx} type="text" value={photo.description != null || photo.description != '' ? photo.description : ''} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
                             <div>
                             {
                               photo.settings.map(function(setting, index){
