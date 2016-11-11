@@ -14,13 +14,6 @@ const NavHeader = () => {
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
-        <LinkContainer to="/galleries">
-          <NavItem eventKey={1} >Galleries</NavItem>
-        </LinkContainer>
-        <LinkContainer to="/createGallery">
-          <NavItem eventKey={1} >Create Gallery</NavItem>
-        </LinkContainer>
-        <NavItem eventKey={2} href="#">Favorites</NavItem>
         <NavItem eventKey={2} href="http://www.boundless-journey.com">Blog</NavItem>
         <LinkContainer to="/contact">
           <NavItem eventKey={3} >Contact</NavItem>
@@ -32,3 +25,16 @@ const NavHeader = () => {
 }
 
 export default NavHeader;
+
+        // <LinkContainer to="/addFeature">
+        //   <NavItem eventKey={1} >Add Feature</NavItem>
+        // </LinkContainer>
+// <LinkContainer to="/galleries">
+//           <NavItem eventKey={1} >Galleries</NavItem>
+//         </LinkContainer>
+//         <LinkContainer to="/createGallery">
+//           <NavItem eventKey={1} >Create Gallery</NavItem>
+//         </LinkContainer>
+        // <LinkContainer to="/featured">
+        //   <NavItem eventKey={2}>Favorites</NavItem>
+        // </LinkContainer>

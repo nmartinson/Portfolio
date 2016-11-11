@@ -1,7 +1,9 @@
 var webpack = require('webpack');
 
 var devUrl = 'http://localhost:3000/api/v1';
-var prodUrl = 'https://boiling-journey-2134.herokuapp.com/api/v1';
+//var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
+
+var prodUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
 
 var apiUrl = process.env.NODE_ENV === 'production' ? prodUrl : devUrl;
 

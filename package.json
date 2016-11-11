@@ -26,6 +26,7 @@
     "react-dom": "^15.3.2",
     "react-dropzone": "^3.6.0",
     "react-helmet": "^3.1.0",
+    "react-images": "^0.5.1",
     "react-modal": "^1.5.2",
     "react-native": "^0.35.0",
     "react-router": "^2.8.1",

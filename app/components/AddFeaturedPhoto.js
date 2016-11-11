@@ -9,24 +9,13 @@ const imageStyle = {
   maxWidth: "200px"
 };
 
-class CreateGallery extends React.Component {
+class AddFeaturedPhoto extends React.Component {
   constructor(){
     super();
     this.state = {
-      galleryName: null,
       files: [],
-      isCoverImage: false,
-      isFeaturedImage: false
+      isFeaturedImage: true
     }
-  }
-
-  handleFeaturedImageChange(e) {
-    let checked = e.target.checked;
-    this.setState({ isFeaturedImage: checked })
-  }
-  handleCoverImageChange(e) {
-    let checked = e.target.checked;
-    this.setState({ isCoverImage: checked })
   }
 
   handleSettingPriceChange(e){
@@ -44,12 +33,6 @@ class CreateGallery extends React.Component {
     fileList[0].settings[e.target.id].size = size;
     this.setState({ files: fileList });
   }
-
-  handleGalleryNameChange(e) {
-    let galleryName = e.target.value;
-    this.setState({ galleryName: galleryName });
-  }
-
   handlePhotoDescriptionChange(e) {
     let description = e.target.value;
     var fileList = this.state.files;
@@ -69,9 +52,10 @@ class CreateGallery extends React.Component {
   handleAddSetting(e){
     var newArray = this.state.files.slice(); 
     var settingsLength = newArray[newArray.length - 1].settings.length;
-
+  console.log(settingsLength)
     //check if last setting is still null
-    if(newArray[newArray.length - 1].settings[settingsLength - 1].size != null)
+
+    if(settingsLength == 0 || newArray[newArray.length - 1].settings[settingsLength - 1].size != null)
     {
       newArray[newArray.length - 1].settings.push({size: null, price:null}); 
       this.setState({files: newArray})
@@ -80,7 +64,7 @@ class CreateGallery extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { galleryName, files} = this.state;
+    const { files} = this.state;
     var reader  = new FileReader();
     var total = files.length; 
     var loaded = 0;
@@ -91,8 +75,6 @@ class CreateGallery extends React.Component {
         return function(evt){
           loaded++;
           var Files = this.state.files;
-          console.log(evt)
-          console.log(file.id)
           Files[file.id].file = reader.result;
           //this.setState({files: Files});
           if (loaded == total){
@@ -105,19 +87,17 @@ class CreateGallery extends React.Component {
   }
 
   uploadFiles(){
-    const { galleryName, files, isCoverImage, isFeaturedImage} = this.state;
+    const { files, isFeaturedImage} = this.state;
     const apiUrl = process.env.API_URL;
-    const path = `${apiUrl}/gallery`
+    const path = `${apiUrl}/features`
 
     var images = files.map((fileItem, index) => {
-      return { file: fileItem.file, name: fileItem.inputName, uniqueFileName: fileItem.name, settings: fileItem.settings, isCover: isCoverImage, isFeatured: isFeaturedImage, description: fileItem.description }
+      return { file: fileItem.file, name: fileItem.inputName, uniqueFileName: fileItem.name, settings: fileItem.settings, isFeatured: isFeaturedImage, description: fileItem.description }
     });
 
      axios.post(path, 
       {
         images: images,
-        galleryName: galleryName,
-        description: ""
       })
       .then( function(names) {
         var newFiles = this.state.files;
@@ -133,8 +113,16 @@ class CreateGallery extends React.Component {
         this.setState({ files: newFiles });  
       }.bind(this))
       .catch((error) => {
-        console.log("Error in Create Gallery:Upload photos: ", error);
+        console.log("Error in Create Feature: ", error);
       });
+  }
+
+  handleMediumChange(e) {
+    let medium = e.target.value;
+    var fileList = this.state.files;
+
+    fileList[0].settings[e.target.id].medium = medium;
+    this.setState({ files: fileList });
   }
 
   onDrop(acceptedFiles, rejectedFiles) {
@@ -143,8 +131,8 @@ class CreateGallery extends React.Component {
         file.url = file.preview;
         file.id = fileCount + index;
         file.inputName = "";
-        file.settings = [{size:null, price:null}];
-        file.isFeatured = false;
+        file.settings = [];
+        file.isFeatured = true;
         return file
     })
     this.setState({ files: this.state.files.concat(newFiles) })
@@ -164,11 +152,6 @@ class CreateGallery extends React.Component {
       return(
         <div>
           <form onSubmit={(x) => {this.handleSubmit(x)}}>
-            <div className="form-group">
-              <label name="gear_tag" htmlFor="gear_tag">Gallery Name</label>
-              <input type="text" onChange={(x) => {this.handleGalleryNameChange(x) }} id="gear_tag" title="Gallery Name"/>
-            </div>
-
             <Dropzone onDrop={(x) => {this.onDrop(x)}}>
               <div>Try dropping some files here, or click to select files to upload.</div>
             </Dropzone>
@@ -180,22 +163,6 @@ class CreateGallery extends React.Component {
                             <input id={idx} type="text" onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
                             <label name="photo_description" htmlFor="photo_description">Photo Description</label>
                             <input id={idx} type="text" onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
-                            <label>
-                              <input type="checkbox"
-                                name="cover_image"
-                                checked={this.state.isCoverImage}
-                                onClick={(x) => {this.handleCoverImageChange(x)}}
-                                value={this.props.value} />
-                                Is Cover Image?
-                            </label>
-                            <label>
-                              <input type="checkbox"
-                                name="featured_image"
-                                checked={this.state.isFeaturedImage}
-                                onClick={(x) => {this.handleFeaturedImageChange(x)}}
-                                value={this.props.value} />
-                                Is Featured Image?
-                            </label>
                             <div>
                             {
                               photo.settings.map(function(setting, index){
@@ -205,6 +172,11 @@ class CreateGallery extends React.Component {
                                     <input key={index + "key"} id={index} type="text" onChange={(x) => {this.handleSettingSizeChange(x) }} title="Size"/>
                                     <label name="price" htmlFor="price">Price</label>
                                     <input id={index} type="decimal" onChange={(x) => {this.handleSettingPriceChange(x) }} title="Price"/>
+                                    <select className="form-control" id="medium" onChange={(x) => {this.handleMediumChange(x)}}>
+                                      <option value="" style={{display: "none"}}>Medium</option>
+                                      <option value="Canvas" style={{display: "none"}}>Canvas</option>
+                                      <option value="Paper Print" style={{display: "none"}}>Paper Print</option>
+                                    </select> 
                                   </div>
                                 )
                               }, this)
@@ -225,4 +197,4 @@ class CreateGallery extends React.Component {
   }
 }
 
-export default CreateGallery;
+export default AddFeaturedPhoto;

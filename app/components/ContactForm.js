@@ -37,7 +37,8 @@ class ContactForm extends React.Component {
   }
 
 
-  handleOnSubmit(){
+  handleOnSubmit(e){
+    e.preventDefault();
     const { email, subject, body, first_name, last_name} = this.state;
     const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/emails`
@@ -46,10 +47,12 @@ class ContactForm extends React.Component {
         email: email,
         subject: subject,
         body: body,
-        first_name: first_name,
-        last_name: last_name
+        name_first: first_name,
+        name_last: last_name
       })
       .then( function(response) {
+        console.log('success')
+        console.log(response)
         window.location = `/`
       }.bind(this))
       .catch((error) => {
@@ -58,16 +61,18 @@ class ContactForm extends React.Component {
   }
 
   componentDidMount(){
-    const { photo_id } = this.props.params;
-    console.log(photo_id)
-
+    const { photo_id, name } = this.props.params;
+    if(name != undefined){
+      this.setState({subject: `[Photo name: ${name}]`})
+    }
   }
 
   componentWillReceiveProps(nextProps){
     //handle new props
+
   }
   render(){
-    const { primaryPhotos, loading } = this.state;
+    const { primaryPhotos, loading, subject } = this.state;
 
     if(loading){
       return <p>Loading</p>
@@ -84,10 +89,10 @@ class ContactForm extends React.Component {
                 </div>      
               </div>
               <div className="form-group">
-                <input type="email" className="form-control" id="email" placeholder="Email" onChange={(x) => {this.handleEmailChange(x) }} />         
+                <input required='required' type="email" className="form-control" id="email" placeholder="Email" onChange={(x) => {this.handleEmailChange(x) }} />         
               </div>
               <div className="form-group">
-                <input type="text" className="form-control" id="subject" placeholder="Subject" onChange={(x) => {this.handleSubjectChange(x) }} /> 
+                <input type="text" className="form-control" id="subject"  value={subject != null && subject != '' ? subject : ""} placeholder="Subject" onChange={(x) => {this.handleSubjectChange(x) }} /> 
               </div>
               <div className="form-group">
                 <input type="textarea" className="form-control" id="body" placeholder="Message" onChange={(x) => {this.handleBodyChange(x) }} />    
@@ -101,3 +106,5 @@ class ContactForm extends React.Component {
 }
 
 export default ContactForm;
+
+ // value={this.state.subject != null || this.state.subject != '' ? this.state.subject :"Subject"}

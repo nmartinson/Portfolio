@@ -72,7 +72,7 @@ const ImagePreview = ({ url, name, style, description }) => {
       <div style={style.content}>
         <h1>{name}</h1>
         <h1>Description</h1>
-        <p>This is an image description</p>
+        <p>{description}</p>
       </div>
     </div>
   )
@@ -148,6 +148,7 @@ class Photoset extends React.Component {
     if(loading){
       return(<p>Loading</p>)
     } else {
+      console.log(imageDetails)
         return (
         <div>
         <FacebookShareButton
