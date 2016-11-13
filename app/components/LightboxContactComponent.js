@@ -11,34 +11,23 @@ const LightboxContactComponent = ({imageDetails}) => {
     window.location = `#/contact/${params[0]}/${params[1]}`
   }
 
+  const handleDetailsClick = (e) => {
+    // var params = e.target.dataset.message.split(",")
+    //console.log(imageDetails)
+    window.location = `#/imageDetails/${imageDetails.id}`
+  }
+
   return (
-      <div>
-        <div>
+    <div>
+      <div className="row">
+        <div className="form-group col-xs-6">
           <p style={{color: "white"}}>{imageDetails.name}</p>
         </div>
-        <form>
-          <div className="form-group">
-            <div className="row">
-              <div className="form-group col-xs-6">
-                <select className="form-control" id="price_tag">
-                  <option value="" style={{display: "none"}}>Prices and Sizes</option>
-                  {
-                    imageDetails.settings.map((setting, index) => {
-                      return <option key={index} value={setting.price}>{setting.size} - ${setting.price}</option>
-                    })                        
-                  }
-                </select>   
-              </div>
-              <div className="hidden form-group col-xs-3">
-                <button >Buy it!</button>               
-              </div>
-              <div className="form-group col-xs-6">
-                <button type={"button"} className={"btn btn-success"} data-message={[imageDetails.id, imageDetails.name]} onClick={handleEmailClick}>Email me about this photo</button>
-              </div>
-            </div>
-          </div>
-        </form>
+        <div className="form-group col-xs-6">
+          <button type={"button"} className={"btn btn-success"} style={{fontSize: '12px', padding: '5px 5px'}} onClick={handleDetailsClick}>See Details</button>
+        </div>
       </div>
+    </div>
   )
 }
 

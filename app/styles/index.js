@@ -15,7 +15,7 @@ var styles = {
   },
   sidebar: {
     float: "left",
-    width: "70%",
+    width: "60%",
   },
   content: {
       display: "block",
