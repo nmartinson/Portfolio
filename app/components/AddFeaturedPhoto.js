@@ -97,18 +97,14 @@ class AddFeaturedPhoto extends React.Component {
 
     var images = files.map((fileItem, index) => {
       var exposure = '';
-      if(exifData.ExposureTime.denominator == 1){
+      var imageData = null;
+      if(exifData != null && exifData != false){
+        if(exifData.ExposureTime.denominator == 1){
         exposure = exifData.ExposureTime.numerator + ' s';
-      } else{
-        exposure = exifData.ExposureTime.numerator + '/' + exifData.ExposureTime.denominator + ' s';
-      }
-      return { file: fileItem.file, 
-        name: fileItem.inputName,
-        uniqueFileName: fileItem.name, 
-        settings: fileItem.settings, 
-        isFeatured: isFeaturedImage, 
-        description: fileItem.description,
-        imageData: {
+        } else{
+          exposure = exifData.ExposureTime.numerator + '/' + exifData.ExposureTime.denominator + ' s';
+        }
+        imageData = {
           copyright: exifData.Copyright,
           date: exifData.DateTimeOriginal,
           fstop: exifData.FNumber.numerator,
@@ -117,7 +113,16 @@ class AddFeaturedPhoto extends React.Component {
           iso: exifData.ISOSpeedRatings,
           make: exifData.Make,
           model: exifData.Model,
-        }
+          tags: xmpData.tags }
+      }
+      
+      return { file: fileItem.file, 
+        name: fileItem.inputName,
+        uniqueFileName: fileItem.name, 
+        settings: fileItem.settings, 
+        isFeatured: isFeaturedImage, 
+        description: fileItem.description,
+        imageData: imageData
       }
     });
 
