@@ -4,6 +4,8 @@ import Dropzone from 'react-dropzone';
 import { Link } from 'react-router';
 import base64 from 'base-64';
 import { ReactRpg } from 'react-rpg';
+var exif = require('exif-js');
+var xmpReader = require('xmp-reader');
 
 const imageStyle = {
   maxWidth: "200px"
@@ -14,7 +16,9 @@ class AddFeaturedPhoto extends React.Component {
     super();
     this.state = {
       files: [],
-      isFeaturedImage: true
+      isFeaturedImage: true,
+      xmpData: null,
+      exifData: null
     }
   }
 
@@ -87,12 +91,44 @@ class AddFeaturedPhoto extends React.Component {
   }
 
   uploadFiles(){
-    const { files, isFeaturedImage} = this.state;
+    const { files, isFeaturedImage, exifData, xmpData} = this.state;
     const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/features`
 
     var images = files.map((fileItem, index) => {
-      return { file: fileItem.file, name: fileItem.inputName, uniqueFileName: fileItem.name, settings: fileItem.settings, isFeatured: isFeaturedImage, description: fileItem.description }
+      var exposure = '';
+      var Fnumber = '';
+      var focalLength = '';
+      var imageData = null;
+
+      if(exifData != null && exifData != false){
+        if(exifData.ExposureTime != null){ // Exposure
+          if(exifData.ExposureTime.denominator == 1){ exposure = exifData.ExposureTime.numerator + ' s'; } 
+          else{ exposure = exifData.ExposureTime.numerator + '/' + exifData.ExposureTime.denominator + ' s'; }
+        }
+        if(exifData.FNumber != null){ Fnumber = exifData.FNumber.numerator;}
+        if(exifData.FocalLengthIn35mmFilm != null){ focalLength = exifData.FocalLengthIn35mmFilm + "mm";}
+        imageData = {
+          copyright: exifData.Copyright,
+          date: exifData.DateTimeOriginal,
+          fstop: Fnumber,
+          exposureTime: exposure,
+          focalLength: focalLength,
+          iso: exifData.ISOSpeedRatings,
+          make: exifData.Make,
+          model: exifData.Model,
+          tags: xmpData.tags,
+          gps: exifData.GPS }
+      }
+      
+      return { file: fileItem.file, 
+        name: fileItem.inputName,
+        uniqueFileName: fileItem.name, 
+        settings: fileItem.settings, 
+        isFeatured: isFeaturedImage, 
+        description: fileItem.description,
+        imageData: imageData
+      }
     });
 
      axios.post(path, 
@@ -135,20 +171,66 @@ class AddFeaturedPhoto extends React.Component {
         file.isFeatured = true;
         return file
     })
+    this.getImageData(acceptedFiles[0]);
     this.setState({ files: this.state.files.concat(newFiles) })
   }
 
-  componentDidMount(){
-
+  getImageData(file){
+    var fileReader = new FileReader();
+    fileReader.onload = function(progressEvent) {
+      var result = progressEvent.target.result;
+      var {files, exifData, xmpData} = this.state;
+      var exifResults = exif.readFromBinaryFile(result);
+      if(exifResults.GPSLatitude != null){ exifResults.GPS = this.ConvertDMSToDD(exifResults); }
+      console.log(exifResults)
+      var buffer = this.toBuffer(result);
+      xmpReader.fromBuffer(buffer).then(
+        (data)=> {
+          console.log(data); 
+          files[0].inputName = data.title;
+          files[0].description = data.description;
+          this.setState({files: files, exifData: exifResults, xmpData: data})},
+        (err) => console.log(err)
+      ); 
+    }.bind(this);
+    fileReader.readAsArrayBuffer(file);
   }
 
-  componentWillReceiveProps(nextProps){
-    //handle new props
-  }
+  toBuffer(ab) {
+    var buf = new Buffer(ab.byteLength);
+    var view = new Uint8Array(ab);
+    for (var i = 0; i < buf.length; ++i) {
+        buf[i] = view[i];
+    }
+    return buf;
+  } 
+  
+  //Util function
+  ConvertDMSToDD(data) {
+    var degrees = data.GPSLatitude[0].numerator/data.GPSLatitude[0].denominator;
+    var minutes = data.GPSLatitude[1].numerator/data.GPSLatitude[1].denominator;
+    var seconds = data.GPSLatitude[2].numerator/data.GPSLatitude[2].denominator;
+    var direction = data.GPSLatitudeRef;
+    var Lat = degrees + minutes/60 + seconds/(60*60);
+
+    if (direction == "S" || direction == "W") {
+        Lat = Lat * -1;
+    } // Don't do anything for N or E
+
+    degrees = data.GPSLongitude[0].numerator/data.GPSLongitude[0].denominator;
+    minutes = data.GPSLongitude[1].numerator/data.GPSLongitude[1].denominator;
+    seconds = data.GPSLongitude[2].numerator/data.GPSLongitude[2].denominator;
+    direction = data.GPSLongitudeRef;
+    var Long = degrees + minutes/60 + seconds/(60*60);
+
+    if (direction == "S" || direction == "W") {
+        Long = Long * -1;
+    } // Don't do anything for N or E
+    return {Lat: Lat, Long:Long};
+  } 
+
   render(){
     const { files} = this.state;
-    if(files.length > 0){
-    console.log(files[0].settings)}
       return(
         <div>
           <form onSubmit={(x) => {this.handleSubmit(x)}}>
@@ -160,9 +242,9 @@ class AddFeaturedPhoto extends React.Component {
               files.map(function(photo, idx) {
                   return (<div>
                             <label name="photo_name" htmlFor="photo_name">Photo Name</label>
-                            <input id={idx} type="text" onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
+                            <input id={idx} type="text" value={photo.inputName != null || photo.inputName != '' ? photo.inputName : ''} onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
                             <label name="photo_description" htmlFor="photo_description">Photo Description</label>
-                            <input id={idx} type="text" onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
+                            <input id={idx} type="text" value={photo.description != null || photo.description != '' ? photo.description : ''} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
                             <div>
                             {
                               photo.settings.map(function(setting, index){
