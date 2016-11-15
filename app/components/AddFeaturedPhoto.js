@@ -97,23 +97,28 @@ class AddFeaturedPhoto extends React.Component {
 
     var images = files.map((fileItem, index) => {
       var exposure = '';
+      var Fnumber = '';
+      var focalLength = '';
       var imageData = null;
+
       if(exifData != null && exifData != false){
-        if(exifData.ExposureTime.denominator == 1){
-        exposure = exifData.ExposureTime.numerator + ' s';
-        } else{
-          exposure = exifData.ExposureTime.numerator + '/' + exifData.ExposureTime.denominator + ' s';
+        if(exifData.ExposureTime != null){ // Exposure
+          if(exifData.ExposureTime.denominator == 1){ exposure = exifData.ExposureTime.numerator + ' s'; } 
+          else{ exposure = exifData.ExposureTime.numerator + '/' + exifData.ExposureTime.denominator + ' s'; }
         }
+        if(exifData.FNumber != null){ Fnumber = exifData.FNumber.numerator;}
+        if(exifData.FocalLengthIn35mmFilm != null){ focalLength = exifData.FocalLengthIn35mmFilm + "mm";}
         imageData = {
           copyright: exifData.Copyright,
           date: exifData.DateTimeOriginal,
-          fstop: exifData.FNumber.numerator,
+          fstop: Fnumber,
           exposureTime: exposure,
-          focalLength: exifData.FocalLengthIn35mmFilm + "mm",
+          focalLength: focalLength,
           iso: exifData.ISOSpeedRatings,
           make: exifData.Make,
           model: exifData.Model,
-          tags: xmpData.tags }
+          tags: xmpData.tags,
+          gps: exifData.GPS }
       }
       
       return { file: fileItem.file, 
@@ -176,8 +181,8 @@ class AddFeaturedPhoto extends React.Component {
       var result = progressEvent.target.result;
       var {files, exifData, xmpData} = this.state;
       var exifResults = exif.readFromBinaryFile(result);
+      if(exifResults.GPSLatitude != null){ exifResults.GPS = this.ConvertDMSToDD(exifResults); }
       console.log(exifResults)
-
       var buffer = this.toBuffer(result);
       xmpReader.fromBuffer(buffer).then(
         (data)=> {
@@ -199,14 +204,31 @@ class AddFeaturedPhoto extends React.Component {
     }
     return buf;
   } 
+  
+  //Util function
+  ConvertDMSToDD(data) {
+    var degrees = data.GPSLatitude[0].numerator/data.GPSLatitude[0].denominator;
+    var minutes = data.GPSLatitude[1].numerator/data.GPSLatitude[1].denominator;
+    var seconds = data.GPSLatitude[2].numerator/data.GPSLatitude[2].denominator;
+    var direction = data.GPSLatitudeRef;
+    var Lat = degrees + minutes/60 + seconds/(60*60);
 
-  componentDidMount(){
+    if (direction == "S" || direction == "W") {
+        Lat = Lat * -1;
+    } // Don't do anything for N or E
 
-  }
+    degrees = data.GPSLongitude[0].numerator/data.GPSLongitude[0].denominator;
+    minutes = data.GPSLongitude[1].numerator/data.GPSLongitude[1].denominator;
+    seconds = data.GPSLongitude[2].numerator/data.GPSLongitude[2].denominator;
+    direction = data.GPSLongitudeRef;
+    var Long = degrees + minutes/60 + seconds/(60*60);
 
-  componentWillReceiveProps(nextProps){
-    //handle new props
-  }
+    if (direction == "S" || direction == "W") {
+        Long = Long * -1;
+    } // Don't do anything for N or E
+    return {Lat: Lat, Long:Long};
+  } 
+
   render(){
     const { files} = this.state;
       return(
