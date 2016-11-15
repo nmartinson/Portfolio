@@ -7,9 +7,9 @@ const NavHeader = () => {
   return (
   <Navbar inverse>
     <Navbar.Header>
-      <Navbar.Brand>
-        <a href="#">Portfolio Home</a>
-      </Navbar.Brand>
+        <LinkContainer to="/featured">
+          <Navbar.Brand>Featured Photos</Navbar.Brand>
+        </LinkContainer>
       <Navbar.Toggle />
     </Navbar.Header>
     <Navbar.Collapse>

@@ -12,8 +12,6 @@ const LightboxContactComponent = ({imageDetails}) => {
   }
 
   const handleDetailsClick = (e) => {
-    // var params = e.target.dataset.message.split(",")
-    //console.log(imageDetails)
     window.location = `#/imageDetails/${imageDetails.id}`
   }
 

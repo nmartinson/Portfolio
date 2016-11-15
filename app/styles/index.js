@@ -5,10 +5,16 @@ var styles = {
   space: {
     marginTop: '25px'
   },
-  modalImage: {
+  landscapeImage: {
     maxWidth: "95%",
     height: "auto",
-    maxHeight: '70%'
+    //maxHeight: '85%'
+  },
+  portraitImage: {
+    maxHeight: '90%',
+    // width: "auto",  
+    maxWidth: '100%',
+    paddingRight: "5px"
   },
   container: {
     overflow: "hidden",

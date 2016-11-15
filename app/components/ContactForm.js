@@ -80,6 +80,8 @@ class ContactForm extends React.Component {
       return (
         <div>
           <form className="col-md-6 col-md-offset-3">
+              <h1>Contact me</h1>
+              <p>Please contact me for any questions/inquiries about photo prints or general questions or comments. Thanks!</p>
               <div className="row">
                 <div className="form-group col-xs-6">
                   <input id="firstname" className="form-control input-group-lg" type="text" name="firstname" onChange={(x) => {this.handleFirstNameChange(x) }} placeholder="First name"/>
