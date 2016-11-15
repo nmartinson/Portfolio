@@ -15,7 +15,7 @@ const ImageSettings = ({ imageDetails, style }) => {
         <option value="" style={{display: "none"}}>Prices and Sizes</option>
         {
           imageDetails.settings.map((setting, index) => {
-            return <option key={index} value={setting.price}>{setting.size} - ${setting.price}</option>
+            return <option key={index} value={setting.price}>{setting.medium} - {setting.size} - ${setting.price}</option>
           })                        
         }
       </select>   

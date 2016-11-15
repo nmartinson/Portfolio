@@ -63,7 +63,6 @@ class EditPhoto extends React.Component {
   constructor(){
     super();
     this.state = {
-      imageURLs: [],
       id: null,
       title: "",
       loading: true,
@@ -91,31 +90,30 @@ class EditPhoto extends React.Component {
     let description = e.target.value;
     var imageDetails = this.state.imageDetails;
     imageDetails.description = description;
-
     this.setState({ imageDetails: imageDetails });
   }
 
   handlePhotoNameChange(e) {
     let fileName = e.target.value;
     var imageDetails = this.state.imageDetails;
-    imageDetails.inputName = fileName;
-
+    imageDetails.name = fileName;
     this.setState({ imageDetails: imageDetails });
   }
   
   handleMediumChange(e) {
     let medium = e.target.value;
     var imageDetails = this.state.imageDetails;
-    console.log(medium)
+        console.log(medium)
+    console.log(e.target.id)
+    console.log(imageDetails.settings)
     imageDetails.settings[e.target.id].medium = medium;
-    this.setState({ imageDetails: fileList });
+    this.setState({ imageDetails: imageDetails });
   }
 
   handleAddSetting(e){
     var newArray = this.state.imageDetails; 
     // var settingsLength = newArray[newArray.length - 1].settings.length;
     var settingsLength = newArray.settings.length;
-    console.log(settingsLength)
     //check if last setting is still null
 
     if(settingsLength == 0 || newArray.settings[settingsLength - 1].size != null)
@@ -141,11 +139,10 @@ class EditPhoto extends React.Component {
     const { imageDetails, isFeaturedImage} = this.state;
     const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/photos`
-    console.log(path)
 
      axios.put(path, 
       {
-        image:{photo_id: imageDetails.id, name: imageDetails.inputName, uniqueFileName: imageDetails.name, settings: imageDetails.settings, isFeatured: true, description: imageDetails.description },
+        image:{photo_id: imageDetails.id, name: imageDetails.name, uniqueFileName: imageDetails.name, settings: imageDetails.settings, isFeatured: true, description: imageDetails.description },
       })
       .then( function(names) {
         console.log('Success')
@@ -162,15 +159,9 @@ class EditPhoto extends React.Component {
       .then((response) => {
         var items = response.data;
         console.log(items)
-        var images = [];
         for(var index=0; index <items.length; index++){
-            var image = null;
-            items[index].clickHandler = (x) => {this.openModal(x) };
-            image = {
-              index: index,
-              src: items[index].url,
-            }
-            images.push(image);
+          var image = null;
+          items[index].clickHandler = (x) => {this.openModal(x) };
         }
         this.setState({
           imageList: items,
@@ -189,8 +180,8 @@ class EditPhoto extends React.Component {
 
 
   render(){
-    const { imageList, images, loading, currentImage, imageDetails} = this.state;
-
+    const { imageList, loading, currentImage, imageDetails} = this.state;
+    console.log(imageDetails)
     if(loading){
       return <p>Loading</p>
     } else {
@@ -221,7 +212,7 @@ class EditPhoto extends React.Component {
                             <input key={"input_size_" + index} id={index} value={setting.size != null ? setting.size : null} type="text" onChange={(x) => {this.handleSettingSizeChange(x) }} title="Size"/>
                             <label key={"label_price_" + index} name="price" htmlFor="price">Price</label>
                             <input key={"input_price_"+index} id ={index} value={setting.price != null ? setting.price : null} type="decimal" onChange={(x) => {this.handleSettingPriceChange(x) }} title="Price"/>
-                            <select key={"medium_"+index} className="form-control" id="medium" onChange={(x) => {this.handleMediumChange(x)}}>
+                            <select value={setting.medium} key={"medium_"+index} className="form-control" id={index} onChange={(x) => {this.handleMediumChange(x)}}>
                               <option key={"medium_none"+index} value="" style={{display: "none"}}>Medium</option>
                               <option key={"medium_canvas_"+index} value="Canvas" style={{display: "none"}}>Canvas</option>
                               <option key={"medium_print_"+index} value="Paper Print" style={{display: "none"}}>Paper Print</option>

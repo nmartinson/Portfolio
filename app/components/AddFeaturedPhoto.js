@@ -100,6 +100,7 @@ class AddFeaturedPhoto extends React.Component {
       var Fnumber = '';
       var focalLength = '';
       var imageData = null;
+      var lens = '';
 
       if(exifData != null && exifData != false){
         if(exifData.ExposureTime != null){ // Exposure
@@ -108,6 +109,7 @@ class AddFeaturedPhoto extends React.Component {
         }
         if(exifData.FNumber != null){ Fnumber = exifData.FNumber.numerator;}
         if(exifData.FocalLengthIn35mmFilm != null){ focalLength = exifData.FocalLengthIn35mmFilm + "mm";}
+        if(exifData.undefined != null && exifData.undefined != "ABP2949482") { lens = exifData.undefined;}
         imageData = {
           copyright: exifData.Copyright,
           date: exifData.DateTimeOriginal,
@@ -118,6 +120,7 @@ class AddFeaturedPhoto extends React.Component {
           make: exifData.Make,
           model: exifData.Model,
           tags: xmpData.tags,
+          lens: lens,
           gps: exifData.GPS }
       }
       
@@ -156,7 +159,6 @@ class AddFeaturedPhoto extends React.Component {
   handleMediumChange(e) {
     let medium = e.target.value;
     var fileList = this.state.files;
-
     fileList[0].settings[e.target.id].medium = medium;
     this.setState({ files: fileList });
   }
@@ -182,11 +184,9 @@ class AddFeaturedPhoto extends React.Component {
       var {files, exifData, xmpData} = this.state;
       var exifResults = exif.readFromBinaryFile(result);
       if(exifResults.GPSLatitude != null){ exifResults.GPS = this.ConvertDMSToDD(exifResults); }
-      console.log(exifResults)
       var buffer = this.toBuffer(result);
       xmpReader.fromBuffer(buffer).then(
         (data)=> {
-          console.log(data); 
           files[0].inputName = data.title;
           files[0].description = data.description;
           this.setState({files: files, exifData: exifResults, xmpData: data})},
@@ -254,8 +254,8 @@ class AddFeaturedPhoto extends React.Component {
                                     <input key={index + "key"} id={index} type="text" onChange={(x) => {this.handleSettingSizeChange(x) }} title="Size"/>
                                     <label name="price" htmlFor="price">Price</label>
                                     <input id={index} type="decimal" onChange={(x) => {this.handleSettingPriceChange(x) }} title="Price"/>
-                                    <select className="form-control" id="medium" onChange={(x) => {this.handleMediumChange(x)}}>
-                                      <option value="" style={{display: "none"}}>Medium</option>
+                                    <select className="form-control" id={index} onChange={(x) => {this.handleMediumChange(x)}}>
+                                      <option disabled value="" style={{display: "none"}}>Medium</option>
                                       <option value="Canvas" style={{display: "none"}}>Canvas</option>
                                       <option value="Paper Print" style={{display: "none"}}>Paper Print</option>
                                     </select> 
