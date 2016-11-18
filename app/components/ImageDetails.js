@@ -119,13 +119,14 @@ class ImageDetails extends React.Component {
       .catch((error) => {
         console.log("Error in Image Details:", error);
       });
+
   }
 
   render(){
     const { imageDetails, loading} = this.state;
 
     if(loading){
-      return <p>Loading</p>
+      return <p>loading</p>
     } else {
       imageDetails.location = String(window.location);
       return (
