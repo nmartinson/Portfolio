@@ -9,8 +9,6 @@ import Lightbox from 'react-images';
 import LightboxContact from './LightboxContactComponent';
 
 
-
-
 function getIndex(value, arr, prop) {
     for(var i = 0; i < arr.length; i++) {
         if(arr[i][prop] === value) {
@@ -32,53 +30,62 @@ class FeaturedImages extends React.Component {
       lightboxIsOpen: false,
       images: []
     }
+    this.openLightbox = this.openLightbox.bind(this);
     this.closeLightbox = this.closeLightbox.bind(this);
     this.gotoNext = this.gotoNext.bind(this);
     this.gotoPrevious = this.gotoPrevious.bind(this);
     this.gotoImage = this.gotoImage.bind(this);
     this.handleClickImage = this.handleClickImage.bind(this);
-    //this.openLightbox = this.openLightbox.bind(this);
   }
 
   openModal(url) {
     var index = getIndex(url, this.state.primaryPhotos, 'url');
     var photo = this.state.primaryPhotos[index];
-    window.location = `#/photoset/${photo.id}/title/${photo.title}`
+    //window.location = `#/photoset/${photo.id}/title/${photo.title}`
   }
 
   componentDidMount(){
-    const apiUrl = process.env.API_URL;
-    const path = `${apiUrl}/features`
-    axios.get(path)
-      .then((response) => {
-        var items = response.data;
-        var images = [];
-        for(var index=0; index <items.length; index++){
-            var image = null;
-            items[index].clickHandler = this.openLightbox.bind(this,index);
-            image = {
-              index: index,
-              src: items[index].url,
-              caption: <LightboxContact imageDetails={items[index]}/>,
-              onClick: this.openLightbox.bind(this,index)
-            }
-            images.push(image);
-        }
-        this.setState({
-          imageList: items,
-          images: images,
-          loading: false,
-          modalIsOpen: false,
-        })
+    var images =  
+      [{
+          index: 0,
+          src: "http://www.boundless-journey.com/portfolio/images/examples/cornerDetail.jpg",
+          caption: 
+            <div>
+              <div className="row">
+                <div className="form-group col-xs-6">
+                  <p style={{color: "white"}}>Corner detail of wrapped canvas</p>
+                </div>
+              </div>
+            </div>,
+          onClick: this.openLightbox.bind(this,0)
+        },
+        {
+          index: 1,
+          src: "http://www.boundless-journey.com/portfolio/images/examples/largeCanvas.jpg",
+          caption: 
+            <div>
+              <div className="row">
+                <div className="form-group col-xs-6">
+                  <p style={{color: "white"}}>Large wrapped canvas</p>
+                </div>
+              </div>
+            </div>,
+          onClick: this.openLightbox.bind(this,1)
+        }];
+
+      this.setState({
+        imageList: images.map(function(image, index)
+        {
+          image.url = image.src; 
+          image.clickHandler = this.openLightbox.bind(image,index);
+          return image;
+        }.bind(this)),
+        images: images,
+        loading: false,
+        modalIsOpen: false,
       })
-      .catch((error) => {
-        console.log("Error in Featured:", error);
-      });
   }
 
-  componentWillReceiveProps(nextProps){
-    //handle new props
-  }
   gotoPrevious () {
     this.setState({
       currentImage: this.state.currentImage - 1,
@@ -96,7 +103,6 @@ class FeaturedImages extends React.Component {
   }
   handleClickImage () {
     if (this.state.currentImage === this.state.imageList.length - 1) return;
-
     this.gotoNext();
   }
   openLightbox (index,x) {
@@ -107,7 +113,6 @@ class FeaturedImages extends React.Component {
     });
   }
   closeLightbox () {
-        console.log('close')
     this.setState({
       currentImage: 0,
       lightboxIsOpen: false,
@@ -121,7 +126,7 @@ class FeaturedImages extends React.Component {
     } else {
       return (
         <div>
-          <ReactRpg imagesArray={imageList} columns={[ 1, 2, 4 ]} padding={10} ></ReactRpg>            
+          <ReactRpg imagesArray={imageList} columns={[ 1, 2, 3 ]} padding={10} ></ReactRpg>            
 
         <Lightbox
         currentImage={currentImage}
@@ -144,11 +149,7 @@ export default Radium(FeaturedImages);
 const theme = {
   // container
   container: { 
-    // background: 'rgba(255, 255, 255, 0.9)',
     background: 'rgba(0, 0, 0, 0.9)',
-    // height: 'auto',
-    // top: '100px',
-    // bottom: '10%'
   },
 
   // arrows

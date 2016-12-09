@@ -2,10 +2,12 @@ import React from 'react';
 import { IndexLink, Link } from 'react-router';
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import Social from './SocialComponent';
+
 
 const NavHeader = () => {
   return (
-  <Navbar inverse>
+  <Navbar inverse style={{marginBottom:"0px"}}>
     <Navbar.Header>
         <LinkContainer to="/featured">
           <Navbar.Brand>Featured Photos</Navbar.Brand>
@@ -20,6 +22,9 @@ const NavHeader = () => {
         </LinkContainer>
         <LinkContainer to="/about">
           <NavItem eventKey={3} >About</NavItem>
+        </LinkContainer>
+        <LinkContainer to="/examples">
+          <NavItem eventKey={3} >Examples</NavItem>
         </LinkContainer>
       </Nav>
     </Navbar.Collapse>
