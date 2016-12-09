@@ -9,6 +9,7 @@ import Contact from '../components/ContactForm';
 import Featured from '../components/FeaturedImages';
 import ImageDetails from '../components/ImageDetails';
 import About from '../components/About';
+import Examples from '../components/Examples';
 import { Route, IndexRoute } from 'react-router';
 
 module.exports = (
@@ -22,5 +23,6 @@ module.exports = (
       <Route path="/featured" component={Featured} />
       <Route path="/imageDetails/:id" component={ImageDetails} />
       <Route path="/about" component={About} />
+      <Route path="/examples" component={Examples} />
   </Route>
 );
