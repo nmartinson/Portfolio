@@ -14,18 +14,21 @@ var MediaQuery = require('react-responsive');
 const styles = {
   cell:{
     paddingBottom: "10px"
+  },
+  outerDiv: {
+    paddingTop:'25px'
   }
 }
 
 const ImagePreview = ({ imageDetails, style }) => {
   if(imageDetails.is_landscape == true){
     return (
-      <div>
+      <div style={styles.outerDiv}>
         <StyleRoot>
           <Grid>
             <Cell align="left" width="1" mediumWidth="1" smallWidth="1" style={styles.cell}>
               <div>
-                <img id="image" src={imageDetails.url}  style={style.landscapeImage} alt={imageDetails.url}/>
+                <img id="image" src={imageDetails.url}  style={[style.landscapeImage]} alt={imageDetails.url}/>
               </div>
             </Cell>
             <Grid>
@@ -45,7 +48,7 @@ const ImagePreview = ({ imageDetails, style }) => {
     )
   } else {
     return (
-      <div>
+      <div  style={styles.outerDiv}>
       <StyleRoot>
           <MediaQuery query='(orientation: portrait)'>
             <StyleRoot>
@@ -62,7 +65,8 @@ const ImagePreview = ({ imageDetails, style }) => {
                   <Cell mediumWidth="1" smallWidth="1" align="left">
                   <div>
                     <ImageMeta imageDetails={imageDetails}/>
-                    <Social url={String(window.location)} title={imageDetails.name} imageUrl={imageDetails.url}/>                  </div>
+                    <Social url={String(window.location)} title={imageDetails.name} imageUrl={imageDetails.url}/>                  
+                  </div>
                 </Cell>
               </Grid>
               </Grid>
@@ -80,7 +84,8 @@ const ImagePreview = ({ imageDetails, style }) => {
                   </Cell>
                   <Cell smallWidth="1" mediumWidth="1/4" largeWidth="1/4" xlargeWidth="1/4" style={{paddingLeft:"5px"}}>
                     <ImageMeta imageDetails={imageDetails}/>
-                    <Social url={String(window.location)} title={imageDetails.name} imageUrl={imageDetails.url}/>                  </Cell>
+                    <Social url={String(window.location)} title={imageDetails.name} imageUrl={imageDetails.url}/>                  
+                  </Cell>
                 </Grid>
               </Cell>
             </StyleRoot>
@@ -156,5 +161,3 @@ class ImageDetails extends React.Component {
 }
 
 export default Radium(ImageDetails);
-
-
