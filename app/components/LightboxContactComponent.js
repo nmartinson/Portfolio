@@ -21,8 +21,8 @@ const LightboxContactComponent = ({imageDetails}) => {
         <div className="form-group col-xs-6">
           <p style={{color: "white"}}>{imageDetails.name}</p>
         </div>
-        <div className="form-group col-xs-6">
-          <button type={"button"} className={"btn btn-success"} style={{fontSize: '12px', padding: '5px 5px'}} onClick={handleDetailsClick}>See Details</button>
+        <div >
+          <button type={"button"} className={"btn btn-success"} style={{fontSize: '12px', float: 'right', padding: '5px 5px'}} onClick={handleDetailsClick}>See Details</button>
         </div>
       </div>
     </div>

@@ -66,7 +66,7 @@ class FeaturedImages extends React.Component {
             <div>
               <div className="row">
                 <div className="form-group col-xs-6">
-                  <p style={{color: "white"}}>Large wrapped canvas</p>
+                  <p style={{color: "white"}}>Large wrapped canvas (24"x36")</p>
                 </div>
               </div>
             </div>,

@@ -131,7 +131,10 @@ class FeaturedImages extends React.Component {
         onClickNext={this.gotoNext}
         onClickImage={this.handleClickImage}
         onClose={this.closeLightbox}
+        showCloseButton={false}
         theme={theme}
+        width={"100%"}
+        backdropClosesModal={true}
       />
       </div>
       )
@@ -146,15 +149,14 @@ const theme = {
   container: { 
     // background: 'rgba(255, 255, 255, 0.9)',
     background: 'rgba(0, 0, 0, 0.9)',
-    // height: 'auto',
+    height: '100%',
     // top: '100px',
-    // bottom: '10%'
+    padding: '0px',
+    margin: '0px'
   },
 
   // arrows
   arrow: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    fill: '#222',
     opacity: 0.6,
     transition: 'opacity 200ms',
 
@@ -163,7 +165,6 @@ const theme = {
     },
   },
   arrow__size__medium: {
-    borderRadius: 40,
     height: 40,
     marginTop: -20,
 
@@ -172,8 +173,8 @@ const theme = {
       padding: 15,
     },
   },
-  arrow__direction__left: { marginLeft: 10 },
-  arrow__direction__right: { marginRight: 10 },
+  arrow__direction__left: { marginLeft: -10 },
+  arrow__direction__right: { marginRight: -10 },
 
   // header
   close: {
@@ -185,10 +186,16 @@ const theme = {
       opacity: 1,
     },
   },
-
+  // header
+  header:{
+    height:'0'
+  },
+  
   // footer
   footer: {
+    height:'0',
     color: 'black',
+    paddingLeft:'10px'
   },
   footerCount: {
     color: 'rgba(0, 0, 0, 0.6)',

@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router';
+import Radium from 'radium';
 
 
 const About = () => {
@@ -8,7 +9,7 @@ const About = () => {
 
 
   return (
-    <div>
+    <div className="col-md-6 col-md-offset-1">
       <h1>About Me</h1>
       <p>
         Nice to meet you! I was born and raised in Bettendorf, Iowa, and lived in Iowa until I graduated college as a Hawkeye.  Chicago 
@@ -29,4 +30,10 @@ const About = () => {
   )
 }
 
-export default About;
+export default Radium(About);
+
+const styles = {
+  outerDiv: {
+    paddingTop:'25px'
+  }
+}
