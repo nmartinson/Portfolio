@@ -23,6 +23,7 @@
     "radium": "^0.18.1",
     "radium-grid": "^2.0.3",
     "react": "^15.3.2",
+    "react-anything-sortable": "^1.6.1",
     "react-bootstrap": "^0.30.5",
     "react-component-gallery": "^1.2.1",
     "react-dom": "^15.3.2",
@@ -41,6 +42,7 @@
     "react-share": "^1.10.0",
     "react-styling": "^1.5.1",
     "react-to-html-webpack-plugin": "^2.2.0",
+    "webpack-combine-loaders": "^2.0.3",
     "xmp-reader": "0.0.3"
   },
   "devDependencies": {

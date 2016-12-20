@@ -6,6 +6,9 @@ import Styles  from '../styles';
 import styler from 'react-styling'
 import Radium from 'radium';
 import Modal from 'react-modal';
+import Sortable from 'react-anything-sortable';
+import SortableImage  from './SortableImage';
+
 
 const customStyles = {
   overlay : {
@@ -67,9 +70,25 @@ class EditPhoto extends React.Component {
       title: "",
       loading: true,
       imageDetails: {settings:[]},
-      imageList: {}
+      imageList: {},
+      showOrder: false,
+      imageOrder: {}
     }
 
+  }
+
+  handleSort(data) {
+    console.log(data)
+    this.setState({
+      result: data.join(' '),
+      imageOrder: data
+    });
+  }
+
+  toggleSection() {
+    this.setState({
+      showOrder: !this.state.showOrder,
+    });
   }
 
   handleSettingPriceChange(e){
@@ -152,6 +171,28 @@ class EditPhoto extends React.Component {
       });
   }
 
+  saveOrder(e) {
+    e.preventDefault();
+    const { imageDetails, isFeaturedImage, imageOrder} = this.state;
+    const apiUrl = process.env.API_URL;
+    const path = `${apiUrl}/photos`
+    console.log(imageOrder)
+
+    imageOrder.map(function(image, index){
+      axios.put(path, 
+      {
+        image:{order: index + 1 , photo_id: image.id, name: image.name, uniqueFileName: image.name, settings: image.settings, isFeatured: true, description: image.description },
+      })
+      .then( function(names) {
+        console.log('Success')
+      })
+      .catch((error) => {
+        console.log("Error in update order: ", error);
+      });
+    })
+     
+  }
+
   componentDidMount(){
     const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/features`
@@ -170,7 +211,7 @@ class EditPhoto extends React.Component {
         })
       })
       .catch((error) => {
-        console.log("Error in Featured:", error);
+        console.log("Error in edit:", error);
       });
   }
 
@@ -180,54 +221,72 @@ class EditPhoto extends React.Component {
 
 
   render(){
-    const { imageList, loading, currentImage, imageDetails} = this.state;
-    console.log(imageDetails)
+    const { imageList, loading, currentImage, imageDetails, showOrder} = this.state;
     if(loading){
       return <p>Loading</p>
     } else {
       return (
         <div>
-          <ReactRpg imagesArray={imageList} columns={[ 1, 2, 3 ]} padding={10} ></ReactRpg>   
-          <Modal
-              isOpen={this.state.modalIsOpen}
-              onRequestClose={(x) => this.closeModal(x)}
-              contentLabel="Example Modal" 
-              style={customStyles}
-            >
-              <div >
-                <button style={{float: "right"}} onClick={(x) => {this.closeModal(x)}}>Close</button>
-                <ImagePreview style={Styles} name={imageDetails.name} description={imageDetails.description} url={imageDetails != null ? imageDetails.url : "" }/>
-                <form>
-                  <div>
-                    <label name="photo_name" htmlFor="photo_name">Photo Name</label>
-                    <input type="text" value={imageDetails.name != null ? imageDetails.name : null} onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
-                    <label name="photo_description" htmlFor="photo_description">Photo Description</label>
-                    <input type="text" value={imageDetails.description != null ? imageDetails.description : null} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
+          <button onClick={(x) => {this.toggleSection(x)}}>Toggle View</button>
+          <div>
+          { showOrder ?
+            <div>
+            <Sortable onSort={(x) => {this.handleSort(x)}}>
+                {
+                  imageList.map(function(image, index){
+                    return(
+                      <SortableImage onclick={(x) => {this.openModal(x)}} url={image.url} order={index} key={index} sortData={image}/>
+                    )
+                  })
+                }
+              </Sortable>
+              <button onClick={(x) => {this.saveOrder(x)}}>Save Order</button>
+            </div>
+          : null }
+          </div>
+          <div>
+            {!showOrder ? <ReactRpg imagesArray={imageList} columns={[ 1, 2, 3 ]} padding={10}></ReactRpg> : null}
+            <Modal
+                isOpen={this.state.modalIsOpen}
+                onRequestClose={(x) => this.closeModal(x)}
+                contentLabel="Example Modal" 
+                style={customStyles}
+              >
+                <div >
+                  <button style={{float: "right"}} onClick={(x) => {this.closeModal(x)}}>Close</button>
+                  <ImagePreview style={Styles} name={imageDetails.name} description={imageDetails.description} url={imageDetails != null ? imageDetails.url : "" }/>
+                  <form>
                     <div>
-                    {
-                      imageDetails.settings.map(function(setting, index){
-                        return(
-                          <div key={"div_"+index}>
-                            <label key={"label_size_" + index} name="size" htmlFor="size">Size</label>
-                            <input key={"input_size_" + index} id={index} value={setting.size != null ? setting.size : null} type="text" onChange={(x) => {this.handleSettingSizeChange(x) }} title="Size"/>
-                            <label key={"label_price_" + index} name="price" htmlFor="price">Price</label>
-                            <input key={"input_price_"+index} id ={index} value={setting.price != null ? setting.price : null} type="decimal" onChange={(x) => {this.handleSettingPriceChange(x) }} title="Price"/>
-                            <select value={setting.medium} key={"medium_"+index} className="form-control" id={index} onChange={(x) => {this.handleMediumChange(x)}}>
-                              <option key={"medium_none"+index} value="" style={{display: "none"}}>Medium</option>
-                              <option key={"medium_canvas_"+index} value="Canvas" style={{display: "none"}}>Canvas</option>
-                              <option key={"medium_print_"+index} value="Paper Print" style={{display: "none"}}>Paper Print</option>
-                            </select> 
-                          </div>
-                        )
-                      }.bind(this))
-                    }
+                      <label name="photo_name" htmlFor="photo_name">Photo Name</label>
+                      <input type="text" value={imageDetails.name != null ? imageDetails.name : null} onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
+                      <label name="photo_description" htmlFor="photo_description">Photo Description</label>
+                      <input type="text" value={imageDetails.description != null ? imageDetails.description : null} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
+                      <div>
+                      {
+                        imageDetails.settings.map(function(setting, index){
+                          return(
+                            <div key={"div_"+index}>
+                              <label key={"label_size_" + index} name="size" htmlFor="size">Size</label>
+                              <input key={"input_size_" + index} id={index} value={setting.size != null ? setting.size : null} type="text" onChange={(x) => {this.handleSettingSizeChange(x) }} title="Size"/>
+                              <label key={"label_price_" + index} name="price" htmlFor="price">Price</label>
+                              <input key={"input_price_"+index} id ={index} value={setting.price != null ? setting.price : null} type="decimal" onChange={(x) => {this.handleSettingPriceChange(x) }} title="Price"/>
+                              <select value={setting.medium} key={"medium_"+index} className="form-control" id={index} onChange={(x) => {this.handleMediumChange(x)}}>
+                                <option key={"medium_none"+index} value="" style={{display: "none"}}>Medium</option>
+                                <option key={"medium_canvas_"+index} value="Canvas" style={{display: "none"}}>Canvas</option>
+                                <option key={"medium_print_"+index} value="Paper Print" style={{display: "none"}}>Paper Print</option>
+                              </select> 
+                            </div>
+                          )
+                        }.bind(this))
+                      }
+                      </div>
+                      <button className="btn btn-default" type="button" onClick={(x) => {this.handleAddSetting(x)}}>Add Setting</button>
                     </div>
-                    <button className="btn btn-default" type="button" onClick={(x) => {this.handleAddSetting(x)}}>Add Setting</button>
-                  </div>
-                <button className="btn btn-default" type="button" onClick={(x) => {this.handleSubmit(x)}}>Submit</button>
-                </form>
-              </div>
-            </Modal>         
+                  <button className="btn btn-default" type="button" onClick={(x) => {this.handleSubmit(x)}}>Submit</button>
+                  </form>
+                </div>
+              </Modal>     
+          </div>    
       </div>
       )
     }
@@ -235,6 +294,7 @@ class EditPhoto extends React.Component {
 }
 
 export default Radium(EditPhoto);
+
 
 const theme = {
   // container

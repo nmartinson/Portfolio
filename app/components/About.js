@@ -25,7 +25,8 @@ const About = () => {
         Over time my passion evolved more towards photography and I grew to appreciate the beauty of the world more.  I really enjoy being out 
         in nature and having new experiences, and I love being able to capture that feeling and share it with others.
       </p>
-      <p>Enjoy!</p>
+      <p>Enjoy the journey!</p>
+      <p>Nick Martinson</p>
     </div>
   )
 }

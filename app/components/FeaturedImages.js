@@ -52,6 +52,7 @@ class FeaturedImages extends React.Component {
     axios.get(path)
       .then((response) => {
         var items = response.data;
+        console.log(items);
         var images = [];
         for(var index=0; index <items.length; index++){
             var image = null;
