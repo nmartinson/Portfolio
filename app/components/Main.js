@@ -13,7 +13,7 @@ const Main = ({children, history}) => {
     return (
       <StyleRoot>
       <div className="main-container"  style={{height:"100%"}}>
-        <NavHeader />
+        <NavHeader history={history}/>
         <div className="container" style={[style.div, style.shadow]}>
           <Featured/>
         </div>
@@ -25,7 +25,7 @@ const Main = ({children, history}) => {
   return (
     <StyleRoot>
     <div className="main-container" style={{height:"100%"}}>
-      <NavHeader />
+      <NavHeader history={history} />
         <div className="container" style={[style.div, style.shadow]}>
           {children}
         </div>

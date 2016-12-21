@@ -48,6 +48,6 @@ module.exports = {
         'API_URL': JSON.stringify(apiUrl)
       }
     }),
-    new ExtractTextPlugin('styles.css'),
+    new ExtractTextPlugin('styles-[hash].css'),
   ]
 }

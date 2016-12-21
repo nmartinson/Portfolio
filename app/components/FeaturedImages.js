@@ -8,8 +8,11 @@ import Radium from 'radium';
 import Lightbox from 'react-images';
 import LightboxContact from './LightboxContactComponent';
 
+var tagSearch = '';
 
-
+function containsTag(element, index, array){
+  return element.tag.toLowerCase().includes(tagSearch);
+}
 
 function getIndex(value, arr, prop) {
     for(var i = 0; i < arr.length; i++) {
@@ -37,7 +40,6 @@ class FeaturedImages extends React.Component {
     this.gotoPrevious = this.gotoPrevious.bind(this);
     this.gotoImage = this.gotoImage.bind(this);
     this.handleClickImage = this.handleClickImage.bind(this);
-    //this.openLightbox = this.openLightbox.bind(this);
   }
 
   openModal(url) {
@@ -67,6 +69,7 @@ class FeaturedImages extends React.Component {
         }
         this.setState({
           imageList: items,
+          filterImages: items,
           images: images,
           loading: false,
           modalIsOpen: false,
@@ -77,9 +80,22 @@ class FeaturedImages extends React.Component {
       });
   }
 
-  componentWillReceiveProps(nextProps){
-    //handle new props
+
+  filterByTag (data) {
+    tagSearch = data.target.value.toLowerCase();
+    if(tagSearch != ""){
+      var imageList = this.state.imageList;
+      var filterImages = imageList.filter(function(el){
+        return el.tags.some(containsTag)
+      });
+    } else {
+      filterImages = this.state.imageList;
+    }
+    this.setState({
+      filterImages: filterImages,
+    });
   }
+
   gotoPrevious () {
     this.setState({
       currentImage: this.state.currentImage - 1,
@@ -116,13 +132,20 @@ class FeaturedImages extends React.Component {
   }
 
   render(){
-    const { imageList, images, loading, currentImage} = this.state;
+    const { imageList, images, loading, currentImage, filterImages} = this.state;
+    console.log(window.innerWidth)
     if(loading){
       return <p>Loading</p>
     } else {
       return (
         <div>
-          <ReactRpg imagesArray={imageList} columns={[ 1, 2, 4 ]} padding={10} ></ReactRpg>            
+          <div className="box" style={search.search}>
+            <div className="container-1">
+              <span className="icon"><i className="fa fa-search"></i></span>
+              <input type="search" id="search" placeholder="Search Tags" onChange={(x) => {this.filterByTag(x) }}/>
+            </div>
+          </div>
+          <ReactRpg imagesArray={filterImages} columns={[ 1, 2, 4 ]} padding={10} ></ReactRpg>            
 
         <Lightbox
         currentImage={currentImage}
@@ -144,6 +167,38 @@ class FeaturedImages extends React.Component {
 }
 
 export default Radium(FeaturedImages);
+
+const search = {
+  search: {
+    marginTop: -40,
+    position: 'absolute',
+    backgroundColor: 'rgb(147,157,157)',
+
+    '@media (max-width: 2000px) and (min-width: 768px)': {
+      marginLeft: '60%',
+    },
+    '@media (max-width: 767px) and (min-width: 320px)': {
+      marginLeft: '35%',
+      width: '100px',
+    },
+    '@media (max-width: 767px) and (min-width: 320px) and (orientation: portrait)': {
+      marginLeft: '35%',
+      width: '100px',
+    },
+    '@media (max-width: 350px) and (min-width: 320px) and (orientation: portrait)': {
+      marginLeft: '32%',
+      width: '100px',
+    },
+    '@media (max-width: 767px) and (min-width: 320px) and (orientation: landscape)': {
+      marginLeft: '50%',
+      width: '160px',
+    },
+    '@media (max-width: 600px) and (min-width: 320px) and (orientation: landscape)': {
+      marginLeft: '45%',
+      width: '140px',
+    },
+  },
+}
 
 const theme = {
   // container
