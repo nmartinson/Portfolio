@@ -33,7 +33,8 @@ const customStyles = {
     width: '80%',
     maxWidth: '100%',
     maxHeight: '100%',
-    background: 'black'
+    background: 'black',
+    color: 'white',
   }
 };
 
@@ -89,6 +90,28 @@ class EditPhoto extends React.Component {
     this.setState({
       showOrder: !this.state.showOrder,
     });
+  }
+
+  handleShippingChange(e){
+    let shipping = e.target.checked;
+    var imageDetails = this.state.imageDetails;
+    console.log(shipping)
+    imageDetails.settings[e.target.id].has_free_shipping = shipping;
+    this.setState({ imageDetails: imageDetails });
+  }
+
+  handleDealerChange(e){
+    let dealerName = e.target.value;
+    var imageDetails = this.state.imageDetails;
+    imageDetails.settings[e.target.id].dealer = dealerName;
+    this.setState({ imageDetails: imageDetails });
+  }
+
+  handlerDealerCostChange(e){
+    let dealerCost = e.target.value;
+    var imageDetails = this.state.imageDetails;
+    imageDetails.settings[e.target.id].dealer_cost = dealerCost;
+    this.setState({ imageDetails: imageDetails });
   }
 
   handleSettingPriceChange(e){
@@ -258,23 +281,32 @@ class EditPhoto extends React.Component {
                   <form>
                     <div>
                       <label name="photo_name" htmlFor="photo_name">Photo Name</label>
-                      <input type="text" value={imageDetails.name != null ? imageDetails.name : null} onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
+                      <input style={style.modalInput} type="text" value={imageDetails.name != null ? imageDetails.name : null} onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
                       <label name="photo_description" htmlFor="photo_description">Photo Description</label>
-                      <input type="text" value={imageDetails.description != null ? imageDetails.description : null} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
+                      <input style={style.modalInput} type="text" value={imageDetails.description != null ? imageDetails.description : null} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
                       <div>
                       {
                         imageDetails.settings.map(function(setting, index){
                           return(
                             <div key={"div_"+index}>
                               <label key={"label_size_" + index} name="size" htmlFor="size">Size</label>
-                              <input key={"input_size_" + index} id={index} value={setting.size != null ? setting.size : null} type="text" onChange={(x) => {this.handleSettingSizeChange(x) }} title="Size"/>
+                              <input style={style.modalInput} key={"input_size_" + index} id={index} value={setting.size != null ? setting.size : null} type="text" onChange={(x) => {this.handleSettingSizeChange(x) }} title="Size"/>
                               <label key={"label_price_" + index} name="price" htmlFor="price">Price</label>
-                              <input key={"input_price_"+index} id ={index} value={setting.price != null ? setting.price : null} type="decimal" onChange={(x) => {this.handleSettingPriceChange(x) }} title="Price"/>
+                              <input style={style.modalInput} key={"input_price_"+index} id ={index} value={setting.price != null ? setting.price : null} type="decimal" onChange={(x) => {this.handleSettingPriceChange(x) }} title="Price"/>
                               <select value={setting.medium} key={"medium_"+index} className="form-control" id={index} onChange={(x) => {this.handleMediumChange(x)}}>
                                 <option key={"medium_none"+index} value="" style={{display: "none"}}>Medium</option>
                                 <option key={"medium_canvas_"+index} value="Canvas" style={{display: "none"}}>Canvas</option>
                                 <option key={"medium_print_"+index} value="Paper Print" style={{display: "none"}}>Paper Print</option>
                               </select> 
+                              <label key={"label_has_free_shipping_" + index} name="shipping" htmlFor="shipping">Has Free Shipping</label>
+                              <input style={style.modalInput} key={"input_has_free_shipping_" + index} id={index} type="checkbox" onClick={(x) => {this.handleShippingChange(x) }}/>
+                              <label key={"label_dealer_" + index} name="dealer" htmlFor="dealer">Dealer</label>
+                              <input style={style.modalInput} key={"input_dealer_" + index} id={index} value={setting.dealer != null ? setting.dealer : null} type="text" onChange={(x) => {this.handleDealerChange(x) }} title="dealer"/>
+                              <label key={"label_dealer_cost" + index} name="size" htmlFor="size">Dealer Cost</label>
+                              <input style={style.modalInput} key={"input_dealer_cost" + index} id={index} value={setting.dealer_cost != null ? setting.dealer_cost : null} type="text" onChange={(x) => {this.handlerDealerCostChange(x) }} title="dealer_cost"/>
+                              <br/>
+                              <br/>
+                              <br/>
                             </div>
                           )
                         }.bind(this))
@@ -360,6 +392,9 @@ const theme = {
 
 const style = styler
 `
+  modalInput {
+    color: black;
+  }
   .thumbnail {
     position: relative;
     width: 400px;
