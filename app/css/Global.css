@@ -32,10 +32,10 @@ input#search{
 }
 
 .editPhotosLabel {
-  color:'black';
+  color:'white';
 }
 .editPhotosInput {
-  color: 'white';
+  color: 'black';
 }
 
 .container-1 input#search::-webkit-input-placeholder {

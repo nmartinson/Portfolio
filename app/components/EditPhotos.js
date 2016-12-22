@@ -184,7 +184,7 @@ class EditPhoto extends React.Component {
 
      axios.put(path, 
       {
-        image:{photo_id: imageDetails.id, name: imageDetails.name, uniqueFileName: imageDetails.name, settings: imageDetails.settings, isFeatured: true, description: imageDetails.description },
+        image:{order: imageDetails.order, photo_id: imageDetails.id, name: imageDetails.name, uniqueFileName: imageDetails.name, settings: imageDetails.settings, isFeatured: true, description: imageDetails.description },
       })
       .then( function(names) {
         console.log('Success')
