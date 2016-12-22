@@ -299,7 +299,7 @@ class EditPhoto extends React.Component {
                                 <option key={"medium_print_"+index} value="Paper Print" style={{display: "none"}}>Paper Print</option>
                               </select> 
                               <label key={"label_has_free_shipping_" + index} name="shipping" htmlFor="shipping">Has Free Shipping</label>
-                              <input style={style.modalInput} key={"input_has_free_shipping_" + index} id={index} type="checkbox" onClick={(x) => {this.handleShippingChange(x) }}/>
+                              <input style={style.modalInput} checked={setting.has_free_shipping != null ? setting.has_free_shipping : false} key={"input_has_free_shipping_" + index} id={index} type="checkbox" onClick={(x) => {this.handleShippingChange(x) }}/>
                               <label key={"label_dealer_" + index} name="dealer" htmlFor="dealer">Dealer</label>
                               <input style={style.modalInput} key={"input_dealer_" + index} id={index} value={setting.dealer != null ? setting.dealer : null} type="text" onChange={(x) => {this.handleDealerChange(x) }} title="dealer"/>
                               <label key={"label_dealer_cost" + index} name="size" htmlFor="size">Dealer Cost</label>
