@@ -8,7 +8,6 @@ import Radium from 'radium';
 import Modal from 'react-modal';
 import Sortable from 'react-anything-sortable';
 import SortableImage  from './SortableImage';
-import ExistingSettings  from './ExistingSettings';
 
 const customStyles = {
   overlay : {
