@@ -10,6 +10,7 @@ import Featured from '../components/FeaturedImages';
 import ImageDetails from '../components/ImageDetails';
 import About from '../components/About';
 import Examples from '../components/Examples';
+import EditPhotoSettings from '../components/EditPhotoSettings';
 import { Route, IndexRoute } from 'react-router';
 
 module.exports = (
@@ -24,5 +25,6 @@ module.exports = (
       <Route path="/imageDetails/:id" component={ImageDetails} />
       <Route path="/about" component={About} />
       <Route path="/examples" component={Examples} />
+      <Route path="/editPhotoSettings" component={EditPhotoSettings} />
   </Route>
 );

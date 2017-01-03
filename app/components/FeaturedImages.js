@@ -54,7 +54,6 @@ class FeaturedImages extends React.Component {
     axios.get(path)
       .then((response) => {
         var items = response.data;
-        console.log(items);
         var images = [];
         for(var index=0; index <items.length; index++){
             var image = null;
@@ -80,7 +79,6 @@ class FeaturedImages extends React.Component {
       });
   }
 
-
   filterByTag (data) {
     tagSearch = data.target.value.toLowerCase();
     if(tagSearch != ""){
@@ -91,9 +89,7 @@ class FeaturedImages extends React.Component {
     } else {
       filterImages = this.state.imageList;
     }
-    this.setState({
-      filterImages: filterImages,
-    });
+    this.setState({ filterImages: filterImages });
   }
 
   gotoPrevious () {
@@ -124,7 +120,6 @@ class FeaturedImages extends React.Component {
     });
   }
   closeLightbox () {
-        console.log('close')
     this.setState({
       currentImage: 0,
       lightboxIsOpen: false,
@@ -133,7 +128,6 @@ class FeaturedImages extends React.Component {
 
   render(){
     const { imageList, images, loading, currentImage, filterImages} = this.state;
-    console.log(window.innerWidth)
     if(loading){
       return <p>Loading</p>
     } else {
@@ -265,7 +259,6 @@ const theme = {
   },
 };
 
-
 const style = styler
 `
   .thumbnail {
@@ -327,5 +320,3 @@ const style = styler
     line-height: 200%
   }
 `
-
-

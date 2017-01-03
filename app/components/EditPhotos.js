@@ -8,7 +8,7 @@ import Radium from 'radium';
 import Modal from 'react-modal';
 import Sortable from 'react-anything-sortable';
 import SortableImage  from './SortableImage';
-
+import ExistingSettings  from './ExistingSettings';
 
 const customStyles = {
   overlay : {
@@ -38,7 +38,15 @@ const customStyles = {
   }
 };
 
-const ImagePreview = ({ url, name, style, description }) => {
+const ImagePreview = ({ url, name, style, description, settings }) => {
+  const handleSelectedChange = (e) => {
+    let selected = e.target.checked;
+    settings[e.target.id].selected = settings;
+    this.setState({
+      settings:settings
+    })
+  }
+
   return (
     <div style={style.container}>
       <div style={style.sidebar}>
@@ -63,6 +71,7 @@ function getIndex(value, arr, prop) {
     return -1; //to handle the case where the value doesn't exist
 }
 
+
 class EditPhoto extends React.Component {
   constructor(){
     super();
@@ -73,13 +82,13 @@ class EditPhoto extends React.Component {
       imageDetails: {settings:[]},
       imageList: {},
       showOrder: false,
-      imageOrder: {}
+      imageOrder: {},
+      settings: []
     }
 
   }
 
   handleSort(data) {
-    console.log(data)
     this.setState({
       result: data.join(' '),
       imageOrder: data
@@ -92,42 +101,57 @@ class EditPhoto extends React.Component {
     });
   }
 
-  handleShippingChange(e){
-    let shipping = e.target.checked;
-    var imageDetails = this.state.imageDetails;
-    console.log(shipping)
-    imageDetails.settings[e.target.id].has_free_shipping = shipping;
-    this.setState({ imageDetails: imageDetails });
-  }
+  handleRemoveSettingsChange(e){
+    let selected = e.target.checked;
+    var {settings, imageDetails} = this.state;
+    if(!selected){
+      for(var j=0; j<imageDetails.settings.length; j++){
+        if(imageDetails.settings[j].id == e.target.id){
+          imageDetails.settings[j].selected = false;
+        }
+      }
 
-  handleDealerChange(e){
-    let dealerName = e.target.value;
-    var imageDetails = this.state.imageDetails;
-    imageDetails.settings[e.target.id].dealer = dealerName;
-    this.setState({ imageDetails: imageDetails });
-  }
+      var settingToPush = imageDetails.settings.filter(function(el){
+        return el.id == e.target.id;
+      })
+      imageDetails.settings = imageDetails.settings.filter(function(el) {
+          return el.id != e.target.id;
+      });
 
-  handlerDealerCostChange(e){
-    let dealerCost = e.target.value;
-    var imageDetails = this.state.imageDetails;
-    imageDetails.settings[e.target.id].dealer_cost = dealerCost;
-    this.setState({ imageDetails: imageDetails });
-  }
+      settings.push(
+        settingToPush[0]
+      )
+    }
 
-  handleSettingPriceChange(e){
-    let price = e.target.value;
-    var imageDetails = this.state.imageDetails;
-    
-    imageDetails.settings[e.target.id].price = price;
-    this.setState({ imageDetails: imageDetails });
-  }
+    this.setState({ 
+      settings: settings,
+      imageDetails: imageDetails
+     });
+   }
 
-  handleSettingSizeChange(e){
-    let size = e.target.value;
-    var imageDetails = this.state.imageDetails;    
-    imageDetails.settings[e.target.id].size = size;
-    this.setState({ imageDetails: imageDetails });
-  }
+  handleSelectedSettingsChange(e){
+    let selected = e.target.checked;
+    var {settings, imageDetails} = this.state;
+    if(selected){
+      imageDetails.settings.push({
+        size: settings[e.target.id].size,
+        price: settings[e.target.id].price,
+        medium: settings[e.target.id].medium,
+        dealer: settings[e.target.id].dealer,
+        dealer_cost: settings[e.target.id].dealer_cost,
+        has_free_shipping: settings[e.target.id].has_free_shipping,
+        id: settings[e.target.id].id,
+        selected: true,
+      })
+      settings.splice(e.target.id, 1);
+    }
+
+    this.setState({ 
+      settings: settings,
+      imageDetails: imageDetails
+     });
+   }
+
   handlePhotoDescriptionChange(e) {
     let description = e.target.value;
     var imageDetails = this.state.imageDetails;
@@ -142,29 +166,6 @@ class EditPhoto extends React.Component {
     this.setState({ imageDetails: imageDetails });
   }
   
-  handleMediumChange(e) {
-    let medium = e.target.value;
-    var imageDetails = this.state.imageDetails;
-        console.log(medium)
-    console.log(e.target.id)
-    console.log(imageDetails.settings)
-    imageDetails.settings[e.target.id].medium = medium;
-    this.setState({ imageDetails: imageDetails });
-  }
-
-  handleAddSetting(e){
-    var newArray = this.state.imageDetails; 
-    // var settingsLength = newArray[newArray.length - 1].settings.length;
-    var settingsLength = newArray.settings.length;
-    //check if last setting is still null
-
-    if(settingsLength == 0 || newArray.settings[settingsLength - 1].size != null)
-    {
-      newArray.settings.push({size: null, price:null, medium: null}); 
-      this.setState({imageDetails: newArray})
-    }
-  }
-
   closeModal(e) {
     e.preventDefault();
     this.setState({modalIsOpen: false});
@@ -172,7 +173,27 @@ class EditPhoto extends React.Component {
 
   openModal(url) {
     var index = getIndex(url, this.state.imageList, 'url');
+    this.getPossibleSettings(this.state.imageList[index].id);
     this.setState({modalIsOpen: true, imageDetails: this.state.imageList[index]});
+  }
+
+  getPossibleSettings(photo_id){
+    console.log(photo_id)
+    const apiUrl = process.env.API_URL;
+    const path = `${apiUrl}/settings/available_settings/${photo_id}`
+    axios.get(path)
+      .then((response) => {
+        var settings = response.data;
+        for(var j=0; j<settings.length; j++){
+          settings[j].selected = false;
+        }
+        this.setState({
+          settings: settings
+        })
+      })
+      .catch((error) => {
+        console.log("Error in get settings:", error);
+      });
   }
 
   handleSubmit(e) {
@@ -222,9 +243,15 @@ class EditPhoto extends React.Component {
     axios.get(path)
       .then((response) => {
         var items = response.data;
-        console.log(items)
         for(var index=0; index <items.length; index++){
           var image = null;
+          if(items[index].settings === undefined){
+            items[index].settings = [];
+          } else {
+            for(var j=0; j<items[index].settings.length; j++){
+              items[index].settings[j].selected = true;
+            }
+          }
           items[index].clickHandler = (x) => {this.openModal(x) };
         }
         this.setState({
@@ -238,13 +265,8 @@ class EditPhoto extends React.Component {
       });
   }
 
-  componentWillReceiveProps(nextProps){
-    //handle new props
-  }
-
-
   render(){
-    const { imageList, loading, currentImage, imageDetails, showOrder} = this.state;
+    const { imageList, loading, currentImage, imageDetails, showOrder, settings} = this.state;
     if(loading){
       return <p>Loading</p>
     } else {
@@ -277,33 +299,62 @@ class EditPhoto extends React.Component {
               >
                 <div >
                   <button style={{float: "right"}} onClick={(x) => {this.closeModal(x)}}>Close</button>
-                  <ImagePreview style={Styles} name={imageDetails.name} description={imageDetails.description} url={imageDetails != null ? imageDetails.url : "" }/>
-                  <form>
-                    <div>
-                      <label name="photo_name" htmlFor="photo_name">Photo Name</label>
-                      <input style={style.modalInput} type="text" value={imageDetails.name != null ? imageDetails.name : null} onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
-                      <label name="photo_description" htmlFor="photo_description">Photo Description</label>
-                      <input style={style.modalInput} type="text" value={imageDetails.description != null ? imageDetails.description : null} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
+                  <ImagePreview style={Styles} name={imageDetails.name} description={imageDetails.description} settings={settings} url={imageDetails != null ? imageDetails.url : "" }/>
+                  <div style={Styles.sidebar}>
+
+                    <form>
+                      <div>
+                        <label name="photo_name" htmlFor="photo_name">Photo Name</label>
+                        <input style={style.modalInput} type="text" value={imageDetails.name != null ? imageDetails.name : null} onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
+                        <label name="photo_description" htmlFor="photo_description">Photo Description</label>
+                        <input style={style.modalInput} type="text" value={imageDetails.description != null ? imageDetails.description : null} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
+                        <div>
+                        {
+                          imageDetails.settings.map(function(setting, index){
+                            return(
+                              <div key={"div_"+index}>
+                                <label key={"selected" + index} name="selected" htmlFor="selected">Selected</label>
+                                <input style={style.modalInput} checked={setting.selected != null ? setting.selected : false} key={"input_selected_" + index} id={setting.id} type="checkbox" onClick={(x) => {this.handleRemoveSettingsChange(x)}}/>
+                                <br/>
+                                <label key={"label_size_" + index} name="size" htmlFor="size">Size - {setting.size}</label>
+                                <br/>
+                                <label key={"label_price_" + index} name="price" htmlFor="price">Price - ${setting.price}</label>
+                                <br/>
+                                <label key={"medium_"+index} id={index} value={setting.medium}>Medium - {setting.medium}</label>
+                                <br/>
+                                <label key={"label_has_free_shipping_" + index} name="shipping" htmlFor="shipping">Has Free Shipping - {setting.has_free_shipping != null ? setting.has_free_shipping.toString() : "false"}</label>
+                                <br/>
+                                <label key={"label_dealer_" + index} name="dealer" htmlFor="dealer">Dealer - {setting.dealer}</label>
+                                <br/>
+                                <label key={"label_dealer_cost" + index} name="size" htmlFor="size">Dealer Cost - {setting.dealer_cost}</label>
+                                <br/>
+                                <br/>
+                              </div>
+                            )
+                          }.bind(this))
+                        }
+                        </div>
+                      </div>
+                    <button className="btn btn-default" type="button" onClick={(x) => {this.handleSubmit(x)}}>Save</button>
+                    </form>
+                  </div>
+                  <div style={Styles.content}>
+                    <form>
                       <div>
                       {
-                        imageDetails.settings.map(function(setting, index){
+                        settings.map(function(setting, index){
                           return(
                             <div key={"div_"+index}>
-                              <label key={"label_size_" + index} name="size" htmlFor="size">Size</label>
-                              <input style={style.modalInput} key={"input_size_" + index} id={index} value={setting.size != null ? setting.size : null} type="text" onChange={(x) => {this.handleSettingSizeChange(x) }} title="Size"/>
-                              <label key={"label_price_" + index} name="price" htmlFor="price">Price</label>
-                              <input style={style.modalInput} key={"input_price_"+index} id ={index} value={setting.price != null ? setting.price : null} type="decimal" onChange={(x) => {this.handleSettingPriceChange(x) }} title="Price"/>
-                              <select value={setting.medium} key={"medium_"+index} className="form-control" id={index} onChange={(x) => {this.handleMediumChange(x)}}>
-                                <option key={"medium_none"+index} value="" style={{display: "none"}}>Medium</option>
-                                <option key={"medium_canvas_"+index} value="Canvas" style={{display: "none"}}>Canvas</option>
-                                <option key={"medium_print_"+index} value="Paper Print" style={{display: "none"}}>Paper Print</option>
-                              </select> 
-                              <label key={"label_has_free_shipping_" + index} name="shipping" htmlFor="shipping">Has Free Shipping</label>
-                              <input style={style.modalInput} checked={setting.has_free_shipping != null ? setting.has_free_shipping : false} key={"input_has_free_shipping_" + index} id={index} type="checkbox" onClick={(x) => {this.handleShippingChange(x) }}/>
-                              <label key={"label_dealer_" + index} name="dealer" htmlFor="dealer">Dealer</label>
-                              <input style={style.modalInput} key={"input_dealer_" + index} id={index} value={setting.dealer != null ? setting.dealer : null} type="text" onChange={(x) => {this.handleDealerChange(x) }} title="dealer"/>
-                              <label key={"label_dealer_cost" + index} name="size" htmlFor="size">Dealer Cost</label>
-                              <input style={style.modalInput} key={"input_dealer_cost" + index} id={index} value={setting.dealer_cost != null ? setting.dealer_cost : null} type="text" onChange={(x) => {this.handlerDealerCostChange(x) }} title="dealer_cost"/>
+                              <label key={"selected" + index} name="selected" htmlFor="selected">Add</label>
+                              <input style={style.modalInput} checked={setting.selected != null ? setting.selected : false} key={"input_selected_" + index} id={index} type="checkbox" onClick={(x) => {this.handleSelectedSettingsChange(x)}}/>
+                              <br/>
+                              <label key={"label_size_" + index} name="size" htmlFor="size">Size - {setting.size}</label>
+                              <br/>
+                              <label key={"label_price_" + index} name="price" htmlFor="price">Price - ${setting.price}</label>
+                              <br/>
+                              <label key={"medium_"+index} id={index} value={setting.medium}>Medium - {setting.medium}</label>
+                              <br/>
+                              <label key={"label_dealer_" + index} name="dealer" htmlFor="dealer">Dealer - {setting.dealer}</label>
                               <br/>
                               <br/>
                               <br/>
@@ -312,10 +363,8 @@ class EditPhoto extends React.Component {
                         }.bind(this))
                       }
                       </div>
-                      <button className="btn btn-default" type="button" onClick={(x) => {this.handleAddSetting(x)}}>Add Setting</button>
-                    </div>
-                  <button className="btn btn-default" type="button" onClick={(x) => {this.handleSubmit(x)}}>Submit</button>
-                  </form>
+                    </form>
+                  </div>
                 </div>
               </Modal>     
           </div>    
@@ -326,7 +375,6 @@ class EditPhoto extends React.Component {
 }
 
 export default Radium(EditPhoto);
-
 
 const theme = {
   // container
@@ -388,7 +436,6 @@ const theme = {
     boxShadow: '0 0 0 2px #00D8FF',
   },
 };
-
 
 const style = styler
 `
@@ -454,5 +501,3 @@ const style = styler
     line-height: 200%
   }
 `
-
-
