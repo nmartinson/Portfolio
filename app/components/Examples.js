@@ -8,7 +8,6 @@ import Radium from 'radium';
 import Lightbox from 'react-images';
 import LightboxContact from './LightboxContactComponent';
 
-
 function getIndex(value, arr, prop) {
     for(var i = 0; i < arr.length; i++) {
         if(arr[i][prop] === value) {
@@ -71,6 +70,32 @@ class FeaturedImages extends React.Component {
               </div>
             </div>,
           onClick: this.openLightbox.bind(this,1)
+        },
+                {
+          index: 1,
+          src: "http://www.boundless-journey.com/portfolio/images/examples/MetalAngle.jpg",
+          caption: 
+            <div>
+              <div className="row">
+                <div className="form-group col-xs-6">
+                  <p style={{color: "white"}}>Glossy Metal (20"x10")</p>
+                </div>
+              </div>
+            </div>,
+          onClick: this.openLightbox.bind(this,2)
+        },
+                {
+          index: 1,
+          src: "http://www.boundless-journey.com/portfolio/images/examples/MetalFront.jpg",
+          caption: 
+            <div>
+              <div className="row">
+                <div className="form-group col-xs-6">
+                  <p style={{color: "white"}}>Glossy Metal (20"x10")</p>
+                </div>
+              </div>
+            </div>,
+          onClick: this.openLightbox.bind(this,3)
         }];
 
       this.setState({

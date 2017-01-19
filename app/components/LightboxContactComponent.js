@@ -2,10 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
+import ReactGA from 'react-ga';
+
 
 const LightboxContactComponent = ({imageDetails}) => {
   var photos = [];
 
+  console.log('Lightbox/ImageDetails/'+imageDetails.id)
+  ReactGA.modalview('Lightbox/ImageDetails/'+imageDetails.id);
+  
   const handleEmailClick = (e) => {
     var params = e.target.dataset.message.split(",")
     window.location = `#/contact/${params[0]}/${params[1]}`
