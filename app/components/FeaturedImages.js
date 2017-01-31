@@ -150,6 +150,7 @@ class FeaturedImages extends React.Component {
         onClickImage={this.handleClickImage}
         onClose={this.closeLightbox}
         showCloseButton={true}
+        preloadNextImage={true}
         theme={theme}
         width={"100%"}
         backdropClosesModal={false}
