@@ -101,7 +101,7 @@ class FeaturedImages extends React.Component {
       this.setState({
         imageList: images.map(function(image, index)
         {
-          image.url = image.src; 
+          image.thumbnail_url = image.src; 
           image.clickHandler = this.openLightbox.bind(image,index);
           return image;
         }.bind(this)),
