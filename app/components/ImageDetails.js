@@ -115,7 +115,6 @@ class ImageDetails extends React.Component {
     const path = `${apiUrl}/photos/${id}`
     axios.get(path)
       .then((response) => {
-        console.log(response.data)
         this.setState({
           imageDetails: response.data,
           loading: false,

@@ -11,6 +11,7 @@ import ImageDetails from '../components/ImageDetails';
 import About from '../components/About';
 import Examples from '../components/Examples';
 import EditPhotoSettings from '../components/EditPhotoSettings';
+import OrderingInfo from '../components/OrderingInfo';
 import { Route, IndexRoute } from 'react-router';
 
 module.exports = (
@@ -26,5 +27,6 @@ module.exports = (
       <Route path="/about" component={About} />
       <Route path="/examples" component={Examples} />
       <Route path="/editPhotoSettings" component={EditPhotoSettings} />
+      <Route path="/orderingInfo" component={OrderingInfo} />
   </Route>
 );

@@ -8,7 +8,6 @@ import ReactGA from 'react-ga';
 const LightboxContactComponent = ({imageDetails}) => {
   var photos = [];
 
-  console.log('Lightbox/ImageDetails/'+imageDetails.id)
   ReactGA.modalview('Lightbox/ImageDetails/'+imageDetails.id);
   
   const handleEmailClick = (e) => {

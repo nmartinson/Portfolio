@@ -24,7 +24,10 @@ class NavHeader extends React.Component {
               <NavItem eventKey={3} >About</NavItem>
             </LinkContainer>
             <LinkContainer to='/examples'>
-              <NavItem eventKey={3} >Examples</NavItem>
+              <NavItem eventKey={4} >Examples</NavItem>
+            </LinkContainer>
+            <LinkContainer to='/orderingInfo'>
+              <NavItem eventKey={5} >Ordering Info</NavItem>
             </LinkContainer>
           </Nav>
         </Navbar.Collapse>
