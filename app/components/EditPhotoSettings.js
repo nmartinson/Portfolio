@@ -124,7 +124,21 @@ class EditPhotoSettings extends React.Component {
 
   componentDidMount(){
     const apiUrl = process.env.API_URL;
-    const path = `${apiUrl}/settings`
+    var path = `${apiUrl}/mediums`
+    var mediums = [];
+    axios.get(path)
+      .then((response) => {
+        mediums = response.data;
+        this.setState({
+          mediums: mediums,
+          loading: false
+        });
+      })
+      .catch((error) => {
+        console.log("Error in Image Settings:", error);
+      });
+
+    path = `${apiUrl}/settings`
     axios.get(path)
       .then((response) => {
         var settings = response.data;
@@ -139,7 +153,7 @@ class EditPhotoSettings extends React.Component {
   }
 
   render(){
-    const { loading,settings} = this.state;
+    const { loading,settings, mediums} = this.state;
     if(loading){
       return <p>Loading</p>
     } else {
@@ -157,10 +171,13 @@ class EditPhotoSettings extends React.Component {
                         <input key={"input_size_" + index} id={index} value={setting.size != null ? setting.size : null} type="text" onChange={(x) => {this.handleSettingSizeChange(x) }} title="Size"/>
                         <label key={"label_price_" + index} name="price" htmlFor="price">Price</label>
                         <input key={"input_price_"+index} id ={index} value={setting.price != null ? setting.price : null} type="decimal" onChange={(x) => {this.handleSettingPriceChange(x) }} title="Price"/>
-                        <select value={setting.medium} key={"medium_"+index} className="form-control" id={index} onChange={(x) => {this.handleMediumChange(x)}}>
-                          <option key={"medium_none"+index} value="" style={{display: "none"}}>Medium</option>
-                          <option key={"medium_canvas_"+index} value="Canvas" style={{display: "none"}}>Canvas</option>
-                          <option key={"medium_print_"+index} value="Paper Print" style={{display: "none"}}>Paper Print</option>
+                        <select value={setting.medium} className="form-control" style={{width: "auto"}} id={index} onChange={(x) => {this.handleMediumChange(x)}}>
+                          <option value="" style={{display: "none"}}>Medium</option>
+                          {
+                            mediums.map((medium, index) => {
+                              return <option key={index} value={medium}>{medium}</option>
+                            })                        
+                          }
                         </select> 
                         <label key={"label_has_free_shipping_" + index} name="shipping" htmlFor="shipping">Has Free Shipping</label>
                         <input checked={setting.has_free_shipping != null ? setting.has_free_shipping : false} key={"input_has_free_shipping_" + index} id={index} type="checkbox" onClick={(x) => {this.handleShippingChange(x) }}/>

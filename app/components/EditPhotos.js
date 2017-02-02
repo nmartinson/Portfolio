@@ -177,7 +177,6 @@ class EditPhoto extends React.Component {
   }
 
   getPossibleSettings(photo_id){
-    console.log(photo_id)
     const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/settings/available_settings/${photo_id}`
     axios.get(path)
@@ -251,7 +250,7 @@ class EditPhoto extends React.Component {
               items[index].settings[j].selected = true;
             }
           }
-          items[index].clickHandler = (x) => {this.openModal(x) };
+          this.configureClickHandler(items, index, items[index].url)
         }
         this.setState({
           imageList: items,
@@ -262,6 +261,10 @@ class EditPhoto extends React.Component {
       .catch((error) => {
         console.log("Error in edit:", error);
       });
+  }
+
+  configureClickHandler(image, index, url) {  
+    image[index].clickHandler = () => {this.openModal(url)};
   }
 
   render(){

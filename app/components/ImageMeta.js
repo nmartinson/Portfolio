@@ -2,7 +2,7 @@ import React from 'react';
 import Radium, { Style, StyleRoot } from "radium";
 
 const ImageMeta = ({ imageDetails, style }) => {
-  console.log(imageDetails)
+  // console.log(imageDetails)
   
   function formatDate(dateString) {
     var date = new Date(dateString);
