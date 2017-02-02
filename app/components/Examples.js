@@ -162,6 +162,7 @@ class FeaturedImages extends React.Component {
         onClickImage={this.handleClickImage}
         onClose={this.closeLightbox}
         theme={theme}
+        showImageCount={false}
       />
       </div>
       )

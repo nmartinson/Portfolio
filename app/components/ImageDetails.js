@@ -33,7 +33,7 @@ const ImagePreview = ({ imageDetails, style }) => {
             </Cell>
             <Grid>
               <Cell mediumWidth="1/2" smallWidth="1" align="left">
-                <ImageSettings id={1} imageDetails={imageDetails}/>
+                <ImageSettings imageDetails={imageDetails}/>
               </Cell>
               <Cell mediumWidth="1/2" smallWidth="1" align="left">
                 <div>
@@ -60,7 +60,7 @@ const ImagePreview = ({ imageDetails, style }) => {
                 </Cell>
               <Grid>
                 <Cell mediumWidth="1" smallWidth="1" align="left">
-                  <ImageSettings id={1} imageDetails={imageDetails}/>
+                  <ImageSettings imageDetails={imageDetails}/>
                   </Cell>
                   <Cell mediumWidth="1" smallWidth="1" align="left">
                   <div>
@@ -80,7 +80,7 @@ const ImagePreview = ({ imageDetails, style }) => {
                     <img id="image" src={imageDetails.url}  style={style.portraitImage} alt={imageDetails.url}/>
                   </Cell>
                   <Cell smallWidth="1" mediumWidth="1/4" largeWidth="1/4" xlargeWidth="1/4" style={{paddingRight:"5px"}}>
-                    <ImageSettings id={1} imageDetails={imageDetails}/>
+                    <ImageSettings imageDetails={imageDetails}/>
                   </Cell>
                   <Cell smallWidth="1" mediumWidth="1/4" largeWidth="1/4" xlargeWidth="1/4" style={{paddingLeft:"5px"}}>
                     <ImageMeta imageDetails={imageDetails}/>
@@ -91,7 +91,6 @@ const ImagePreview = ({ imageDetails, style }) => {
             </StyleRoot>
             </MediaQuery>
             <MediaQuery query='(min-resolution: 2dppx)'>
-              <div>You are retina</div>
             </MediaQuery>
          </StyleRoot>   
        </div> 
