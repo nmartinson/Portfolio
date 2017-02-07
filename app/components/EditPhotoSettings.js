@@ -65,15 +65,15 @@ class EditPhotoSettings extends React.Component {
   handlerDealerCostChange(e){
     let dealerCost = e.target.value;
     var settings = this.state.settings;
-    settings[e.target.id].dealer_cost = parseFloat(dealerCost);
+    settings[e.target.id].dealer_cost = dealerCost;
     this.setState({ settings: settings });
   }
 
   handleSettingPriceChange(e){
     let price = e.target.value;
     var settings = this.state.settings;
-    
-    settings[e.target.id].price = parseFloat(price);
+    console.log(price)
+    settings[e.target.id].price = price;
     this.setState({ settings: settings });
   }
 

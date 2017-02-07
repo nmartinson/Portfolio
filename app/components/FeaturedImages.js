@@ -154,6 +154,7 @@ class FeaturedImages extends React.Component {
         theme={theme}
         width={"100%"}
         backdropClosesModal={false}
+        showImageCount={false}
       />
       </div>
       )
