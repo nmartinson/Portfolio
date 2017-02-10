@@ -10,7 +10,7 @@ class NavHeader extends React.Component {
       <Navbar inverse style={{marginBottom:"0px"}}>
         <Navbar.Header>
             <LinkContainer to="/featured">
-              <Navbar.Brand>Featured Photos</Navbar.Brand>
+              <a href="#" class="navbar-left"><img height="50px" src="http://www.boundless-journey.com/portfolio/images/resources/logo.png"/></a>
             </LinkContainer>
           <Navbar.Toggle />
         </Navbar.Header>
@@ -36,3 +36,4 @@ class NavHeader extends React.Component {
 }
 
 export default NavHeader;
+
