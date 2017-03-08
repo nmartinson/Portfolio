@@ -131,7 +131,7 @@ class ImageDetails extends React.Component {
     if(loading){
       return <p>loading</p>
     } else {
-      imageDetails.location = String(window.location);
+      // imageDetails.location = String(window.location);
       return (
         <div>
           <Helmet

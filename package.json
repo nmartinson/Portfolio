@@ -6,7 +6,8 @@
   "scripts": {
     "build:dev": "NODE_ENV=development webpack -w",
     "build:prod": "NODE_ENV=production webpack -w",
-    "start": "webpack-dev-server"
+    "start": "node dist/server.js",
+    "build": "webpack"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "base-64": "^0.1.0",
     "css-loader": "^0.25.0",
     "exif-js": "^2.1.1",
+    "express": "^4.15.2",
     "extract-text-webpack-plugin": "^1.0.1",
     "postcss-color-rebeccapurple": "^2.0.0",
     "radium": "^0.18.1",
@@ -45,6 +47,7 @@
     "static-site-generator-webpack-plugin": "^3.1.0",
     "style-loader": "^0.13.1",
     "webpack-combine-loaders": "^2.0.3",
+    "webpack-node-externals": "^1.5.4",
     "xmp-reader": "0.0.3"
   },
   "devDependencies": {

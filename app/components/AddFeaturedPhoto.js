@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import base64 from 'base-64';
 import { ReactRpg } from 'react-rpg';
 var exif = require('exif-js');
-var xmpReader = require('xmp-reader');
+var xmpReader = require('./xmpReader');
 
 const imageStyle = {
   maxWidth: "200px"

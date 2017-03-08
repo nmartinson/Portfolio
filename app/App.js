@@ -6,6 +6,7 @@ const appHistory = useRouterHistory(createHashHistory)()
 import routes from './config/routes';
 import ReactGA from 'react-ga';
 
+
 ReactGA.initialize('UA-90607881-1');
 
 

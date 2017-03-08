@@ -1,12 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import { ReactRpg } from 'react-rpg';
 import Styles  from '../styles';
 import styler from 'react-styling'
 import Radium from 'radium';
 import Lightbox from 'react-images';
 import LightboxContact from './LightboxContactComponent';
+import {Modal} from 'react-bootstrap';
 
 var tagSearch = '';
 
@@ -33,7 +34,8 @@ class FeaturedImages extends React.Component {
       imageList: {},
       currentImage: 0,
       lightboxIsOpen: false,
-      images: []
+      images: [],
+      modalVisible: false
     }
     this.closeLightbox = this.closeLightbox.bind(this);
     this.gotoNext = this.gotoNext.bind(this);
@@ -48,7 +50,17 @@ class FeaturedImages extends React.Component {
     window.location = `#/photoset/${photo.id}/title/${photo.title}`
   }
 
+  setModalVisible(e){
+    e.preventDefault();
+
+    var visible = !this.state.modalVisible;
+    console.log('visible ' + visible);
+    this.setState({modalVisible:visible, lightboxIsOpen:true})
+  }
+
   componentDidMount(){
+    console.log('this')
+    console.log(this)
     const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/features`
     axios.get(path)
@@ -118,6 +130,7 @@ class FeaturedImages extends React.Component {
       currentImage: index,
       lightboxIsOpen: true,
     });
+
   }
   closeLightbox () {
     this.setState({
@@ -127,6 +140,7 @@ class FeaturedImages extends React.Component {
   }
 
   render(){
+    console.log(this)
     const { imageList, images, loading, currentImage, filterImages} = this.state;
     if(loading){
       return <p>Loading</p>
@@ -161,6 +175,7 @@ class FeaturedImages extends React.Component {
     }
   }
 }
+
 
 export default Radium(FeaturedImages);
 
@@ -201,7 +216,7 @@ const theme = {
   container: { 
     // background: 'rgba(255, 255, 255, 0.9)',
     background: 'rgba(0, 0, 0, 0.9)',
-    height: '100%',
+    height: '90%',
     // top: '100px',
     padding: '0px',
     margin: '0px'

@@ -17,7 +17,7 @@ function getIndex(value, arr, prop) {
     return -1; //to handle the case where the value doesn't exist
 }
 
-class FeaturedImages extends React.Component {
+class Examples extends React.Component {
   constructor(){
     super();
     this.state = {
@@ -170,7 +170,7 @@ class FeaturedImages extends React.Component {
   }
 }
 
-export default Radium(FeaturedImages);
+export default Radium(Examples);
 
 const theme = {
   // container
