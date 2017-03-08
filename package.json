@@ -9,6 +9,10 @@
     "start": "node dist/server.js",
     "build": "webpack"
   },
+    "engines": {
+    "node": "6.5.0",
+    "npm": "4.1.2"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
