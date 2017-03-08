@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var combineLoaders = require('webpack-combine-loaders');
 var nodeExternals = require('webpack-node-externals');
+var path = require('path')
 
 var isProduction = process.env.NODE_ENV === 'production';
 var productionPluginDefine = isProduction ? [
@@ -29,10 +30,9 @@ module.exports = [
 {
     entry: './app/server.js',
     output: {
-      path: './public',
+      path: path.join('public/'),
       filename: 'server.js',
-      libraryTarget: 'commonjs2',
-      publicPath: '/'
+      libraryTarget: 'commonjs2'
     },
     target: 'node',
     node: {
@@ -60,8 +60,7 @@ module.exports = [
   {
     entry: './app/App.js',
     output: {
-      path: './public/assets',
-      publicPath: '/',
+      path: path.join('public/assets/'),
       filename: 'bundle.js'
     },
   module: {
