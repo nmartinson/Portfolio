@@ -7,7 +7,7 @@ import { match, RouterContext } from 'react-router';
 import routes from './config/routes';
 import template from './template';
 
-// import NotFoundPage from './components/NotFoundPage';
+import NotFoundPage from './components/NotFoundPage';
 
 // initialize the server and configure support for ejs templates
 const app = new Express();
