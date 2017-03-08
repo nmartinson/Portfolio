@@ -16,43 +16,39 @@ const server = new Server(app);
 // app.set('views', path.join(__dirname, 'views'));
 
 // define the folder that will be used for static assets
-app.use('/dist/assets', Express.static('dist/assets'));
+app.use('/public/assets', Express.static('public/assets'));
 
 // universal routing and rendering
 app.get('*', (req, res) => {
-  match(
-    { routes, location: req.url },
-    (err, redirectLocation, renderProps) => {
+  match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
+    // in case of error display the error message
+    if (err) {
+      return res.status(500).send(err.message);
+    }
 
-      // in case of error display the error message
-      if (err) {
-        return res.status(500).send(err.message);
-      }
+    // in case of redirect propagate the redirect to the browser
+    if (redirectLocation) {
+      return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    }
 
-      // in case of redirect propagate the redirect to the browser
-      if (redirectLocation) {
-        return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-      }
+    const initialState = { true };
 
-  const initialState = { true };
-
-      // generate the React markup for the current route
-      let markup;
-      if (renderProps) {
-        // if the current route matched we have renderProp
-
-        markup = renderToString(<RouterContext {...renderProps}/>);
-      } else {
-        // otherwise we can render a 404 page
-        markup = renderToString(<NotFoundPage/>);
-        res.status(404);
-      }
-  res.send(template({
-    body: markup,
-    title: 'Hello World from the server',
-    initialState: JSON.stringify(initialState)
-  }));    }
-  );
+    // generate the React markup for the current route
+    let markup;
+    if (renderProps) {
+      // if the current route matched we have renderProp
+      markup = renderToString(<RouterContext {...renderProps}/>);
+    } else {
+      // otherwise we can render a 404 page
+      markup = renderToString(<NotFoundPage/>);
+      res.status(404);
+    }
+    res.send(template({
+      body: markup,
+      title: 'Hello World from the server',
+      initialState: JSON.stringify(initialState)
+    }));    
+  });
 });
 
 // start the server

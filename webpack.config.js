@@ -29,7 +29,7 @@ module.exports = [
 {
     entry: './app/server.js',
     output: {
-      path: './dist',
+      path: './public',
       filename: 'server.js',
       libraryTarget: 'commonjs2',
       publicPath: '/'
@@ -60,7 +60,7 @@ module.exports = [
   {
     entry: './app/App.js',
     output: {
-      path: './dist/assets',
+      path: './public/assets',
       publicPath: '/',
       filename: 'bundle.js'
     },
