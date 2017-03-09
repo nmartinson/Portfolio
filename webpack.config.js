@@ -33,7 +33,7 @@ module.exports = [
     output: {
       path: __dirname,
       publicPath: '/',
-      filename: 'server.js',
+      filename: 'server.bundle.js',
       libraryTarget: 'commonjs2'
     },
     target: 'node',
