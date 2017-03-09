@@ -30,7 +30,8 @@ module.exports = [
 {
     entry: './app/server.js',
     output: {
-      path: path.join('public/'),
+      path: __dirname,
+      publicPath: '/',
       filename: 'server.js',
       libraryTarget: 'commonjs2'
     },
@@ -60,7 +61,8 @@ module.exports = [
   {
     entry: './app/App.js',
     output: {
-      path: path.join('public/assets/'),
+      path: __dirname,
+      publicPath: '/',
       filename: 'bundle.js'
     },
   module: {

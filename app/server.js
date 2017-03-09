@@ -16,7 +16,7 @@ const server = new Server(app);
 // app.set('views', path.join(__dirname, 'views'));
 
 // define the folder that will be used for static assets
-app.use('/public/assets', Express.static('public/assets'));
+app.use(Express.static(__dirname + '/assets'));
 
 // universal routing and rendering
 app.get('*', (req, res) => {
