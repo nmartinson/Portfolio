@@ -1,104 +1,63 @@
-var webpack = require('webpack');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var combineLoaders = require('webpack-combine-loaders');
+const webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
-var path = require('path')
 
-var isProduction = process.env.NODE_ENV === 'production';
-var productionPluginDefine = isProduction ? [
-  new webpack.DefinePlugin({'process.env': {'NODE_ENV': JSON.stringify('production')}})
-] : [];
-// var clientLoaders = isProduction ? productionPluginDefine.concat([
-//   new webpack.optimize.DedupePlugin(),
-//   new webpack.optimize.OccurrenceOrderPlugin(),
-//   new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false }, sourceMap: false })
-// ]) : [];
-var commonLoaders = [
-  {
-    test: /\.json$/,
-    loader: 'json-loader'
-  }
-];
-var devUrl = 'http://localhost:3000/api/v1';
-//var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
-
-var prodUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
-
-var apiUrl = process.env.NODE_ENV === 'production' ? prodUrl : devUrl;
-console.log('directory')
-console.log(__dirname)
 module.exports = [
-{
-    entry: './app/server.js',
+    {
+    entry: './server.js',
     output: {
-      path: './app',
-      publicPath: '/',
-      filename: 'server.bundle.js',
-      libraryTarget: 'commonjs2'
+        path: './',
+        filename: 'server.bundle.js',
+    },
+    module: {
+        loaders: [{
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+                presets: ['react', 'es2015', 'stage-1']
+            }
+        }]
     },
     target: 'node',
-    node: {
-      console: false,
-      global: false,
-      process: false,
-      Buffer: false,
-      __filename: false,
-      __dirname: false
+    externals: [nodeExternals()]
+    //If you want to minify your files uncomment this
+    // ,
+    // plugins: [
+    //     new webpack.optimize.UglifyJsPlugin({
+    //         compress: {
+    //             warnings: false,
+    //         },
+    //         output: {
+    //             comments: false,
+    //         },
+    //     }),
+    // ]
     },
-    externals: nodeExternals(),
-    plugins: productionPluginDefine,
-    module: {
-      loaders: [
-        {
-          test: /\.jsx?$/,
-          loader: 'babel',
-                  query: {
-          presets: ['react', 'es2015']
+    {
+        entry: './app/App.js',
+        output: {
+            path: './bin',
+            filename: 'app.bundle.js',
+        },
+        module: {
+            loaders: [{
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['react', 'es2015', 'stage-1']
+                }
+            }]
         }
-        }
-      ].concat(commonLoaders)
+        //If you want to minify your files uncomment this
+        // ,
+        // plugins: [
+        //     new webpack.optimize.UglifyJsPlugin({
+        //         compress: {
+        //             warnings: false,
+        //         },
+        //         output: {
+        //             comments: false,
+        //         },
+        //     }),
+        // ]
     }
-  },
-  {
-    entry: './app/App.js',
-    output: {
-      path: __dirname,
-      publicPath: '/',
-      filename: 'bundle.js'
-    },
-  module: {
-    loaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          presets: ['react', 'es2015']
-        }
-      },
-      {
-      test: /\.css$/,
-      loader: ExtractTextPlugin.extract(
-        'style-loader',
-        combineLoaders([{
-          loader: 'css-loader',
-          query: {
-            modules: true,
-            localIdentName: '[name]__[local]___[hash:base64:5]'
-          }
-        }])
-      )}
-    ]
-  },
-
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
-        'API_URL': JSON.stringify(apiUrl)
-      }
-    }),
-    new ExtractTextPlugin('styles-[hash].css'),
-  ]
-}
 ]

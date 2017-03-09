@@ -12,11 +12,13 @@ import NotFoundPage from './components/NotFoundPage';
 // initialize the server and configure support for ejs templates
 const app = new Express();
 const server = new Server(app);
+var publicPath = path.resolve(__dirname, 'public');
+
 // app.set('view engine', 'ejs');
 // app.set('views', path.join(__dirname, 'views'));
 
 // define the folder that will be used for static assets
-app.use(Express.static(__dirname + '/assets'));
+app.use(Express.static(publicPath));
 
 // universal routing and rendering
 app.get('*', (req, res) => {
