@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./app/server.bundle.js",
     "build:dev": "NODE_ENV=development webpack -w",
-    "prod": "NODE_ENV=production node ./app/server.bundle.js"
+    "prod": "NODE_ENV=production"
   },
     "engines": {
     "node": "6.5.0",
