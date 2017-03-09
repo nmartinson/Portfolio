@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:dev": "NODE_ENV=development webpack -w",
-    "build:prod": "NODE_ENV=production webpack -w",
-    "start": "node server.js",
-    "build": "webpack"
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
+    "prod": "NODE_ENV=production node server.js",
+    "postinstall": "webpack -p"
   },
     "engines": {
     "node": "6.5.0",

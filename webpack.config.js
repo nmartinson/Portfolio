@@ -25,7 +25,8 @@ var devUrl = 'http://localhost:3000/api/v1';
 var prodUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
 
 var apiUrl = process.env.NODE_ENV === 'production' ? prodUrl : devUrl;
-
+console.log('directory')
+console.log(__dirname)
 module.exports = [
 {
     entry: './app/server.js',
