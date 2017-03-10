@@ -2,10 +2,12 @@
   "name": "portfolio_react",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.bundle.js",
   "scripts": {
-    "prod": "NODE_ENV=production webpack -w",
-    "start": "node server.bundle.js"
+    "start": "node app/server.bundle.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prod": "webpack -p --config webpack.config.js",
+    "postinstall": "webpack -p --config webpack.config.js"
   },
   "engines": {
     "node": "6.5.0",
