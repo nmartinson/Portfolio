@@ -6,6 +6,7 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from './app/config/routes';
 import template from './app/template';
+import Helmet from 'react-helmet';
 
 import NotFoundPage from './app/components/NotFoundPage';
 
@@ -14,11 +15,8 @@ const app = new Express();
 const server = new Server(app);
 var publicPath = path.resolve(__dirname, 'public');
 
-// app.set('view engine', 'ejs');
-// app.set('views', path.join(__dirname, 'views'));
-
 // define the folder that will be used for static assets
-app.use(Express.static(publicPath));
+app.use('/bin',Express.static('./bin'));
 
 // universal routing and rendering
 app.get('*', (req, res) => {
@@ -45,11 +43,46 @@ app.get('*', (req, res) => {
       markup = renderToString(<NotFoundPage/>);
       res.status(404);
     }
-    res.send(template({
-      body: markup,
-      title: 'Hello World from the server',
-      initialState: JSON.stringify(initialState)
-    }));    
+        markup = renderToString(<RouterContext {...renderProps}/>);
+        let head = Helmet.rewind();
+
+        /* render document with Helmet-rendered `<head>` info
+           and React-rendered body. then, initialize the client
+           side via `client.js`.
+           Note: Helmet will update your page's `<head`> on the client
+                 side, but you must construct `<head>` manually
+                 on the server. */
+        let html = `
+            <!doctype html>
+            <html>
+                <head>
+					<meta charset="utf-8" />
+					<meta charset="UTF-8">
+					<meta name="viewport" content="initial-scale=1">
+					<title>Portfolio</title>
+					<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+					<link rel="stylesheet" type="text/css" href="sortable.css">
+					<link rel="stylesheet" type="text/css" href="app/css/sortable.css">
+					<link rel="stylesheet" type="text/css" href="app/css/Global.css">
+					<link rel="stylesheet" type="text/css" href="Global.css">
+					<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+                    <title>${head.title}</title>
+                    ${head.meta}
+                    ${head.link}
+                </head>
+                <body>
+                    <div id="app">${markup}</div>
+                    <script src="app/bundle.js"></script>
+                </body>
+            </html>
+        `;
+        res.write(html);
+        res.end();
+    // res.send(template({
+    //   body: markup,
+    //   title: 'Hello World from the server',
+    //   initialState: JSON.stringify(initialState)
+    // }));    
   });
 });
 

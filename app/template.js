@@ -21,7 +21,7 @@ export default ({ body, title, initialState }) => {
         <div id="app">${body}</div>
       </body>
       
-      <script src="bundle.js"></script>
+      <script src="bin/app.bundle.js"></script>
     </html>
   `;
 };

@@ -36,7 +36,7 @@ module.exports = [
         entry: './app/App.js',
         output: {
             path: './bin',
-            filename: 'app.bundle.js',
+            filename: 'bundle.js',
         },
         module: {
             loaders: [{
