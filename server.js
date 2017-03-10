@@ -1,27 +1,66 @@
-var express = require('express');
-var path = require('path');
-var httpProxy = require('http-proxy');
+import path from 'path';
+import { Server } from 'http';
+import Express from 'express';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import { match, RouterContext } from 'react-router';
+import routes from './app/config/routes';
+import template from './app/template';
 
-var proxy = httpProxy.createProxyServer();
-var app = express();
+import NotFoundPage from './app/components/NotFoundPage';
 
-var isProduction = process.env.NODE_ENV === 'production';
-var port = isProduction ? process.env.PORT : 3000;
+// initialize the server and configure support for ejs templates
+const app = new Express();
+const server = new Server(app);
 var publicPath = path.resolve(__dirname, 'public');
 
-import router from './app/config/index';
+// app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname, 'views'));
 
+// define the folder that will be used for static assets
+app.use(Express.static(publicPath));
 
+// universal routing and rendering
+app.get('*', (req, res) => {
+  match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
+    // in case of error display the error message
+    if (err) {
+      return res.status(500).send(err.message);
+    }
 
-app.use(express.static(publicPath));
+    // in case of redirect propagate the redirect to the browser
+    if (redirectLocation) {
+      return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    }
 
-app.use('/bin', express.static('./bin'));
-app.use('/stylesheets', express.static('./public/stylesheets'));
+    const initialState = { true };
 
+    // generate the React markup for the current route
+    let markup;
+    if (renderProps) {
+      // if the current route matched we have renderProp
+      markup = renderToString(<RouterContext {...renderProps}/>);
+    } else {
+      // otherwise we can render a 404 page
+      markup = renderToString(<NotFoundPage/>);
+      res.status(404);
+    }
+    res.send(template({
+      body: markup,
+      title: 'Hello World from the server',
+      initialState: JSON.stringify(initialState)
+    }));    
+  });
+});
 
-app.use('/', router);
-app.use('/view/*', router);
-
-app.listen(port, function () {
-  console.log('Server running on port ' + port);
+// start the server
+const port = process.env.PORT || 8000;
+const env = process.env.NODE_ENV || 'production';
+server.listen(port, err => {
+  if (err) {
+    return console.error(err);
+  }
+  console.info(`Server running on http://localhost:${port} [${env}]`);
+  console.log('directory')
+console.log(__dirname)
 });
