@@ -17,10 +17,10 @@ class NavHeader extends React.Component {
         <Navbar.Collapse>
           <Nav>
             <NavItem eventKey={1} href="http://www.boundless-journey.com">Blog</NavItem>
-            <LinkContainer to="/contact">
+            <LinkContainer to='/contact'>
               <NavItem eventKey={2} >Contact</NavItem>
             </LinkContainer>
-            <LinkContainer to="/about">
+            <LinkContainer to='/about'>
               <NavItem eventKey={3} >About</NavItem>
             </LinkContainer>
             <LinkContainer to='/examples'>

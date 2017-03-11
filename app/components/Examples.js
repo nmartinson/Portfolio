@@ -7,6 +7,8 @@ import styler from 'react-styling'
 import Radium from 'radium';
 import Lightbox from 'react-images';
 import LightboxContact from './LightboxContactComponent';
+import ReactGA from 'react-ga';
+import Helmet from "react-helmet";
 
 function getIndex(value, arr, prop) {
     for(var i = 0; i < arr.length; i++) {
@@ -35,12 +37,12 @@ class Examples extends React.Component {
     this.gotoPrevious = this.gotoPrevious.bind(this);
     this.gotoImage = this.gotoImage.bind(this);
     this.handleClickImage = this.handleClickImage.bind(this);
+    ReactGA.pageview('/examples');
   }
 
   openModal(url) {
     var index = getIndex(url, this.state.primaryPhotos, 'url');
     var photo = this.state.primaryPhotos[index];
-    //window.location = `#/photoset/${photo.id}/title/${photo.title}`
   }
 
   componentDidMount(){
@@ -48,6 +50,7 @@ class Examples extends React.Component {
       [{
           index: 0,
           src: "http://www.boundless-journey.com/portfolio/images/examples/cornerDetail.jpg",
+          url: "http://www.boundless-journey.com/portfolio/images/examples/thumbnails/cornerDetail_thumb.jpg",
           caption: 
             <div>
               <div className="row">
@@ -61,6 +64,7 @@ class Examples extends React.Component {
         {
           index: 1,
           src: "http://www.boundless-journey.com/portfolio/images/examples/largeCanvas.jpg",
+          url: "http://www.boundless-journey.com/portfolio/images/examples/thumbnails/largeCanvas_thumb.jpg",
           caption: 
             <div>
               <div className="row">
@@ -74,6 +78,7 @@ class Examples extends React.Component {
                 {
           index: 1,
           src: "http://www.boundless-journey.com/portfolio/images/examples/MetalAngle.jpg",
+          url: "http://www.boundless-journey.com/portfolio/images/examples/thumbnails/MetalAngle_thumb.jpg",
           caption: 
             <div>
               <div className="row">
@@ -87,6 +92,7 @@ class Examples extends React.Component {
                 {
           index: 1,
           src: "http://www.boundless-journey.com/portfolio/images/examples/MetalFront.jpg",
+          url: "http://www.boundless-journey.com/portfolio/images/examples/thumbnails/MetalFront_thumb.jpg",
           caption: 
             <div>
               <div className="row">
@@ -101,7 +107,6 @@ class Examples extends React.Component {
       this.setState({
         imageList: images.map(function(image, index)
         {
-          image.thumbnail_url = image.src; 
           image.clickHandler = this.openLightbox.bind(image,index);
           return image;
         }.bind(this)),
@@ -115,11 +120,13 @@ class Examples extends React.Component {
     this.setState({
       currentImage: this.state.currentImage - 1,
     });
+    ReactGA.modalview('example/'+this.state.images[this.state.currentImage - 1].url);
   }
   gotoNext () {
     this.setState({
       currentImage: this.state.currentImage + 1,
     });
+    ReactGA.modalview('example/'+this.state.images[this.state.currentImage + 1].url);
   }
   gotoImage (index) {
     this.setState({
@@ -132,6 +139,8 @@ class Examples extends React.Component {
   }
   openLightbox (index,x) {
     event.preventDefault();
+    ReactGA.modalview('example/'+this.state.images[index].url);
+
     this.setState({
       currentImage: index,
       lightboxIsOpen: true,
@@ -151,6 +160,21 @@ class Examples extends React.Component {
     } else {
       return (
         <div>
+          <Helmet
+            htmlAttributes={{"lang": "en"}} // amp takes no value
+            title="Landscape & Nature Photography | Examples | Boundless Journey"
+            titleTemplate="Landscape & Nature Photography | Boundless Journey"
+            defaultTitle="Landscape & Nature Photography | Boundless Journey"
+            meta={[
+                {"name": "twitter:image", "content": "http://www.boundless-journey.com/portfolio/images/features/DSC_6429-Pano-Edit-2.jpg"},
+                {"name": "thumbnail", "content": "http://www.boundless-journey.com/portfolio/images/features/thumbnails/DSC_6429-Pano-Edit-2_thumb.jpg"},
+                {"property": "og:image", "content": "http://www.boundless-journey.com/portfolio/images/features/DSC_6429-Pano-Edit-2.jpg"},
+                {"property": "og:title", "content": "Landscape & Nature Photography | Boundless Journey"},
+                {"property": "og:url", "content": `www.portfolio.boundless-journey.com`},
+                {"property": "og:description", "content": "Landscape & Nature Photography | Boundless Journey"},
+                {"property": "og:type", "content": "website"}
+            ]}
+          />
           <ReactRpg imagesArray={imageList} columns={[ 1, 2, 3 ]} padding={10} ></ReactRpg>            
 
         <Lightbox
@@ -279,7 +303,6 @@ const style = styler
     left: 0;
     right: 0;
     width: 400px;
-    max-width:  window.innerWidth
     background: rgb(0, 0, 0); 
     background: rgba(0, 0, 0, 0.7); 
     margin-top: 0px;

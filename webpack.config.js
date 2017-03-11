@@ -1,11 +1,18 @@
 const webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
+// var devUrl = 'http://localhost:3000/api/v1';
+var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
+
+var prodUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
+
+var apiUrl = process.env.NODE_ENV === 'production' ? prodUrl : devUrl;
+var path = require('path');
 
 module.exports = [
     {
     entry: './server.js',
     output: {
-        path: './app',
+        path: path.join(__dirname, 'public/'),
         filename: 'server.bundle.js',
     },
     module: {
@@ -18,7 +25,15 @@ module.exports = [
         }]
     },
     target: 'node',
-    externals: [nodeExternals()]
+    externals: [nodeExternals()],
+    plugins: [
+        new webpack.DefinePlugin({
+          'process.env': {
+            'NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
+            'API_URL': JSON.stringify(apiUrl)
+          }
+        })
+      ]
     //If you want to minify your files uncomment this
     // ,
     // plugins: [
@@ -35,7 +50,7 @@ module.exports = [
     {
         entry: './app/App.js',
         output: {
-            path: './bin',
+            path: path.join(__dirname, 'public/'),
             filename: 'bundle.js',
         },
         module: {
@@ -46,7 +61,15 @@ module.exports = [
                     presets: ['react', 'es2015', 'stage-1']
                 }
             }]
-        }
+        },
+        plugins: [
+            new webpack.DefinePlugin({
+              'process.env': {
+                'NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
+                'API_URL': JSON.stringify(apiUrl)
+              }
+            }),
+        ]
         //If you want to minify your files uncomment this
         // ,
         // plugins: [

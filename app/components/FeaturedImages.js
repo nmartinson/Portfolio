@@ -216,7 +216,7 @@ const theme = {
   container: { 
     // background: 'rgba(255, 255, 255, 0.9)',
     background: 'rgba(0, 0, 0, 0.9)',
-    height: '90%',
+    height: '100%',
     // top: '100px',
     padding: '0px',
     margin: '0px'

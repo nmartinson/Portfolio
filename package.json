@@ -4,9 +4,10 @@
   "description": "",
   "main": "server.bundle.js",
   "scripts": {
-    "start": "node app/server.bundle.js",
+    "start": "node public/server.bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prod": "webpack -p --config webpack.config.js",
+    "dev": "webpack -w --config webpack.config.js",
     "postinstall": "webpack -p --config webpack.config.js"
   },
   "engines": {
@@ -42,7 +43,7 @@
     "react-ga": "^2.1.2",
     "react-helmet": "^3.1.0",
     "react-image-gallery": "^0.7.4",
-    "react-images": "^0.5.1",
+    "react-images": "^0.5.2",
     "react-measure": "^1.3.1",
     "react-modal": "^1.5.2",
     "react-responsive": "^1.2.1",

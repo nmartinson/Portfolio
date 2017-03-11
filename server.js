@@ -13,10 +13,10 @@ import NotFoundPage from './app/components/NotFoundPage';
 // initialize the server and configure support for ejs templates
 const app = new Express();
 const server = new Server(app);
-var publicPath = path.resolve(__dirname, 'public');
+
 
 // define the folder that will be used for static assets
-app.use('/bin',Express.static('./bin'));
+app.use('/static',Express.static('public'));
 
 // universal routing and rendering
 app.get('*', (req, res) => {
@@ -72,7 +72,7 @@ app.get('*', (req, res) => {
                 </head>
                 <body>
                     <div id="app">${markup}</div>
-                    <script src="app/bundle.js"></script>
+                    <script src="/static/bundle.js"></script>
                 </body>
             </html>
         `;

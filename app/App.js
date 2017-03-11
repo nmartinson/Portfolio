@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, useRouterHistory } from 'react-router'
+import { Router, useRouterHistory, browserHistory } from 'react-router'
 import { createHashHistory } from 'history'
 const appHistory = useRouterHistory(createHashHistory)()
 import routes from './config/routes';
@@ -16,6 +16,6 @@ function logPageView() {
 }
 
 ReactDOM.render(
-  <Router routes={routes} onUpdate={logPageView} history={appHistory} >{routes}</Router>,
+  <Router routes={routes} onUpdate={logPageView} history={browserHistory} >{routes}</Router>,
   document.getElementById('app')
 )
