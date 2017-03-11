@@ -94,6 +94,5 @@ server.listen(port, err => {
     return console.error(err);
   }
   console.info(`Server running on http://localhost:${port} [${env}]`);
-  console.log('directory')
-console.log(__dirname)
+
 });
