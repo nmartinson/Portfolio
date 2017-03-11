@@ -87,6 +87,10 @@ app.get('*', (req, res) => {
 });
 
 // start the server
+console.info('process.ENV')
+console.info(process.env)
+console.info(process.env.PORT)
+
 const port = process.env.PORT || 8000;
 const env = process.env.NODE_ENV || 'production';
 server.listen(port, err => {
