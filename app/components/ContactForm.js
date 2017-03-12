@@ -40,7 +40,7 @@ class ContactForm extends React.Component {
   handleOnSubmit(e){
     e.preventDefault();
     const { email, subject, body, first_name, last_name} = this.state;
-    const apiUrl = process.env.API_URL;
+    const apiUrl = API_URL;
     const path = `${apiUrl}/emails`
     axios.post(path, 
       {

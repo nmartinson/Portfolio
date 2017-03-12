@@ -107,7 +107,7 @@ class EditPhotoSettings extends React.Component {
     e.preventDefault();
     const { files} = this.state;
     const { settings } = this.state;
-    const apiUrl = process.env.API_URL;
+    const apiUrl = API_URL;
     const path = `${apiUrl}/settings`
 
      axios.put(path, 
@@ -123,7 +123,7 @@ class EditPhotoSettings extends React.Component {
   }
 
   componentDidMount(){
-    const apiUrl = process.env.API_URL;
+    const apiUrl = API_URL;
     var path = `${apiUrl}/mediums`
     var mediums = [];
     axios.get(path)

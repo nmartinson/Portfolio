@@ -92,7 +92,7 @@ class AddFeaturedPhoto extends React.Component {
 
   uploadFiles(){
     const { files, isFeaturedImage, exifData, xmpData} = this.state;
-    const apiUrl = process.env.API_URL;
+    const apiUrl = API_URL;
     const path = `${apiUrl}/features`
 
     var images = files.map((fileItem, index) => {

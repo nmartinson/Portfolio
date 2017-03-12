@@ -26,7 +26,17 @@ module.exports = [
     },
     target: 'node',
     externals: [nodeExternals()],
+    plugins: [
+        new webpack.DefinePlugin({
+            'API_URL': JSON.stringify(apiUrl),
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
 
+          // 'process.env': {
+          //   'NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
+          //   'API_URL': JSON.stringify(apiUrl)
+          // }
+        })
+      ]
     //If you want to minify your files uncomment this
     // ,
     // plugins: [
@@ -55,7 +65,17 @@ module.exports = [
                 }
             }]
         },
+        plugins: [
+        new webpack.DefinePlugin({
+            'API_URL': JSON.stringify(apiUrl),
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
 
+          // 'process.env': {
+          //   'NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development'),
+          //   'API_URL': JSON.stringify(apiUrl)
+          // }
+        })
+        ]
         //If you want to minify your files uncomment this
         // ,
         // plugins: [

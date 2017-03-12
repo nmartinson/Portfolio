@@ -110,7 +110,7 @@ class ImageDetails extends React.Component {
 
   componentDidMount(){
     const {id} = this.props.params;
-    const apiUrl = process.env.API_URL;
+    const apiUrl = API_URL;
     const path = `${apiUrl}/photos/${id}`
     axios.get(path)
       .then((response) => {

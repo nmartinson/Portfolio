@@ -101,7 +101,7 @@ class Photoset extends React.Component {
   }
   componentDidMount(){
     const { id, title } = this.props.params;
-    const apiUrl = process.env.API_URL;
+    const apiUrl = API_URL;
     const path = `${apiUrl}/gallery?gallery_id=${id}`
 
     axios.get(path)

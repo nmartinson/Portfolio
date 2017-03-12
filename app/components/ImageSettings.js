@@ -21,7 +21,7 @@ class ImageSettings extends React.Component {
   }
 
   componentDidMount(){
-    const apiUrl = process.env.API_URL;
+    const apiUrl = API_URL;
     const path = `${apiUrl}/mediums`
     var mediums = [];
     axios.get(path)

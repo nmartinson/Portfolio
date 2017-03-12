@@ -14,7 +14,7 @@ class PhotoSettings extends React.Component {
 
   }
   componentDidMount(){
-    const apiUrl = process.env.API_URL;
+    const apiUrl = API_URL;
     const path = `${apiUrl}/galleries`
     axios.get(path)
       .then((response) => {
