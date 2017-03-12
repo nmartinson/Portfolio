@@ -45,6 +45,10 @@ app.get('*', (req, res) => {
     }
         markup = renderToString(<RouterContext {...renderProps}/>);
         let head = Helmet.rewind();
+        console.log('HELMET')
+        console.log(head)
+        console.log('META')
+        console.log(head.meta)
 
         /* render document with Helmet-rendered `<head>` info
            and React-rendered body. then, initialize the client
@@ -54,7 +58,7 @@ app.get('*', (req, res) => {
                  on the server. */
         let html = `
             <!doctype html>
-            <html>
+				<html lang="en" style="height:100%">
                 <head>
 					<meta charset="utf-8" />
 					<meta charset="UTF-8">
@@ -70,8 +74,8 @@ app.get('*', (req, res) => {
                     ${head.meta}
                     ${head.link}
                 </head>
-                <body>
-                    <div id="app">${markup}</div>
+				<body style="height:100%">
+				  <div id="app" style="height:100%">${markup}</div>
                     <script src="/static/bundle.js"></script>
                 </body>
             </html>
