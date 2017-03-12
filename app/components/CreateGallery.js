@@ -106,7 +106,7 @@ class CreateGallery extends React.Component {
 
   uploadFiles(){
     const { galleryName, files, isCoverImage, isFeaturedImage} = this.state;
-    const apiUrl = API_URL;
+    const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/gallery`
 
     var images = files.map((fileItem, index) => {

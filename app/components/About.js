@@ -1,31 +1,13 @@
 import React from 'react';
-import axios from 'axios';
-import { Link } from 'react-router';
-import Radium from 'radium';
-import Helmet from 'react-helmet';
+import ReactGA from 'react-ga';
 
 
 const About = () => {
   var photos = [];
-
+  ReactGA.pageview('/about');
 
   return (
     <div className="col-md-6 col-md-offset-1">
-      <Helmet
-        htmlAttributes={{"lang": "en",
-          "xmlns":"http://www.w3.org/1999/xhtml",
-          "xmlns:fb":"http://ogp.me/ns/fb#"}} // amp takes no value
-        title="Photoset"
-        titleTemplate="Portfolio"
-        defaultTitle="Portfolio"
-        base={{"target": "_blank", "href": "http://boundless-journey.com/portfolio"}}
-        meta={[
-            {"name": "twitter:image", "content": "http://i1.wp.com/www.boundless-journey.com/wp-content/uploads/2016/09/DSC_5325.jpg"},
-            {"property": "og:title", "content": "Photoset title - boundless-journey"},
-            {"property": "og:description", "content": "boundless-journey"},
-            {"property": "og:type", "content": "website"}
-        ]}
-      />
       <h1>About Me</h1>
       <p>
         Nice to meet you! I was born and raised in Bettendorf, Iowa, and lived in Iowa until I graduated college as a Hawkeye.  Chicago 
@@ -47,7 +29,7 @@ const About = () => {
   )
 }
 
-export default Radium(About);
+export default About;
 
 const styles = {
   outerDiv: {

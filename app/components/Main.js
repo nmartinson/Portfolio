@@ -6,6 +6,12 @@ import styler from 'react-styling'
 import Radium from 'radium';
 import {StyleRoot} from 'radium';
 
+import { Link } from 'react-router';
+
+
+// import {bindActionCreators} from 'redux'
+// import {connect} from 'react-redux';
+// import * as actionCreators from '../actions/helloWorldActionCreators';
 
 
 const Main = ({children, history}) => {
@@ -16,6 +22,7 @@ const Main = ({children, history}) => {
         <NavHeader history={history}/>
         <div className="container" style={[style.div, style.shadow]}>
           <Featured/>
+          {children}
         </div>
         <Footer/>
       </div>
@@ -35,7 +42,31 @@ const Main = ({children, history}) => {
   )
 }
 
+
+
 export default Radium(Main);
+
+      // <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" lazyload="1"/>
+      // <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" lazyload="1"/>
+/*
+  if(children == null){
+    return (
+      <StyleRoot>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" lazyload="1"/>
+
+      <div className="main-container"  style={{height:"100%"}}>
+        <NavHeader history={history}/>
+        <div className="container" style={[style.div, style.shadow]}>
+          <Featured/>
+          {      'link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" lazyload="1"/>'}
+          {children}
+        </div>
+        <Footer/>
+      </div>
+      </StyleRoot>
+    )
+  }
+  */
 
 const style = styler
 `

@@ -3,11 +3,13 @@ import axios from 'axios';
 import { Link } from 'react-router';
 import { LinkContainer } from 'react-router-bootstrap';
 import Radium from 'radium';
+import ReactGA from 'react-ga';
+
 
 
 const OrderingInfo = () => {
   var photos = [];
-
+  ReactGA.pageview('/orderingInfo');
 
   return (
     <div className="col-md-6 col-md-offset-1">

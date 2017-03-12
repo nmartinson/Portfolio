@@ -177,7 +177,7 @@ class EditPhoto extends React.Component {
   }
 
   getPossibleSettings(photo_id){
-    const apiUrl = API_URL;
+    const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/settings/available_settings/${photo_id}`
     axios.get(path)
       .then((response) => {
@@ -198,7 +198,7 @@ class EditPhoto extends React.Component {
     e.preventDefault();
     const { files} = this.state;
     const { imageDetails, isFeaturedImage} = this.state;
-    const apiUrl = API_URL;
+    const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/photos`
 
      axios.put(path, 
@@ -216,7 +216,7 @@ class EditPhoto extends React.Component {
   saveOrder(e) {
     e.preventDefault();
     const { imageDetails, isFeaturedImage, imageOrder} = this.state;
-    const apiUrl = API_URL;
+    const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/photos`
     console.log(imageOrder)
 
@@ -236,7 +236,7 @@ class EditPhoto extends React.Component {
   }
 
   componentDidMount(){
-    const apiUrl = API_URL;
+    const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/features`
     axios.get(path)
       .then((response) => {

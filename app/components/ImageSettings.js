@@ -21,7 +21,7 @@ class ImageSettings extends React.Component {
   }
 
   componentDidMount(){
-    const apiUrl = API_URL;
+    const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/mediums`
     var mediums = [];
     axios.get(path)
@@ -57,11 +57,6 @@ class ImageSettings extends React.Component {
 
   }
 
-  handleEmailClick(e){
-    var params = e.target.dataset.message.split(",")
-    window.location = `localhost:8080/#/contact/${params[0]}/${params[1]}`
-  }
-
   render() {
     const { style, imageDetails, filterSettings,mediums, loading} = this.state;
 
@@ -70,7 +65,6 @@ class ImageSettings extends React.Component {
       return(<div>Loading</div>)
     } else {
       return (
-
         <div>
           <p style={{fontSize: '20px'}}><b>{imageDetails.name}</b></p>
           <p>{imageDetails.description}</p>
@@ -90,7 +84,7 @@ class ImageSettings extends React.Component {
               })                        
             }
           </select>   
-          <button className={"hidden"}>Buy it!</button>     
+          <button className={"hidden"}>Buy it!</button>    
           <LinkContainer to={`/contact/${imageDetails.id}/${imageDetails.name}`}>
             <button style={{marginTop: '10px', marginBottom: "10px", padding:"5px", fontSize:"12px"}} type={"button"} className={"btn btn-success"}>Contact me about this photo</button>
           </LinkContainer>          

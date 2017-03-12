@@ -35,7 +35,7 @@ class GalleriesContainer extends React.Component {
   }
 
   componentDidMount(){
-    const apiUrl = API_URL;
+    const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/galleries`
     axios.get(path)
       .then((response) => {

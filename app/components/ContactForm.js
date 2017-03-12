@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
 import Styles  from '../styles';
+import ReactGA from 'react-ga';
+
 
 class ContactForm extends React.Component {
   constructor(){
@@ -15,6 +17,7 @@ class ContactForm extends React.Component {
       first_name: null,
       last_name: null
     }
+    ReactGA.pageview('/contact');
   }
 
   handleFirstNameChange(e) {
@@ -40,7 +43,7 @@ class ContactForm extends React.Component {
   handleOnSubmit(e){
     e.preventDefault();
     const { email, subject, body, first_name, last_name} = this.state;
-    const apiUrl = API_URL;
+    const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/emails`
     axios.post(path, 
       {
@@ -53,7 +56,6 @@ class ContactForm extends React.Component {
       .then( function(response) {
         console.log('success')
         console.log(response)
-        window.location = `/`
       }.bind(this))
       .catch((error) => {
         console.log("Error in send email: ", error);

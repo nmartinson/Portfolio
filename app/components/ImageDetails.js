@@ -9,6 +9,8 @@ import { Grid, Cell } from 'radium-grid';
 import ImageMeta from './ImageMeta';
 import ImageSettings from './ImageSettings';
 import Social from './SocialComponent';
+import ReactGA from 'react-ga';
+
 var MediaQuery = require('react-responsive');
 
 const styles = {
@@ -20,7 +22,7 @@ const styles = {
   }
 }
 
-const ImagePreview = ({ imageDetails, style }) => {
+const ImagePreview = ({ imageDetails, style, props }) => {
   if(imageDetails.is_landscape == true){
     return (
       <div style={styles.outerDiv}>
@@ -33,12 +35,12 @@ const ImagePreview = ({ imageDetails, style }) => {
             </Cell>
             <Grid>
               <Cell mediumWidth="1/2" smallWidth="1" align="left">
-                <ImageSettings imageDetails={imageDetails}/>
+                <ImageSettings imageDetails={imageDetails}/>              
               </Cell>
               <Cell mediumWidth="1/2" smallWidth="1" align="left">
                 <div>
                   <ImageMeta imageDetails={imageDetails}/>
-                  <Social url={String(window.location)} title={imageDetails.name} imageUrl={imageDetails.url}/>
+                  <Social url={`www.portfolio.boundless-journey.com/imageDetails/${imageDetails.id}`} title={imageDetails.name} imageUrl={imageDetails.url}/>                  
                 </div>
               </Cell>
             </Grid>
@@ -60,12 +62,12 @@ const ImagePreview = ({ imageDetails, style }) => {
                 </Cell>
               <Grid>
                 <Cell mediumWidth="1" smallWidth="1" align="left">
-                  <ImageSettings imageDetails={imageDetails}/>
-                  </Cell>
+                  <ImageSettings imageDetails={imageDetails}/>                  
+                </Cell>
                   <Cell mediumWidth="1" smallWidth="1" align="left">
                   <div>
                     <ImageMeta imageDetails={imageDetails}/>
-                    <Social url={String(window.location)} title={imageDetails.name} imageUrl={imageDetails.url}/>                  
+                    <Social url={`www.portfolio.boundless-journey.com/imageDetails/${imageDetails.id}`} title={imageDetails.name} imageUrl={imageDetails.url}/>                  
                   </div>
                 </Cell>
               </Grid>
@@ -84,7 +86,7 @@ const ImagePreview = ({ imageDetails, style }) => {
                   </Cell>
                   <Cell smallWidth="1" mediumWidth="1/4" largeWidth="1/4" xlargeWidth="1/4" style={{paddingLeft:"5px"}}>
                     <ImageMeta imageDetails={imageDetails}/>
-                    <Social url={String(window.location)} title={imageDetails.name} imageUrl={imageDetails.url}/>                  
+                    <Social url={`www.portfolio.boundless-journey.com/imageDetails/${imageDetails.id}`} title={imageDetails.name} imageUrl={imageDetails.url}/>                  
                   </Cell>
                 </Grid>
               </Cell>
@@ -110,7 +112,7 @@ class ImageDetails extends React.Component {
 
   componentDidMount(){
     const {id} = this.props.params;
-    const apiUrl = API_URL;
+    const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/photos/${id}`
     axios.get(path)
       .then((response) => {
@@ -122,7 +124,7 @@ class ImageDetails extends React.Component {
       .catch((error) => {
         console.log("Error in Image Details:", error);
       });
-
+    ReactGA.pageview('/imageDetails/' + id);
   }
 
   render(){
@@ -141,17 +143,17 @@ class ImageDetails extends React.Component {
             title="Photoset"
             titleTemplate="Portfolio"
             defaultTitle="Portfolio"
-            base={{"target": "_blank", "href": "http://boundless-journey.com/portfolio"}}
             meta={[
                 {"name": "twitter:image", "content": "http://i1.wp.com/www.boundless-journey.com/wp-content/uploads/2016/09/DSC_5325.jpg"},
+                {"name": "thumbnail", "content": `${imageDetails.thumbnail_url}`},
                 {"property": "og:image", "content": `${imageDetails.url}`},
                 {"property": "og:title", "content": "Photoset title - boundless-journey"},
-                {"property": "og:url", "content": window.location},
+                {"property": "og:url", "content": `www.portfolio.boundless-journey.com/imageDetails/${imageDetails.id}`},
                 {"property": "og:description", "content": "boundless-journey"},
                 {"property": "og:type", "content": "website"}
             ]}
           />
-          <ImagePreview style={Styles} imageDetails={imageDetails}/>
+          <ImagePreview props={this.props} style={Styles} imageDetails={imageDetails}/>
         </div>
       )
     }

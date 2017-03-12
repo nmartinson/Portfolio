@@ -2,7 +2,6 @@ import React from 'react';
 import { IndexLink, Link, History } from 'react-router';
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import Social from './SocialComponent';
 
 class NavHeader extends React.Component {
   render() {
@@ -10,17 +9,17 @@ class NavHeader extends React.Component {
       <Navbar inverse style={{marginBottom:"0px"}}>
         <Navbar.Header>
             <LinkContainer to="/featured">
-              <a href="#" class="navbar-left"><img height="50px" src="http://www.boundless-journey.com/portfolio/images/resources/logo.png"/></a>
+              <a href="#" className="navbar-left"><img height="50px" src="http://www.boundless-journey.com/portfolio/images/resources/logo.png"/></a>
             </LinkContainer>
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav>
             <NavItem eventKey={1} href="http://www.boundless-journey.com">Blog</NavItem>
-            <LinkContainer to='/contact'>
+            <LinkContainer to="/contact">
               <NavItem eventKey={2} >Contact</NavItem>
             </LinkContainer>
-            <LinkContainer to='/about'>
+            <LinkContainer to="/about">
               <NavItem eventKey={3} >About</NavItem>
             </LinkContainer>
             <LinkContainer to='/examples'>
