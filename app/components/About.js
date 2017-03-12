@@ -8,7 +8,7 @@ const About = () => {
 
   return (
     <div className="col-md-6 col-md-offset-1">
-      <h1>About Me</h1>
+      <h1>About Me!</h1>
       <p>
         Nice to meet you! I was born and raised in Bettendorf, Iowa, and lived in Iowa until I graduated college as a Hawkeye.  Chicago 
         was the next step to start my career as a Software consultant. After a year it was determined that Chicago wasn't a great fit, 
