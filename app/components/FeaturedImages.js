@@ -59,8 +59,6 @@ class FeaturedImages extends React.Component {
   }
 
   componentDidMount(){
-    console.log('this')
-    console.log(this)
     const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/features`
     axios.get(path)

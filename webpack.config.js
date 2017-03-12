@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
+const Helmet = require('react-helmet');
 // var devUrl = 'http://localhost:3000/api/v1';
 var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
 
@@ -26,6 +27,9 @@ module.exports = [
     },
     target: 'node',
     externals: [nodeExternals()],
+    // externals:{
+    //     'react-helmet': 'ReactHelmet',
+    // },
     plugins: [
         new webpack.DefinePlugin({
             'process.env.API_URL': JSON.stringify(apiUrl),
@@ -64,7 +68,7 @@ module.exports = [
         new webpack.DefinePlugin({
             'process.env.API_URL': JSON.stringify(apiUrl),
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development')
-        })
+        })      
         ]
         //If you want to minify your files uncomment this
         // ,

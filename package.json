@@ -60,6 +60,7 @@
     "webpack-dev-server": "^1.16.3",
     "webpack-node-externals": "^1.5.4"
   },
+  "peerDependencies": {},
   "devDependencies": {
     "webpack-dev-server": "^1.15.1"
   }

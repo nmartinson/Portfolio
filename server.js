@@ -7,7 +7,6 @@ import { match, RouterContext } from 'react-router';
 import routes from './app/config/routes';
 import template from './app/template';
 import Helmet from 'react-helmet';
-
 import NotFoundPage from './app/components/NotFoundPage';
 
 // initialize the server and configure support for ejs templates
@@ -48,7 +47,8 @@ app.get('*', (req, res) => {
         console.log('HELMET')
         console.log(head)
         console.log('META')
-        console.log(head.meta)
+        console.log(head.meta.toString.toString())
+
 
         /* render document with Helmet-rendered `<head>` info
            and React-rendered body. then, initialize the client
@@ -70,9 +70,9 @@ app.get('*', (req, res) => {
 					<link rel="stylesheet" type="text/css" href="app/css/Global.css">
 					<link rel="stylesheet" type="text/css" href="Global.css">
 					<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-                    <title>${head.title}</title>
-                    ${head.meta}
-                    ${head.link}
+					${head.title.toString()}
+					${head.meta}
+${head.meta.toString()}
                 </head>
 				<body style="height:100%">
 				  <div id="app" style="height:100%">${markup}</div>
@@ -80,8 +80,9 @@ app.get('*', (req, res) => {
                 </body>
             </html>
         `;
-        res.write(html);
-        res.end();
+        res.send(html)
+        // res.write(html);
+        // res.end();
     // res.send(template({
     //   body: markup,
     //   title: 'Hello World from the server',

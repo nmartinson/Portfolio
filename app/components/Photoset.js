@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
 import Modal from 'react-modal';
 import Styles  from '../styles';
-import Helmet from "react-helmet";
+// import Helmet from "react-helmet";
 
 import {
   ShareButtons,
@@ -158,18 +158,7 @@ class Photoset extends React.Component {
               size={32}
               round />
           </FacebookShareButton>
-          <Helmet
-            htmlAttributes={{"lang": "en", "amp": undefined}} // amp takes no value
-            title="Photoset"
-            titleTemplate="Portfolio"
-            defaultTitle="Portfolio"
-            base={{"target": "_blank", "href": "http://boundless-journey.com/portfolio"}}
-            meta={[
-                {"name": "twitter:image", "content": "http://i1.wp.com/www.boundless-journey.com/wp-content/uploads/2016/09/DSC_5325.jpg"},
-                {"property": "og:image", "content": "http://i1.wp.com/www.boundless-journey.com/wp-content/uploads/2016/09/DSC_5325.jpg"},
-                {"property": "og:title", "content": "Photoset title - boundless-journey"}
-            ]}
-          />
+
           <div >
             <Modal
               isOpen={this.state.modalIsOpen}
