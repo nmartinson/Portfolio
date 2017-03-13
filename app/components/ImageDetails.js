@@ -131,7 +131,28 @@ class ImageDetails extends React.Component {
     const { imageDetails, loading} = this.state;
 
     if(loading){
-      return <p>loading</p>
+      return (
+        <div>
+          <Helmet
+            htmlAttributes={{"lang": "en",
+              "xmlns":"http://www.w3.org/1999/xhtml",
+              "xmlns:fb":"http://ogp.me/ns/fb#"}} // amp takes no value
+            title="Photoset"
+            titleTemplate="Portfolio"
+            defaultTitle="Portfolio"
+            meta={[
+                {"name": "twitter:image", "content": "http://i1.wp.com/www.boundless-journey.com/wp-content/uploads/2016/09/DSC_5325.jpg"},
+                {"name": "thumbnail", "content": `${imageDetails.thumbnail_url}`},
+                {"property": "og:image", "content": `${imageDetails.url}`},
+                {"property": "og:title", "content": "Photoset title - boundless-journey"},
+                {"property": "og:url", "content": `www.portfolio.boundless-journey.com/imageDetails/${imageDetails.id}`},
+                {"property": "og:description", "content": "boundless-journey"},
+                {"property": "og:type", "content": "website"}
+            ]}
+          />
+          <p>loading</p>
+        </div>
+        )
     } else {
       // imageDetails.location = String(window.location);
       return (

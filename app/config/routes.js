@@ -16,7 +16,7 @@ import LightboxContactComponent from '../components/LightboxContactComponent';
 
 import { Route, IndexRoute } from 'react-router';
 
-module.exports = (
+const Routes = (
   <Route path="/" component={Main} >
       <Route path="/galleries" component={Galleries} />
       <Route path="/photoset/:id/title/:title" component={Photoset} />
@@ -33,3 +33,5 @@ module.exports = (
 
   </Route>
 );
+
+export default Routes;

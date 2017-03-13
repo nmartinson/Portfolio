@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
 import Styles  from '../styles';
 import ReactGA from 'react-ga';
+import Helmet from "react-helmet";
 
 
 class ContactForm extends React.Component {
@@ -77,10 +78,44 @@ class ContactForm extends React.Component {
     const { primaryPhotos, loading, subject } = this.state;
 
     if(loading){
-      return <p>Loading</p>
+      return (
+        <div>
+          <Helmet
+            htmlAttributes={{"lang": "en"}} // amp takes no value
+            title="Landscape & Nature Photography | Contact | Boundless Journey"
+            titleTemplate="Landscape & Nature Photography | Boundless Journey"
+            defaultTitle="Landscape & Nature Photography | Boundless Journey"
+            meta={[
+                {"name": "twitter:image", "content": "http://www.boundless-journey.com/portfolio/images/features/DSC_6429-Pano-Edit-2.jpg"},
+                {"name": "thumbnail", "content": "http://www.boundless-journey.com/portfolio/images/features/thumbnails/DSC_6429-Pano-Edit-2_thumb.jpg"},
+                {"property": "og:image", "content": "http://www.boundless-journey.com/portfolio/images/features/DSC_6429-Pano-Edit-2.jpg"},
+                {"property": "og:title", "content": "Contact | Landscape & Nature Photography | Boundless Journey"},
+                {"property": "og:url", "content": `www.portfolio.boundless-journey.com/contact`},
+                {"property": "og:description", "content": "Contact | Landscape & Nature Photography | Boundless Journey"},
+                {"property": "og:type", "content": "website"}
+            ]}
+          />
+          <p>Loading</p>
+        </div>
+      )
     } else {
       return (
         <div>
+          <Helmet
+            htmlAttributes={{"lang": "en"}} // amp takes no value
+            title="Landscape & Nature Photography | Contact | Boundless Journey"
+            titleTemplate="Landscape & Nature Photography | Boundless Journey"
+            defaultTitle="Landscape & Nature Photography | Boundless Journey"
+            meta={[
+                {"name": "twitter:image", "content": "http://www.boundless-journey.com/portfolio/images/features/DSC_6429-Pano-Edit-2.jpg"},
+                {"name": "thumbnail", "content": "http://www.boundless-journey.com/portfolio/images/features/thumbnails/DSC_6429-Pano-Edit-2_thumb.jpg"},
+                {"property": "og:image", "content": "http://www.boundless-journey.com/portfolio/images/features/DSC_6429-Pano-Edit-2.jpg"},
+                {"property": "og:title", "content": "Contact | Landscape & Nature Photography | Boundless Journey"},
+                {"property": "og:url", "content": `www.portfolio.boundless-journey.com/contact`},
+                {"property": "og:description", "content": "Contact | Landscape & Nature Photography | Boundless Journey"},
+                {"property": "og:type", "content": "website"}
+            ]}
+          />
           <form className="col-md-6 col-md-offset-3">
               <h1>Contact me</h1>
               <p>Please contact me for any questions/inquiries about photo prints or general questions or comments. Thanks!</p>

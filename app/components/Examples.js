@@ -157,7 +157,26 @@ class Examples extends React.Component {
   render(){
     const { imageList, images, loading, currentImage} = this.state;
     if(loading){
-      return <p>Loading</p>
+      return(
+        <div>
+            <Helmet
+            htmlAttributes={{"lang": "en"}} // amp takes no value
+            title="Landscape & Nature Photography | Examples | Boundless Journey"
+            titleTemplate="Landscape & Nature Photography | Boundless Journey"
+            defaultTitle="Landscape & Nature Photography | Boundless Journey"
+            meta={[
+                {"name": "twitter:image", "content": "http://www.boundless-journey.com/portfolio/images/features/DSC_6429-Pano-Edit-2.jpg"},
+                {"name": "thumbnail", "content": "http://www.boundless-journey.com/portfolio/images/features/thumbnails/DSC_6429-Pano-Edit-2_thumb.jpg"},
+                {"property": "og:image", "content": "http://www.boundless-journey.com/portfolio/images/features/DSC_6429-Pano-Edit-2.jpg"},
+                {"property": "og:title", "content": "Landscape & Nature Photography | Boundless Journey"},
+                {"property": "og:url", "content": `www.portfolio.boundless-journey.com`},
+                {"property": "og:description", "content": "Landscape & Nature Photography | Boundless Journey"},
+                {"property": "og:type", "content": "website"}
+            ]}
+          />
+           <p>Loading</p>
+          </div>
+          )
     } else {
       return (
         <div>
