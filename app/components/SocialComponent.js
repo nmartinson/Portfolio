@@ -31,16 +31,16 @@ const PinterestIcon = generateShareIcon('pinterest');
 const VKIcon = generateShareIcon('vk');
 
 const Social = ({ title, url, imageUrl }) => {
-  const handleEmailClick = (e) => {
-    var params = e.target.dataset.message.split(",")
-    window.location = `#/contact/${params[0]}/${params[1]}`
-  }
+  // const handleEmailClick = (e) => {
+  //   var params = e.target.dataset.message.split(",")
+  //   window.location = `#/contact/${params[0]}/${params[1]}`
+  // }
 
   return (
     <div>
       <div className="row">
         <div className="form-group col-xs-2">
-          <FacebookShareButton url={url} title={title} >
+          <FacebookShareButton picture={imageUrl} url={url} title={title} >
             <FacebookIcon size={32} round />
           </FacebookShareButton>
         </div>

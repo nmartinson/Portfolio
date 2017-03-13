@@ -44,11 +44,6 @@ app.get('*', (req, res) => {
     }
         markup = renderToString(<RouterContext {...renderProps}/>);
         let head = Helmet.rewind();
-        console.log('HELMET')
-        console.log(head)
-        console.log('META')
-        console.log(head.meta.toString.toString())
-
 
         /* render document with Helmet-rendered `<head>` info
            and React-rendered body. then, initialize the client
@@ -72,7 +67,6 @@ app.get('*', (req, res) => {
 					<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 					${head.title.toString()}
 					${head.meta}
-${head.meta.toString()}
                 </head>
 				<body style="height:100%">
 				  <div id="app" style="height:100%">${markup}</div>

@@ -139,7 +139,6 @@ class FeaturedImages extends React.Component {
   }
 
   render(){
-    console.log(this)
     const { imageList, images, loading, currentImage, filterImages} = this.state;
     if(loading){
       return (
