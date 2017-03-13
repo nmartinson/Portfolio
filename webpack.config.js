@@ -74,15 +74,15 @@ module.exports = [
         ]
         //If you want to minify your files uncomment this
         // ,
-        // plugins: [
-        //     new webpack.optimize.UglifyJsPlugin({
-        //         compress: {
-        //             warnings: false,
-        //         },
-        //         output: {
-        //             comments: false,
-        //         },
-        //     }),
-        // ]
+        plugins: [
+            new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                    warnings: false,
+                },
+                output: {
+                    comments: false,
+                },
+            }),
+        ]
     }
 ]

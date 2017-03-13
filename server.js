@@ -74,14 +74,7 @@ app.get('*', (req, res) => {
                 </body>
             </html>
         `;
-        res.send(html)
-        // res.write(html);
-        // res.end();
-    // res.send(template({
-    //   body: markup,
-    //   title: 'Hello World from the server',
-    //   initialState: JSON.stringify(initialState)
-    // }));    
+        res.send(html)  
   });
 });
 
