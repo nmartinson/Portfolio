@@ -67,18 +67,13 @@ module.exports = [
             }]
         },
         plugins: [
-        new webpack.DefinePlugin({
-            'process.env.API_URL': JSON.stringify(apiUrl),
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development')
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false,
-            },
-            output: {
-                comments: false,
-            },
-        }),     
+            new webpack.DefinePlugin({
+                'process.env.API_URL': JSON.stringify(apiUrl),
+                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development')
+            }),
+            new webpack.optimize.UglifyJsPlugin(),
+            new webpack.optimize.DedupePlugin(), //dedupe similar code
+            new webpack.optimize.AggressiveMergingPlugin()//Merge chunks
         ]
     }
 ]

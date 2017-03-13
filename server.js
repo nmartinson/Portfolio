@@ -17,6 +17,12 @@ const server = new Server(app);
 // define the folder that will be used for static assets
 app.use('/static',Express.static('public'));
 
+app.get('*.js', function (req, res, next) {
+  req.url = req.url + '.gz';
+  res.set('Content-Encoding', 'gzip');
+  next();
+});
+
 // universal routing and rendering
 app.get('*', (req, res) => {
   match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
