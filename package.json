@@ -59,11 +59,11 @@
     "webpack": "^1.13.2",
     "webpack-combine-loaders": "^2.0.3",
     "webpack-dev-server": "^1.16.3",
-    "webpack-node-externals": "^1.5.4"
+    "webpack-node-externals": "^1.5.4",
+    "compression-webpack-plugin": "^0.3.2"
   },
   "peerDependencies": {},
   "devDependencies": {
-    "compression-webpack-plugin": "^0.3.2",
     "nodemon": "^1.4.1",
     "webpack-dev-server": "^1.15.1"
   }
