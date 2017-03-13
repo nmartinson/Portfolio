@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
+var CompressionPlugin = require('compression-webpack-plugin');
 // const Helmet = require('react-helmet');
 // var devUrl = 'http://localhost:3000/api/v1';
 var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
@@ -73,7 +74,14 @@ module.exports = [
             }),
             new webpack.optimize.UglifyJsPlugin(),
             new webpack.optimize.DedupePlugin(), //dedupe similar code
-            new webpack.optimize.AggressiveMergingPlugin()//Merge chunks
+            new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
+            new CompressionPlugin({
+              asset: "[path].gz[query]",
+              algorithm: "gzip",
+              test: /\.js$|\.css$|\.html$/,
+              threshold: 10240,
+              minRatio: 0.8
+            })
         ]
     }
 ]
