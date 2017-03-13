@@ -70,19 +70,15 @@ module.exports = [
         new webpack.DefinePlugin({
             'process.env.API_URL': JSON.stringify(apiUrl),
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development')
-        })      
-        ]
-        //If you want to minify your files uncomment this
-        // ,
-        plugins: [
-            new webpack.optimize.UglifyJsPlugin({
-                compress: {
-                    warnings: false,
-                },
-                output: {
-                    comments: false,
-                },
-            }),
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false,
+            },
+            output: {
+                comments: false,
+            },
+        }),     
         ]
     }
 ]
