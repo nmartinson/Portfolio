@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import Dropzone from 'react-dropzone';
 import { Link } from 'react-router';
-import base64 from 'base-64';
+// import base64 from 'base-64';
 import { ReactRpg } from 'react-rpg';
 var exif = require('exif-js');
 var xmpReader = require('./xmpReader');

@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 import Radium, { Style, StyleRoot } from "radium";
 import Styles  from '../styles';
 import Helmet from "react-helmet";
-import styler from 'react-styling'
+// import styler from 'react-styling'
 import { Grid, Cell } from 'radium-grid';
 import ImageMeta from './ImageMeta';
 import ImageSettings from './ImageSettings';

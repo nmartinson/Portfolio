@@ -6,7 +6,7 @@ import styler from 'react-styling'
 import Radium from 'radium';
 import {StyleRoot} from 'radium';
 
-import { Link } from 'react-router';
+// import { Link } from 'react-router';
 
 
 // import {bindActionCreators} from 'redux'

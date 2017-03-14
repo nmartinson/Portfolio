@@ -1,7 +1,7 @@
 import React from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { Link } from 'react-router';
-import { LinkContainer } from 'react-router-bootstrap';
+// import { LinkContainer } from 'react-router-bootstrap';
 import Radium from 'radium';
 import ReactGA from 'react-ga';
 import Helmet from "react-helmet";

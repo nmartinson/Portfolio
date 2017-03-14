@@ -1,7 +1,7 @@
 var React  = require('react');
-var Router = require('react-router');
-var Link = Router.Link;
-var Navigation = require('react-router').Navigation;
+// var Router = require('react-router');
+// var Link = Router.Link;
+// var Navigation = require('react-router').Navigation;
 //import styler from 'react-styling'
 import Radium from 'radium';
 

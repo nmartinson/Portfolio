@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
-import Styles  from '../styles';
+// import Styles  from '../styles';
 import styler from 'react-styling'
 import Radium from 'radium';
 import Lightbox from 'react-images';

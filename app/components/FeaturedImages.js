@@ -1,13 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-import { Link, browserHistory } from 'react-router';
+// import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
-import Styles  from '../styles';
-import styler from 'react-styling'
+// import Styles  from '../styles';
+// import styler from 'react-styling'
 import Radium from 'radium';
 import Lightbox from 'react-images';
 import LightboxContact from './LightboxContactComponent';
-import {Modal} from 'react-bootstrap';
+// import {Modal} from 'react-bootstrap';
 import Helmet from "react-helmet";
 
 var tagSearch = '';
@@ -45,19 +45,19 @@ class FeaturedImages extends React.Component {
     this.handleClickImage = this.handleClickImage.bind(this);
   }
 
-  openModal(url) {
-    var index = getIndex(url, this.state.primaryPhotos, 'url');
-    var photo = this.state.primaryPhotos[index];
-    window.location = `#/photoset/${photo.id}/title/${photo.title}`
-  }
+  // openModal(url) {
+  //   var index = getIndex(url, this.state.primaryPhotos, 'url');
+  //   var photo = this.state.primaryPhotos[index];
+  //   window.location = `#/photoset/${photo.id}/title/${photo.title}`
+  // }
 
-  setModalVisible(e){
-    e.preventDefault();
+  // setModalVisible(e){
+  //   e.preventDefault();
 
-    var visible = !this.state.modalVisible;
-    console.log('visible ' + visible);
-    this.setState({modalVisible:visible, lightboxIsOpen:true})
-  }
+  //   var visible = !this.state.modalVisible;
+  //   console.log('visible ' + visible);
+  //   this.setState({modalVisible:visible, lightboxIsOpen:true})
+  // }
 
   componentDidMount(){
     const apiUrl = process.env.API_URL;
@@ -309,64 +309,64 @@ const theme = {
   },
 };
 
-const style = styler
-`
-  .thumbnail {
-    position: relative;
-    width: 400px;
-    height: 400px;
-    overflow: hidden;
-  }
-  .thumbnail_img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    height: 100%;
-    width: auto;
-    overflow:hidden;
-    -webkit-transform: translate(-50%,-50%);
-        -ms-transform: translate(-50%,-50%);
-            transform: translate(-50%,-50%);
-  }
-  .img_portrait {
-    width: 100%;
-    height: auto;
-    overflow:hidden;
-  }
+// const style = styler
+// `
+//   .thumbnail {
+//     position: relative;
+//     width: 400px;
+//     height: 400px;
+//     overflow: hidden;
+//   }
+//   .thumbnail_img {
+//     position: absolute;
+//     left: 50%;
+//     top: 50%;
+//     height: 100%;
+//     width: auto;
+//     overflow:hidden;
+//     -webkit-transform: translate(-50%,-50%);
+//         -ms-transform: translate(-50%,-50%);
+//             transform: translate(-50%,-50%);
+//   }
+//   .img_portrait {
+//     width: 100%;
+//     height: auto;
+//     overflow:hidden;
+//   }
 
-  div_image {
-    position: relative;
-    margin-bottom: 20px;
-    width: 100%; 
-    overflow: hidden;
-    min-height: 200px;
+//   div_image {
+//     position: relative;
+//     margin-bottom: 20px;
+//     width: 100%; 
+//     overflow: hidden;
+//     min-height: 200px;
 
-    &:hover {
-      opacity: 0.7;
-    }
-  }
+//     &:hover {
+//       opacity: 0.7;
+//     }
+//   }
 
-  div_hover {
-    &:hover {
-      opacity: 0.7;
-    }
-  }
+//   div_hover {
+//     &:hover {
+//       opacity: 0.7;
+//     }
+//   }
 
-  .h2{
-    position: absolute;
-    top: 0px;
-    left: 0;
-    right: 0;
-    width: 400px;
-    max-width:  window.innerWidth
-    background: rgb(0, 0, 0); 
-    background: rgba(0, 0, 0, 0.7); 
-    margin-top: 0px;
-    margin-left: auto;
-    margin-right: auto;
-    color: white; 
-    font-size: 35px;
-    letter-spacing: -1px;
-    line-height: 200%
-  }
-`
+//   .h2{
+//     position: absolute;
+//     top: 0px;
+//     left: 0;
+//     right: 0;
+//     width: 400px;
+//     max-width:  window.innerWidth
+//     background: rgb(0, 0, 0); 
+//     background: rgba(0, 0, 0, 0.7); 
+//     margin-top: 0px;
+//     margin-left: auto;
+//     margin-right: auto;
+//     color: white; 
+//     font-size: 35px;
+//     letter-spacing: -1px;
+//     line-height: 200%
+//   }
+// `

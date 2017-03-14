@@ -1,7 +1,7 @@
 import React from 'react';
 import Radium, { Style, StyleRoot } from "radium";
 import { LinkContainer } from 'react-router-bootstrap';
-import { IndexLink, Link, History } from 'react-router';
+// import { Link, History } from 'react-router';
 import axios from 'axios';
 
 var mediumSearch = '';

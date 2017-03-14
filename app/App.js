@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, useRouterHistory, browserHistory } from 'react-router'
+import { Router, browserHistory } from 'react-router'
 // import { createHashHistory } from 'history'
 // const appHistory = useRouterHistory(createHashHistory)()
 import routes from './config/routes';

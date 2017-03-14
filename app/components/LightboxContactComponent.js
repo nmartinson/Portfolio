@@ -1,7 +1,7 @@
 import React from 'react';
-import axios from 'axios';
-import { Link,browserHistory } from 'react-router';
-import { ReactRpg } from 'react-rpg';
+// import axios from 'axios';
+// import { Link,browserHistory } from 'react-router';
+// import { ReactRpg } from 'react-rpg';
 import ReactGA from 'react-ga';
 
 

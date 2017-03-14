@@ -3,7 +3,7 @@ import Radium, { Style, StyleRoot } from "radium";
 
 import {
   ShareButtons,
-  ShareCounts,
+  // ShareCounts,
   generateShareIcon
 } from 'react-share';
 
@@ -16,12 +16,12 @@ const {
   VKShareButton,
 } = ShareButtons;
 
-const {
-  FacebookShareCount,
-  GooglePlusShareCount,
-  LinkedinShareCount,
-  PinterestShareCount,
-} = ShareCounts;
+// const {
+//   FacebookShareCount,
+//   GooglePlusShareCount,
+//   LinkedinShareCount,
+//   PinterestShareCount,
+// } = ShareCounts;
 
 const FacebookIcon = generateShareIcon('facebook');
 const TwitterIcon = generateShareIcon('twitter');

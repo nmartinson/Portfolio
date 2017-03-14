@@ -1,8 +1,11 @@
 const webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
 var CompressionPlugin = require('compression-webpack-plugin');
+
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
 // var HtmlWebpackPlugin = require('html-webpack-plugin');
-// const Helmet = require('react-helmet');
+
 // var devUrl = 'http://localhost:3000/api/v1';
 var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
 
@@ -57,8 +60,13 @@ module.exports = [
             path: path.join(__dirname, 'public/'),
             filename: 'bundle.js',
         },
+        alias: {
+         'react': 'preact-compat',
+         'react-dom': 'preact-compat'
+        },
         module: {
-            loaders: [{
+            loaders: [
+            {
                 test: /\.js$/,
                 exclude: /node_modules/,
                         include: path.resolve(__dirname, '..'),
@@ -66,16 +74,24 @@ module.exports = [
                 query: {
                     presets: ['react', 'es2015', 'stage-1']
                 }
-            }]
+            },
+            {
+                test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
+                loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
+            }
+            ]
         },
         devtool: 'cheap-module-source-map',
         plugins: [
+            new BundleAnalyzerPlugin(),
             new webpack.DefinePlugin({
                 'process.env.API_URL': JSON.stringify(apiUrl),
-                'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development')
+                'process.env.NODE_ENV': '"production"'//JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development')
             }),
             new webpack.optimize.UglifyJsPlugin({
                 beautify: false,
+                sourceMap: true,
+                minimize: false,
                 mangle: {
                     screw_ie8: true,
                     keep_fnames: true
