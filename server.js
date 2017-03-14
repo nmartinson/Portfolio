@@ -19,6 +19,7 @@ app.use('/static',Express.static('public'));
 
 app.get('*.js', function (req, res, next) {
   req.url = req.url + '.gz';
+  console.log('GZIP')
   res.set('Content-Encoding', 'gzip');
   next();
 });

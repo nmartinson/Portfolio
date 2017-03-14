@@ -67,12 +67,23 @@ module.exports = [
                 }
             }]
         },
+        devtool: 'cheap-module-source-map',
         plugins: [
             new webpack.DefinePlugin({
                 'process.env.API_URL': JSON.stringify(apiUrl),
                 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development')
             }),
-            new webpack.optimize.UglifyJsPlugin(),
+            new webpack.optimize.UglifyJsPlugin({
+                beautify: false,
+                mangle: {
+                    screw_ie8: true,
+                    keep_fnames: true
+                },
+                compress: {
+                    screw_ie8: true
+                },
+                comments: false
+            }),
             new webpack.optimize.DedupePlugin(), //dedupe similar code
             new webpack.optimize.AggressiveMergingPlugin(),//Merge chunks
             new CompressionPlugin({
