@@ -60,7 +60,7 @@ class FeaturedImages extends React.Component {
   }
 
   componentDidMount(){
-    const apiUrl =process.env.API_URL;
+    const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/features`
     axios.get(path)
       .then((response) => {
@@ -75,6 +75,7 @@ class FeaturedImages extends React.Component {
               caption: <LightboxContact imageDetails={items[index]}/>,
               onClick: this.openLightbox.bind(this,index)
             }
+            items[index].url = items[index].thumbnail_url; //change react-rpg image to thumbnail
             images.push(image);
         }
         this.setState({
