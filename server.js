@@ -5,7 +5,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import routes from './app/config/routes';
-import template from './app/template';
+
 import Helmet from 'react-helmet';
 import NotFoundPage from './app/components/NotFoundPage';
 
