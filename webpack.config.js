@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
 var CompressionPlugin = require('compression-webpack-plugin');
+// var HtmlWebpackPlugin = require('html-webpack-plugin');
 // const Helmet = require('react-helmet');
 // var devUrl = 'http://localhost:3000/api/v1';
 var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
@@ -92,7 +93,17 @@ module.exports = [
               test: /\.js$|\.css$|\.html$/,
               threshold: 10240,
               minRatio: 0.8
-            })
+            }),
+            // new HtmlWebpackPlugin({
+            //   template: 'src/index.html',
+            //   minify: {
+            //     collapseWhitespace: true,
+            //     removeComments: true,
+            //     removeRedundantAttributes: true,
+            //     removeScriptTypeAttributes: true,
+            //     removeStyleLinkTypeAttributes: true
+            //   }
+            // }),
         ]
     }
 ]
