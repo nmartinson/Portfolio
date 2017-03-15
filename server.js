@@ -83,7 +83,7 @@ app.get('*', (req, res) => {
                 </head>
 				<body style="height:100%">
 				  <div id="app" style="height:100%">${markup}</div>
-                    <script src="/static/bundle.js"></script>
+                    <script src="/static/bundle.js.gz"></script>
                 </body>
             </html>
         `;
