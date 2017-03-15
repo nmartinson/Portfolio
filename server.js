@@ -8,21 +8,25 @@ import routes from './app/config/routes';
 
 import Helmet from 'react-helmet';
 import NotFoundPage from './app/components/NotFoundPage';
+import compression from 'compression'; //import to express app
+
 
 // initialize the server and configure support for ejs templates
 const app = new Express();
 const server = new Server(app);
 
+app.use(compression());
 
 // define the folder that will be used for static assets
 app.use('/static',Express.static('public'));
 
-app.get('*.js', function (req, res, next) {
-  req.url = req.url + '.gz';
-  console.log('GZIP')
-  res.set('Content-Encoding', 'gzip');
-  next();
-});
+
+// app.get('*.js', function (req, res, next) {
+//   req.url = req.url + '.gz';
+//   console.log('GZIP')
+//   res.set('Content-Encoding', 'gzip');
+//   next();
+// });
 
 // universal routing and rendering
 app.get('*', (req, res) => {
@@ -83,7 +87,7 @@ app.get('*', (req, res) => {
                 </head>
 				<body style="height:100%">
 				  <div id="app" style="height:100%">${markup}</div>
-                    <script src="/static/bundle.js.gz"></script>
+                    <script src="/static/bundle.js"></script>
                 </body>
             </html>
         `;
