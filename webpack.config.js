@@ -2,7 +2,7 @@ const webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
 var CompressionPlugin = require('compression-webpack-plugin');
 
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // var HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -79,7 +79,7 @@ module.exports = [
         },
         devtool: 'cheap-module-source-map',
         plugins: [
-            new BundleAnalyzerPlugin(),
+            // new BundleAnalyzerPlugin(),
             new webpack.DefinePlugin({
                 'process.env.API_URL': JSON.stringify(apiUrl),
                 'process.env.NODE_ENV': '"production"'//JSON.stringify(process.env.NODE_ENV) || JSON.stringify('development')
