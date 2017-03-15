@@ -60,10 +60,6 @@ module.exports = [
             path: path.join(__dirname, 'public/'),
             filename: 'bundle.js',
         },
-        alias: {
-         'react': 'preact-compat',
-         'react-dom': 'preact-compat'
-        },
         module: {
             loaders: [
             {
