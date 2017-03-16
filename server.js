@@ -18,9 +18,9 @@ const server = new Server(app);
 
 app.use(compression());
 
-const publicPath = Express.static(path.join(__dirname, '../public'))
+// const publicPath = Express.static(path.join(__dirname, '../public'))
 // define the folder that will be used for static assets
-app.use('/public', publicPath);
+app.use(Express.static(__dirname + '/public'));
 
 
 // app.get('*.js', function (req, res, next) {
