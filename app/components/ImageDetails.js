@@ -129,7 +129,8 @@ class ImageDetails extends React.Component {
 
   render(){
     const { imageDetails, loading} = this.state;
-
+  console.log('imageDetails')
+  console.log(imageDetails)
     if(loading){
       return (
         <div>
