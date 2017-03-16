@@ -9,6 +9,7 @@ import routes from './app/config/routes';
 import Helmet from 'react-helmet';
 import NotFoundPage from './app/components/NotFoundPage';
 import compression from 'compression'; //import to express app
+var path = require('path');
 
 
 // initialize the server and configure support for ejs templates
