@@ -2,13 +2,14 @@
   "name": "portfolio_react",
   "version": "1.0.0",
   "description": "",
-  "main": "bundle.js",
+  "main": "server.bundle.js",
   "scripts": {
     "start": "babel-node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prod": "webpack -p --config webpack.config.js",
     "dev": "webpack -w --config webpack.dev.config.js",
-    "startdev": "nodemon --exec babel-node devServer.js"
+    "startdev": "nodemon --exec babel-node devServer.js",
+    "postinstall": "webpack -p --config webpack.config.js"
   },
   "engines": {
     "node": "6.5.0",
@@ -28,7 +29,6 @@
     "base-64": "^0.1.0",
     "compression": "^1.6.2",
     "compression-webpack-plugin": "^0.3.2",
-    "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.25.0",
     "exif-js": "^2.1.1",
     "express": "^4.15.2",
