@@ -60,7 +60,7 @@ module.exports = [
         output: {
             path: path.join(__dirname, 'public'),
             filename: 'bundle.js',
-            publicPath: '/public/'
+            publicPath: 'wwww.portfolio.boundless-journey.com/'
         },
         module: {
             loaders: [
