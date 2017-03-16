@@ -58,8 +58,9 @@ module.exports = [
         // context: path.join(__dirname, 'Portfolio'),
         entry: './app/App.js',
         output: {
-            path: path.join(__dirname, 'public/'),
+            path: path.join(__dirname, '/public'),
             filename: 'bundle.js',
+            publicPath: '/'
         },
         module: {
             loaders: [
