@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
 var CompressionPlugin = require('compression-webpack-plugin');
-
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 // var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -55,6 +55,7 @@ module.exports = [
     // // ]
     // },
     {
+        // context: path.join(__dirname, 'Portfolio'),
         entry: './app/App.js',
         output: {
             path: path.join(__dirname, 'public/'),
@@ -79,6 +80,9 @@ module.exports = [
         },
         devtool: 'cheap-module-source-map',
         plugins: [
+            new CopyWebpackPlugin([
+                { from: 'assets' }, {from: 'app/css'}
+            ]),
             // new BundleAnalyzerPlugin(),
             new webpack.DefinePlugin({
                 'process.env.API_URL': JSON.stringify(apiUrl),

@@ -18,7 +18,7 @@ const server = new Server(app);
 app.use(compression());
 
 // define the folder that will be used for static assets
-app.use('/static',Express.static('public'));
+app.use('/',Express.static('public'));
 
 
 // app.get('*.js', function (req, res, next) {
@@ -80,14 +80,14 @@ app.get('*', (req, res) => {
           <link rel="stylesheet" type="text/css" href="sortable.css">
 					<link rel="stylesheet" type="text/css" href="app/css/sortable.css">
 					<link rel="stylesheet" type="text/css" href="app/css/Global.css">
-					<link rel="stylesheet" type="text/css" href="Global.css">
+					<link rel="stylesheet" type="text/css" href="/styles.css">
 					<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 					${head.title.toString()}
 					${head.meta}
                 </head>
 				<body style="height:100%">
 				  <div id="app" style="height:100%">${markup}</div>
-                    <script src="/static/bundle.js"></script>
+                    <script src="/bundle.js"></script>
                 </body>
             </html>
         `;

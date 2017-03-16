@@ -2,13 +2,14 @@ import React from 'react';
 import axios from 'axios';
 // import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
-// import Styles  from '../styles';
+// require('../css/Global.css');
 // import styler from 'react-styling'
 import Radium from 'radium';
 import Lightbox from 'react-images';
 import LightboxContact from './LightboxContactComponent';
 // import {Modal} from 'react-bootstrap';
 import Helmet from "react-helmet";
+
 
 var tagSearch = '';
 
@@ -44,20 +45,6 @@ class FeaturedImages extends React.Component {
     this.gotoImage = this.gotoImage.bind(this);
     this.handleClickImage = this.handleClickImage.bind(this);
   }
-
-  // openModal(url) {
-  //   var index = getIndex(url, this.state.primaryPhotos, 'url');
-  //   var photo = this.state.primaryPhotos[index];
-  //   window.location = `#/photoset/${photo.id}/title/${photo.title}`
-  // }
-
-  // setModalVisible(e){
-  //   e.preventDefault();
-
-  //   var visible = !this.state.modalVisible;
-  //   console.log('visible ' + visible);
-  //   this.setState({modalVisible:visible, lightboxIsOpen:true})
-  // }
 
   componentDidMount(){
     const apiUrl = process.env.API_URL;
