@@ -22,7 +22,8 @@ class EditPhotoSettings extends React.Component {
     this.state = {
       id: null,
       loading: true,
-      settings: []
+      settings: [],
+      galleries: []
     }
 
   }
@@ -135,7 +136,7 @@ class EditPhotoSettings extends React.Component {
         });
       })
       .catch((error) => {
-        console.log("Error in Image Settings:", error);
+        console.log("Error in edit photo settings get mediums:", error);
       });
 
     path = `${apiUrl}/settings`
@@ -148,12 +149,25 @@ class EditPhotoSettings extends React.Component {
         })
       })
       .catch((error) => {
-        console.log("Error in edit:", error);
+        console.log("Error in edit photo settings get settings:", error);
+      });
+
+    path = `${apiUrl}/galleries`
+    axios.get(path)
+      .then((response) => {
+        var galleries = response.data;
+        this.setState({
+          loading: false,
+          galleries: galleries
+        })
+      })
+      .catch((error) => {
+        console.log("Error in edit photo settings get galleries:", error);
       });
   }
 
   render(){
-    const { loading,settings, mediums} = this.state;
+    const { loading,settings, mediums, galleries} = this.state;
     if(loading){
       return <p>Loading</p>
     } else {
@@ -162,6 +176,17 @@ class EditPhotoSettings extends React.Component {
           <div >
             <form>
               <div>
+                <div>
+                    <select name="galleries" multiple>
+                    {
+                      galleries.map(function(gallery, index){
+                        return(
+                            <option value={gallery.id}>{gallery.name}</option>
+                        )
+                      }.bind(this))
+                    }
+                    </select>
+                </div>
                 <div>
                 {
                   settings.map(function(setting, index){

@@ -65,32 +65,32 @@ app.get('*', (req, res) => {
                  side, but you must construct `<head>` manually
                  on the server. */
         let html = `
-            <!doctype html>
-				<html lang="en" style="height:100%">
-                <head>
-					<meta charset="utf-8" />
-					<meta charset="UTF-8">
-					<meta name="viewport" content="initial-scale=1">
-					<title>Portfolio</title>
-					<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-          <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-          <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-          <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
-          <link rel="manifest" href="/manifest.json">
-          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000">
-          <meta name="theme-color" content="#ffffff">
-          <link rel="stylesheet" type="text/css" href="sortable.css">
-					<link rel="stylesheet" type="text/css" href="app/css/sortable.css">
-					<link rel="stylesheet" type="text/css" href="app/css/Global.css">
-					<link rel="stylesheet" type="text/css" href="/styles.css">
-					<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-					${head.title.toString()}
-					${head.meta}
-                </head>
-				<body style="height:100%">
-				  <div id="app" style="height:100%">${markup}</div>
-                    <script src="/bundle.js"></script>
-                </body>
+          <!doctype html>
+				    <html lang="en" style="height:100%">
+              <head>
+      					<meta charset="utf-8"/>
+      					<meta charset="UTF-8">
+      					<meta name="viewport" content="initial-scale=1">
+      					<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+                <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+                <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+                <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+                <link rel="manifest" href="/manifest.json">
+                <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#000000">
+                <meta name="theme-color" content="#ffffff">
+                <link rel="stylesheet" type="text/css" href="sortable.css">
+      					<link rel="stylesheet" type="text/css" href="app/css/sortable.css">
+      					<link rel="stylesheet" type="text/css" href="app/css/Global.css">
+      					<link rel="stylesheet" type="text/css" href="/styles.css">
+      					<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    					  <meta name="description" content="Nick Martinson of Boundless Journey Photography features nature &amp; landscape images, fine art prints, and adventure content.">
+                ${head.title.toString()}
+      					${head.meta}
+              </head>
+      				<body style="height:100%">
+      				  <div id="app" style="height:100%">${markup}</div>
+                <script src="/bundle.js"></script>
+              </body>
             </html>
         `;
         res.send(html)  

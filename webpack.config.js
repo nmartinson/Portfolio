@@ -6,8 +6,8 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-// var devUrl = 'http://localhost:3000/api/v1';
-var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
+var devUrl = 'http://localhost:3000/api/v1';
+// var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
 
 var prodUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
 

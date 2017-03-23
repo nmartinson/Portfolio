@@ -4,8 +4,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var combineLoaders = require('webpack-combine-loaders');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
-// var devUrl = 'http://localhost:3000/api/v1';
-var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
+var devUrl = 'http://localhost:3000/api/v1';
+// var devUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
 var prodUrl = 'https://tranquil-springs-59529.herokuapp.com/api/v1';
 var apiUrl = process.env.NODE_ENV === 'production' ? prodUrl : devUrl;
 var path = require('path');

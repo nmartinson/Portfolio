@@ -10,6 +10,9 @@ import Examples from '../components/Examples';
 import EditPhotoSettings from '../components/EditPhotoSettings';
 import OrderingInfo from '../components/OrderingInfo';
 import LightboxContactComponent from '../components/LightboxContactComponent';
+import CreateGallery from '../components/CreateGallery';
+import Gallery from '../components/Gallery';
+
 
 import { Route, IndexRoute } from 'react-router';
 
@@ -24,6 +27,9 @@ const Routes = (
       <Route path="/examples" component={Examples} />
       <Route path="/editPhotoSettings" component={EditPhotoSettings} />
       <Route path="/orderingInfo" component={OrderingInfo} />      
+      <Route path="/createGallery" component={CreateGallery} />
+      <Route path="/gallery/:id" component={Gallery} />
+
 
   </Route>
 );

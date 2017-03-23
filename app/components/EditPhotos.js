@@ -82,6 +82,7 @@ class EditPhoto extends React.Component {
       imageList: {},
       showOrder: false,
       imageOrder: {},
+      selectedGalleries: [],
       settings: []
     }
 
@@ -164,6 +165,19 @@ class EditPhoto extends React.Component {
     imageDetails.name = fileName;
     this.setState({ imageDetails: imageDetails });
   }
+
+  handleGalleryChange(e){
+    var options = e.target.options;
+    var value = [];
+    for (var i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    console.log('gallery change')
+    console.log(value)
+    this.setState({selectedGalleries: value});
+  }
   
   closeModal(e) {
     e.preventDefault();
@@ -196,26 +210,35 @@ class EditPhoto extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { files} = this.state;
+    const { files, selectedGalleries} = this.state;
     const { imageDetails, isFeaturedImage} = this.state;
     const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/photos`
 
      axios.put(path, 
       {
-        image:{order: imageDetails.order, photo_id: imageDetails.id, name: imageDetails.name, uniqueFileName: imageDetails.name, settings: imageDetails.settings, isFeatured: true, description: imageDetails.description },
+        image:{
+          order: imageDetails.order,
+          photo_id: imageDetails.id,
+          name: imageDetails.name,
+          uniqueFileName: imageDetails.name,
+          settings: imageDetails.settings,
+          isFeatured: true,
+          description: imageDetails.description,
+          galleries: selectedGalleries  
+        },
       })
       .then( function(names) {
         console.log('Success')
       })
       .catch((error) => {
-        console.log("Error in Edit Photo: ", error);
+        console.log("Error in Edit Photo Submit: ", error);
       });
   }
 
   saveOrder(e) {
     e.preventDefault();
-    const { imageDetails, isFeaturedImage, imageOrder} = this.state;
+    const { imageDetails, isFeaturedImage, imageOrder, selectedGalleries} = this.state;
     const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/photos`
     console.log(imageOrder)
@@ -223,7 +246,16 @@ class EditPhoto extends React.Component {
     imageOrder.map(function(image, index){
       axios.put(path, 
       {
-        image:{order: index + 1 , photo_id: image.id, name: image.name, uniqueFileName: image.name, settings: image.settings, isFeatured: true, description: image.description },
+        image:{
+          order: index + 1,
+          photo_id: image.id,
+          name: image.name,
+          uniqueFileName: image.name,
+          settings: image.settings,
+          isFeatured: true,
+          description: image.description, 
+          galleries: selectedGalleries 
+        },
       })
       .then( function(names) {
         console.log('Success')
@@ -233,6 +265,23 @@ class EditPhoto extends React.Component {
       });
     })
      
+  }
+
+  getGalleryDetails(){
+    const apiUrl =process.env.API_URL;
+    const path = `${apiUrl}/galleries`
+    axios.get(path)
+      .then((response) => {
+        var galleries = response.data;
+        console.log(galleries)
+        this.setState({
+          loading: false,
+          galleries: galleries
+        })
+      })
+      .catch((error) => {
+        console.log("Error in edit Photo get Galleries:", error);
+      });
   }
 
   componentDidMount(){
@@ -254,13 +303,14 @@ class EditPhoto extends React.Component {
         }
         this.setState({
           imageList: items,
-          loading: false,
+          loading: true,
           modalIsOpen: false,
         })
       })
       .catch((error) => {
-        console.log("Error in edit:", error);
+        console.log("Error in edit get features:", error);
       });
+      this.getGalleryDetails();
   }
 
   configureClickHandler(image, index, url) {  
@@ -268,7 +318,7 @@ class EditPhoto extends React.Component {
   }
 
   render(){
-    const { imageList, loading, currentImage, imageDetails, showOrder, settings} = this.state;
+    const { imageList, loading, currentImage, imageDetails, showOrder, settings, galleries} = this.state;
     if(loading){
       return <p>Loading</p>
     } else {
@@ -310,6 +360,17 @@ class EditPhoto extends React.Component {
                         <input style={style.modalInput} type="text" value={imageDetails.name != null ? imageDetails.name : null} onChange={(x) => {this.handlePhotoNameChange(x) }} title="Photo Name"/>
                         <label name="photo_description" htmlFor="photo_description">Photo Description</label>
                         <input style={style.modalInput} type="text" value={imageDetails.description != null ? imageDetails.description : null} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
+                        <div>
+                          <select name="galleries" multiple onChange={(x) => {this.handleGalleryChange(x)}}>
+                          {
+                            galleries.map(function(gallery, index){
+                              return(
+                                  <option value={gallery.id}>{gallery.name}</option>
+                              )
+                            }.bind(this))
+                          }
+                          </select>
+                        </div>
                         <div>
                         {
                           imageDetails.settings.map(function(setting, index){

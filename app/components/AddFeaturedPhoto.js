@@ -18,7 +18,8 @@ class AddFeaturedPhoto extends React.Component {
       files: [],
       isFeaturedImage: true,
       xmpData: null,
-      exifData: null
+      exifData: null,
+      selectedGalleries: []
     }
   }
 
@@ -65,6 +66,35 @@ class AddFeaturedPhoto extends React.Component {
       this.setState({files: newArray})
     }
   }
+  
+  handleGalleryChange(e){
+    var options = e.target.options;
+    var value = [];
+    for (var i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    console.log('gallery change')
+    console.log(value)
+    this.setState({selectedGalleries: value});
+  }
+
+  getGalleryDetails(){
+    const apiUrl =process.env.API_URL;
+    const path = `${apiUrl}/galleries`
+    axios.get(path)
+      .then((response) => {
+        var galleries = response.data;
+        this.setState({
+          loading: false,
+          galleries: galleries
+        })
+      })
+      .catch((error) => {
+        console.log("Error in add feature get Gallery Details:", error);
+      });
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -91,7 +121,7 @@ class AddFeaturedPhoto extends React.Component {
   }
 
   uploadFiles(){
-    const { files, isFeaturedImage, exifData, xmpData} = this.state;
+    const { files, isFeaturedImage, exifData, xmpData, selectedGalleries} = this.state;
     const apiUrl =process.env.API_URL;
     const path = `${apiUrl}/features`
 
@@ -123,14 +153,15 @@ class AddFeaturedPhoto extends React.Component {
           lens: lens,
           gps: exifData.GPS }
       }
-      
+      console.log(selectedGalleries)
       return { file: fileItem.file, 
         name: fileItem.inputName,
         uniqueFileName: fileItem.name, 
         settings: fileItem.settings, 
         isFeatured: isFeaturedImage, 
         description: fileItem.description,
-        imageData: imageData
+        imageData: imageData,
+        galleries: selectedGalleries
       }
     });
 
@@ -175,6 +206,7 @@ class AddFeaturedPhoto extends React.Component {
     })
     this.getImageData(acceptedFiles[0]);
     this.setState({ files: this.state.files.concat(newFiles) })
+    this.getGalleryDetails();
   }
 
   getImageData(file){
@@ -230,7 +262,7 @@ class AddFeaturedPhoto extends React.Component {
   } 
 
   render(){
-    const { files} = this.state;
+    const { files, galleries} = this.state;
       return(
         <div>
           <form onSubmit={(x) => {this.handleSubmit(x)}}>
@@ -263,6 +295,17 @@ class AddFeaturedPhoto extends React.Component {
                                 )
                               }, this)
                             }
+                            </div>
+                              <div>
+                                <select name="galleries" multiple onChange={(x) => {this.handleGalleryChange(x)}}>
+                                {
+                                  galleries.map(function(gallery, index){
+                                    return(
+                                        <option value={gallery.id}>{gallery.name}</option>
+                                    )
+                                  }.bind(this))
+                                }
+                                </select>
                             </div>
                             <button className="btn btn-default" type="button" onClick={(x) => {this.handleAddSetting(x)}}>Add Setting</button>
                             <Link key={idx} to={`/photoset/${photo.id}/title/${photo.title}`}>
