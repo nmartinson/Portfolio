@@ -7,8 +7,9 @@
     "start": "babel-node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prod": "webpack -p --config webpack.config.js",
-    "dev": "webpack -w --config webpack.config.js",
-    "startdev": "nodemon --exec babel-node devServer.js"
+    "dev": "webpack -w --config webpack.dev.config.js",
+    "startdev": "nodemon --exec babel-node devServer.js",
+    "postinstall": "webpack -p --config webpack.config.js"
   },
   "engines": {
     "node": "6.5.0",
