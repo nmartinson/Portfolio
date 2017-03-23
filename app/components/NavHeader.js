@@ -55,7 +55,7 @@ class NavHeader extends React.Component {
             <LinkContainer to='/orderingInfo'>
               <NavItem eventKey={5} >Ordering Info</NavItem>
             </LinkContainer>
-            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+            <NavDropdown eventKey={3} title="Galleries" id="basic-nav-dropdown">
             {
               galleries.map(function(gallery, index){
                 return(
