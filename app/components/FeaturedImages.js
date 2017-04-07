@@ -1,15 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-// import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
-// require('../css/Global.css');
-// import styler from 'react-styling'
 import Radium from 'radium';
 import Lightbox from 'react-images';
 import LightboxContact from './LightboxContactComponent';
-// import {Modal} from 'react-bootstrap';
 import Helmet from "react-helmet";
 import { ThreeBounce } from 'better-react-spinkit'
+// import HiddenImages from './HiddenImages';
 
 var tagSearch = '';
 
@@ -39,6 +36,7 @@ class FeaturedImages extends React.Component {
       images: [],
       modalVisible: false
     }
+    this.getImages();
     this.closeLightbox = this.closeLightbox.bind(this);
     this.gotoNext = this.gotoNext.bind(this);
     this.gotoPrevious = this.gotoPrevious.bind(this);
@@ -47,6 +45,38 @@ class FeaturedImages extends React.Component {
   }
 
   componentDidMount(){
+    // const apiUrl = process.env.API_URL;
+    // const path = `${apiUrl}/features`
+    // axios.get(path)
+    //   .then((response) => {
+    //     var items = response.data;
+    //     var images = [];
+    //     for(var index=0; index <items.length; index++){
+    //         var image = null;
+    //         items[index].clickHandler = this.openLightbox.bind(this,index);
+    //         image = {
+    //           index: index,
+    //           src: items[index].url,
+    //           caption: <LightboxContact imageDetails={items[index]}/>,
+    //           onClick: this.openLightbox.bind(this,index)
+    //         }
+    //         items[index].url = items[index].thumbnail_url; //change react-rpg image to thumbnail
+    //         images.push(image);
+    //     }
+    //     this.setState({
+    //       imageList: items,
+    //       filterImages: items,
+    //       images: images,
+    //       loading: false,
+    //       modalIsOpen: false,
+    //     })
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error in Featured:", error);
+    //   });
+  }
+
+  getImages(){
     const apiUrl = process.env.API_URL;
     const path = `${apiUrl}/features`
     axios.get(path)

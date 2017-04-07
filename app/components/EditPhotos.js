@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Link } from 'react-router';
 import { ReactRpg } from 'react-rpg';
@@ -77,12 +78,15 @@ class EditPhoto extends React.Component {
     this.state = {
       id: null,
       title: "",
-      loading: true,
+      loadingPhotos: true,
+      loadingGalleries: true,
+      loadingNonSelectedGalleries: true,
       imageDetails: {settings:[]},
       imageList: {},
       showOrder: false,
       imageOrder: {},
       selectedGalleries: [],
+      nonSelectedGalleries: [],
       settings: []
     }
 
@@ -166,19 +170,6 @@ class EditPhoto extends React.Component {
     this.setState({ imageDetails: imageDetails });
   }
 
-  handleGalleryChange(e){
-    var options = e.target.options;
-    var value = [];
-    for (var i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
-    }
-    console.log('gallery change')
-    console.log(value)
-    this.setState({selectedGalleries: value});
-  }
-  
   closeModal(e) {
     e.preventDefault();
     this.setState({modalIsOpen: false});
@@ -187,6 +178,8 @@ class EditPhoto extends React.Component {
   openModal(url) {
     var index = getIndex(url, this.state.imageList, 'url');
     this.getPossibleSettings(this.state.imageList[index].id);
+    this.getPossibleGalleries();
+    this.getSelectGalleries(this.state.imageList[index].id);
     this.setState({modalIsOpen: true, imageDetails: this.state.imageList[index]});
   }
 
@@ -264,24 +257,6 @@ class EditPhoto extends React.Component {
         console.log("Error in update order: ", error);
       });
     })
-     
-  }
-
-  getGalleryDetails(){
-    const apiUrl =process.env.API_URL;
-    const path = `${apiUrl}/galleries`
-    axios.get(path)
-      .then((response) => {
-        var galleries = response.data;
-        console.log(galleries)
-        this.setState({
-          loading: false,
-          galleries: galleries
-        })
-      })
-      .catch((error) => {
-        console.log("Error in edit Photo get Galleries:", error);
-      });
   }
 
   componentDidMount(){
@@ -303,7 +278,7 @@ class EditPhoto extends React.Component {
         }
         this.setState({
           imageList: items,
-          loading: true,
+          loadingPhotos: false,
           modalIsOpen: false,
         })
       })
@@ -317,9 +292,146 @@ class EditPhoto extends React.Component {
     image[index].clickHandler = () => {this.openModal(url)};
   }
 
+  getGalleryDetails(){
+    const apiUrl =process.env.API_URL;
+    const path = `${apiUrl}/galleries`
+    axios.get(path)
+      .then((response) => {
+        var galleries = response.data;
+        this.setState({
+          loadingGalleries: false,
+          galleries: galleries
+        })
+      })
+      .catch((error) => {
+        console.log("Error in edit Photo get Galleries:", error);
+      });
+  }
+
+  deselectGalleries(e){
+    e.preventDefault();
+    const {nonSelectedGalleries, selectedGalleries} = this.state;
+    var node = ReactDOM.findDOMNode(this.refs.selectedGalleries);
+    var options = [].slice.call(node.querySelectorAll('option'));
+    var selected = options.filter(function (option) {
+        return option.selected;
+    });
+    var selectedValues = selected.map(function (option) {
+        nonSelectedGalleries.push({name:option.value, id:parseInt(option.id)});
+        return {name:option.value, id:parseInt(option.id)};
+    });
+
+    for(var i = 0; i < selectedGalleries.length; i++) {
+      for(var j = 0; j < selectedValues.length; j++) {
+        if(selectedGalleries[i].id == selectedValues[j].id) {
+            selectedGalleries.splice(i, 1);
+            break;
+        }
+      }
+    }
+
+    this.setState({
+      selectedGalleries: selectedGalleries,
+      nonSelectedGalleries: nonSelectedGalleries
+    });
+  }
+
+  selectGalleries(e){
+    e.preventDefault();
+    const {nonSelectedGalleries, selectedGalleries} = this.state;
+    var node = ReactDOM.findDOMNode(this.refs.nonSelectedGalleries  );
+    var options = [].slice.call(node.querySelectorAll('option'));
+    var selected = options.filter(function (option) {
+        return option.selected;
+    });
+    var selectedValues = selected.map(function (option) {
+        selectedGalleries.push({name:option.value, id:parseInt(option.id)});
+        return {name:option.value, id:parseInt(option.id)};
+    });
+
+    for(var i = 0; i < nonSelectedGalleries.length; i++) {
+      for(var j = 0; j < selectedValues.length; j++) {
+        if(nonSelectedGalleries[i].id == selectedValues[j].id) {
+            nonSelectedGalleries.splice(i, 1);
+            break;
+        }
+      }
+    }
+
+    this.setState({
+      selectedGalleries: selectedGalleries,
+      nonSelectedGalleries: nonSelectedGalleries
+    });
+  }
+
+  selectPreviouslySelectedGalleries(){
+    const {nonSelectedGalleries,selectedGalleryIds} = this.state;
+    var selectedGalleries = [];
+    var idsToRemoveFromNonSelectedGalleries = []
+
+    for(var i = 0; i < nonSelectedGalleries.length; i++) {
+      for(var j = 0; j < selectedGalleryIds.length; j++) {
+        if(nonSelectedGalleries[i].id == selectedGalleryIds[j].gallery_id) {
+            selectedGalleries.push(nonSelectedGalleries[i]);
+            idsToRemoveFromNonSelectedGalleries.push(nonSelectedGalleries[i].id);
+            break;
+        }
+      }
+    }
+
+    for(var i =0; i < idsToRemoveFromNonSelectedGalleries.length; i++){
+      for(var j = nonSelectedGalleries.length -1; j>0; j--) {
+        if(nonSelectedGalleries[j].id == idsToRemoveFromNonSelectedGalleries[i]) {
+          nonSelectedGalleries.splice(j, 1);
+          break;
+        }
+      }
+    }
+    this.setState({
+      nonSelectedGalleries: nonSelectedGalleries,
+      selectedGalleries: selectedGalleries
+    })
+  }
+
+  getSelectGalleries(photo_id){
+    const apiUrl =process.env.API_URL;
+    const path = `${apiUrl}/gallery_photos/${photo_id}`
+    axios.get(path)
+      .then((response) => {
+        var galleries = response.data;
+
+        this.setState({
+          selectedGalleryIds: galleries
+        })
+            this.selectPreviouslySelectedGalleries();
+
+      })
+      .catch((error) => {
+        console.log("Error in get settings:", error);
+      });
+  }
+
+  getPossibleGalleries(){
+    const {selectedGalleries,galleries} = this.state;
+    var nonSelectedGalleries = [];
+    galleries.forEach(function(gallery){
+      var shouldAddGallery = true;
+      selectedGalleries.forEach(function(selectedGallery){
+      if(gallery.id == selectedGallery.id)
+        shouldAddGallery = false;
+      })
+      nonSelectedGalleries.push(gallery);
+    })
+    this.setState({
+      nonSelectedGalleries: nonSelectedGalleries,
+      loadingNonSelectedGalleries: false
+    });
+    return nonSelectedGalleries;
+  }
+
   render(){
-    const { imageList, loading, currentImage, imageDetails, showOrder, settings, galleries} = this.state;
-    if(loading){
+    const { imageList, loadingPhotos, loadingGalleries,loadingNonSelectedGalleries, currentImage, imageDetails, showOrder, settings,nonSelectedGalleries, selectedGalleries, galleries} = this.state;
+    if(loadingPhotos || loadingGalleries){
       return <p>Loading</p>
     } else {
       return (
@@ -361,16 +473,31 @@ class EditPhoto extends React.Component {
                         <label name="photo_description" htmlFor="photo_description">Photo Description</label>
                         <input style={style.modalInput} type="text" value={imageDetails.description != null ? imageDetails.description : null} onChange={(x) => {this.handlePhotoDescriptionChange(x) }} title="Photo Description"/>
                         <div>
-                          <select name="galleries" multiple onChange={(x) => {this.handleGalleryChange(x)}}>
+                          <select ref="nonSelectedGalleries" name="galleries" multiple>
                           {
-                            galleries.map(function(gallery, index){
+                            nonSelectedGalleries.map(function(gallery, index){
                               return(
-                                  <option value={gallery.id}>{gallery.name}</option>
+                                  <option id={gallery.id} style={{color: "black"}}>{gallery.name}</option>
                               )
                             }.bind(this))
                           }
                           </select>
+                          <button onClick={(x) => {this.selectGalleries(x)}}>Add Galleries</button>
                         </div>
+
+                        <div>
+                          <select ref="selectedGalleries" name="selectedGalleries" multiple>
+                          {
+                            selectedGalleries.map(function(gallery, index){
+                              return(
+                                  <option id={gallery.id} style={{color: "black"}}>{gallery.name}</option>
+                              )
+                            }.bind(this))
+                          }
+                          </select>
+                          <button onClick={(x) => {this.deselectGalleries(x)}}>Remove Galleries</button>
+                        </div>
+
                         <div>
                         {
                           imageDetails.settings.map(function(setting, index){
