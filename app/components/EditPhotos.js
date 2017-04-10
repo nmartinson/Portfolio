@@ -201,6 +201,27 @@ class EditPhoto extends React.Component {
       });
   }
 
+  handleDelete(e) {
+    e.preventDefault();
+    const { imageDetails} = this.state;
+    const apiUrl =process.env.API_URL;
+    const path = `${apiUrl}/photos/${imageDetails.id}`
+
+     axios.delete(path)
+      .then( function(response) {
+        console.log(response)
+        if(response.data == 200)
+        {
+          console.log('Delete Success')
+          window.location.reload()
+        }
+
+      })
+      .catch((error) => {
+        console.log("Error in Delete Photo Submit: ", error);
+      });
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     const { files, selectedGalleries} = this.state;
@@ -526,6 +547,7 @@ class EditPhoto extends React.Component {
                         </div>
                       </div>
                     <button className="btn btn-default" type="button" onClick={(x) => {this.handleSubmit(x)}}>Save</button>
+                    <button className="btn btn-default" type="button" onClick={(x) => {this.handleDelete(x)}}>Delete</button>
                     </form>
                   </div>
                   <div style={Styles.content}>
