@@ -43,7 +43,7 @@ app.get('*', (req, res) => {
       return res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     }
 
-    const initialState = { true };
+    // const initialState = { true };
 
     // generate the React markup for the current route
     let markup;
