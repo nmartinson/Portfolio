@@ -129,8 +129,6 @@ class ImageDetails extends React.Component {
 
   render(){
     const { imageDetails, loading} = this.state;
-  console.log('imageDetails')
-  console.log(imageDetails)
     if(loading){
       return (
         <div>
@@ -138,14 +136,14 @@ class ImageDetails extends React.Component {
             htmlAttributes={{"lang": "en",
               "xmlns":"http://www.w3.org/1999/xhtml",
               "xmlns:fb":"http://ogp.me/ns/fb#"}} // amp takes no value
-            title="Photoset"
-            titleTemplate="Portfolio"
-            defaultTitle="Portfolio"
+            title="Boundless-Journey"
+            titleTemplate="Boundless-Journey"
+            defaultTitle="Boundless-Journey"
             meta={[
-                {"name": "twitter:image", "content": "http://i1.wp.com/www.boundless-journey.com/wp-content/uploads/2016/09/DSC_5325.jpg"},
+                {"name": "twitter:image", "content": `${imageDetails.url}`},
                 {"name": "thumbnail", "content": `${imageDetails.thumbnail_url}`},
                 {"property": "og:image", "content": `${imageDetails.url}`},
-                {"property": "og:title", "content": "Photoset title - boundless-journey"},
+                {"property": "og:title", "content": `${imageDetails.name} - boundless-journey`},
                 {"property": "og:url", "content": `www.portfolio.boundless-journey.com/imageDetails/${imageDetails.id}`},
                 {"property": "og:description", "content": "boundless-journey"},
                 {"property": "og:type", "content": "website"}
@@ -162,14 +160,14 @@ class ImageDetails extends React.Component {
             htmlAttributes={{"lang": "en",
               "xmlns":"http://www.w3.org/1999/xhtml",
               "xmlns:fb":"http://ogp.me/ns/fb#"}} // amp takes no value
-            title="Photoset"
-            titleTemplate="Portfolio"
-            defaultTitle="Portfolio"
+            title="Boundless-Journey"
+            titleTemplate="Boundless-Journey"
+            defaultTitle="Boundless-Journey"
             meta={[
-                {"name": "twitter:image", "content": "http://i1.wp.com/www.boundless-journey.com/wp-content/uploads/2016/09/DSC_5325.jpg"},
+                {"name": "twitter:image", "content": `${imageDetails.url}`},
                 {"name": "thumbnail", "content": `${imageDetails.thumbnail_url}`},
                 {"property": "og:image", "content": `${imageDetails.url}`},
-                {"property": "og:title", "content": "Photoset title - boundless-journey"},
+                {"property": "og:title", "content": `${imageDetails.name} - boundless-journey`},
                 {"property": "og:url", "content": `www.portfolio.boundless-journey.com/imageDetails/${imageDetails.id}`},
                 {"property": "og:description", "content": "boundless-journey"},
                 {"property": "og:type", "content": "website"}

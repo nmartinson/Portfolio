@@ -81,7 +81,7 @@ app.get('*', (req, res) => {
 					<meta charset="utf-8" />
 					<meta charset="UTF-8">
 					<meta name="viewport" content="initial-scale=1">
-					<title>Portfolio</title>
+					<title>Boundless-Journey</title>
 					<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
           <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
