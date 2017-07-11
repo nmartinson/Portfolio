@@ -13,7 +13,7 @@ var Footer = React.createClass({
 
     return (
       <div>
-        <a href="https://www.instagram.com/nickmartinson986/">
+        <a href="https://www.instagram.com/boundless.journey.photography/">
           <div  style={[style.div_image]}>
             <img style={style.instagram} alt="Photos of Nick Martinson while photographing subjects."
               src="http://www.boundless-journey.com/portfolio/images/resources/instagram_icon.png"/>
